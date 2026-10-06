@@ -9,6 +9,10 @@
 
 一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）插件：通过你自己托管的 [SearXNG](https://github.com/searxng/searxng) 元搜索实例，为 AI 智能体提供**免费、无限制、保护隐私的网页搜索**——**无需 API 密钥、没有按次计费的模型成本、查询记录不离开你的机器**。安装后还会在 Web 与桌面应用的 设置 → 插件 页添加 **SearXNG 搜索**卡片，实例地址、引擎限制与结果语言都可以在图形界面里直接编辑。
 
+![设置 → 插件 页中的 SearXNG 搜索卡片](docs/settings-card.png)
+
+*设置 → 插件 页中的 SearXNG 搜索卡片——实例地址、引擎限制与结果语言，改动对下一次搜索立即生效，无需重启。*
+
 ## 为什么用 SearXNG 而不是搜索 API？
 
 | | 托管搜索 API | **本插件** |
@@ -75,15 +79,29 @@ docker run -d --name searxng -p 8080:8080 \
 curl "http://localhost:8080/search?q=test&format=json"
 ```
 
-## 安装
+## 安装（导入 dsh）
 
-从 GitHub 直接安装到任意 dsh profile：
+**方式一 —— 从 GitHub 直接导入（跟踪最新 main）：**
 
 ```sh
 dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-本地克隆或 tarball 也走同一命令，填绝对路径即可。安装会激活 bundle 的补丁层并注册提供方行。
+**方式二 —— 指定发布版本（推荐，可复现）：**
+
+```sh
+dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.1.0
+```
+
+所有版本见 [Releases 页面](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases)。
+
+**方式三 —— 本地克隆或 tarball：** 同一命令填绝对路径即可，例如 `dsh plugin --profile <名称> add /path/to/dsh-web-search-searxng`。无需构建——`lib/` 已提交。
+
+安装会激活 bundle 的补丁层并注册提供方行。验证导入结果：
+
+```sh
+dsh plugin --profile <名称> list        # 应能看到 dsh-web-search-searxng
+```
 
 ```sh
 # 卸载

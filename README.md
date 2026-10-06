@@ -9,6 +9,10 @@
 
 A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) plugin that gives your AI agent **free, unlimited, privacy-friendly web search** through your own self-hosted [SearXNG](https://github.com/searxng/searxng) metasearch instance — **no API key, no per-search model cost, no query logs leaving your machine**. Installing it also adds a **SearXNG search** card to the *Settings → Plugins* page of the Web and Desktop apps, so the endpoint, engine restriction, and result language are editable from the GUI.
 
+![SearXNG settings card in Settings → Plugins](docs/settings-card.png)
+
+*The SearXNG search card on the Settings → Plugins page — endpoint, engines, and result language, applied to the next search without a restart.*
+
 ## Why SearXNG instead of a search API?
 
 | | Hosted search APIs | **This plugin** |
@@ -75,15 +79,29 @@ Verify JSON is enabled:
 curl "http://localhost:8080/search?q=test&format=json"
 ```
 
-## Install
+## Install (import into dsh)
 
-Into any dsh profile, straight from GitHub:
+**Option 1 — from GitHub (tracks latest):**
 
 ```sh
 dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-From a local clone or tarball, the same command takes the absolute path. Installing activates the bundle's patch layer, which registers the provider row.
+**Option 2 — pin a release version (recommended for reproducibility):**
+
+```sh
+dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.1.0
+```
+
+See all versions on the [Releases page](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases).
+
+**Option 3 — from a local clone or tarball:** the same command takes an absolute path, e.g. `dsh plugin --profile <name> add /path/to/dsh-web-search-searxng`. No build step needed — `lib/` is committed.
+
+Installing activates the bundle's patch layer, which registers the provider row. Verify the import:
+
+```sh
+dsh plugin --profile <name> list        # dsh-web-search-searxng should appear
+```
 
 ```sh
 # remove

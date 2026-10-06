@@ -9,6 +9,10 @@
 
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）用のプラグインです。セルフホストした [SearXNG](https://github.com/searxng/searxng) メタ検索インスタンスを通じて、AI エージェントに**無料・無制限・プライバシー重視の Web 検索**を提供します——**API キー不要、検索ごとのモデルコストなし、クエリログはマシンの外に出ません**。インストールすると Web / デスクトップアプリの 設定 → プラグイン ページに **SearXNG 検索**カードが追加され、エンドポイント・エンジン制限・結果言語を GUI から編集できます。
 
+![設定 → プラグイン ページの SearXNG 検索カード](docs/settings-card.png)
+
+*設定 → プラグイン ページの SearXNG 検索カード——エンドポイント・エンジン制限・結果言語。変更は再起動なしで次の検索に適用されます。*
+
 ## 検索 API ではなく SearXNG を選ぶ理由
 
 | | ホスト型検索 API | **このプラグイン** |
@@ -75,15 +79,29 @@ JSON が有効か確認：
 curl "http://localhost:8080/search?q=test&format=json"
 ```
 
-## インストール
+## インストール（dsh へのインポート）
 
-GitHub から任意の dsh プロファイルへ直接インストール：
+**方法 1 —— GitHub から直接（最新の main を追跡）：**
 
 ```sh
 dsh plugin --profile <名前> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-ローカルクローンや tarball の場合も同じコマンドで、絶対パスを指定します。インストールするとバンドルのパッチレイヤーが有効になり、プロバイダー行が登録されます。
+**方法 2 —— リリースバージョンを固定（再現性のため推奨）：**
+
+```sh
+dsh plugin --profile <名前> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.1.0
+```
+
+全バージョンは [Releases ページ](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases)を参照してください。
+
+**方法 3 —— ローカルクローンまたは tarball から：** 同じコマンドに絶対パスを指定します。例：`dsh plugin --profile <名前> add /path/to/dsh-web-search-searxng`。`lib/` はコミット済みのためビルド不要です。
+
+インストールするとバンドルのパッチレイヤーが有効になり、プロバイダー行が登録されます。インポートの確認：
+
+```sh
+dsh plugin --profile <名前> list        # dsh-web-search-searxng が表示されるはず
+```
 
 ```sh
 # アンインストール
