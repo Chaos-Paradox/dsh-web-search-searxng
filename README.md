@@ -9,7 +9,7 @@
 
 A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) plugin that gives your AI agent **free, unlimited, privacy-friendly web search** through your own self-hosted [SearXNG](https://github.com/searxng/searxng) metasearch instance — **no API key, no per-search model cost, no query logs leaving your machine**. Installing it also adds a **SearXNG search** card to the *Settings → Plugins* page of the Web and Desktop apps, so the endpoint, engine restriction, and result language are editable from the GUI.
 
-![SearXNG settings card in Settings → Plugins](docs/settings-card.png)
+![SearXNG settings card in Settings → Plugins](docs/settings-card.en.png)
 
 *The SearXNG search card on the Settings → Plugins page — endpoint, engines, and result language, applied to the next search without a restart.*
 

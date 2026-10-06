@@ -9,7 +9,7 @@
 
 一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）插件：通过你自己托管的 [SearXNG](https://github.com/searxng/searxng) 元搜索实例，为 AI 智能体提供**免费、无限制、保护隐私的网页搜索**——**无需 API 密钥、没有按次计费的模型成本、查询记录不离开你的机器**。安装后还会在 Web 与桌面应用的 设置 → 插件 页添加 **SearXNG 搜索**卡片，实例地址、引擎限制与结果语言都可以在图形界面里直接编辑。
 
-![设置 → 插件 页中的 SearXNG 搜索卡片](docs/settings-card.png)
+![设置 → 插件 页中的 SearXNG 搜索卡片](docs/settings-card.zh.png)
 
 *设置 → 插件 页中的 SearXNG 搜索卡片——实例地址、引擎限制与结果语言，改动对下一次搜索立即生效，无需重启。*
 

@@ -9,7 +9,7 @@
 
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）用のプラグインです。セルフホストした [SearXNG](https://github.com/searxng/searxng) メタ検索インスタンスを通じて、AI エージェントに**無料・無制限・プライバシー重視の Web 検索**を提供します——**API キー不要、検索ごとのモデルコストなし、クエリログはマシンの外に出ません**。インストールすると Web / デスクトップアプリの 設定 → プラグイン ページに **SearXNG 検索**カードが追加され、エンドポイント・エンジン制限・結果言語を GUI から編集できます。
 
-![設定 → プラグイン ページの SearXNG 検索カード](docs/settings-card.png)
+![設定 → プラグイン ページの SearXNG 検索カード](docs/settings-card.en.png)
 
 *設定 → プラグイン ページの SearXNG 検索カード——エンドポイント・エンジン制限・結果言語。変更は再起動なしで次の検索に適用されます。*
 
