@@ -1,6 +1,6 @@
 # dsh-web-search-searxng
 
-**English** | [中文](README.zh.md) | [日本語](README.ja.md)
+**English** | [中文](README.zh.md)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-339933?logo=node.js&logoColor=white)](https://nodejs.org)
