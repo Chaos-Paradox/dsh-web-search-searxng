@@ -10,6 +10,7 @@ import type { SearxngSearchCardFace } from './searxng-search-card-controller.ts'
 export type SearxngSearchCardProps = PropsRuntime<'plugins.item'> & PropsLocale<'settings.webSearchSearxng'> & InjectFace<SearxngSearchCardFace>;
 /**
  * Render the SearXNG search provider's one-liner or its settings form, as the Plugins page asks.
+ * The update check fires only on the button's click — rendering never fetches.
  * @param props - the view asked for, locale copy, the form snapshot, and its actions.
  * @returns the one-liner, or the form.
  */

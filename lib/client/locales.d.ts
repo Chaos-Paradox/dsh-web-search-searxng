@@ -1,7 +1,7 @@
 /** Locale bundles for the SearXNG search provider's settings page. */
 import type { SettingsFormLabels } from '@deepseek-ai/dsh-client-ui-primitives';
 /** Locale keys the page renders. */
-export type SearxngSearchSettingsLocaleKey = 'title' | 'description' | 'baseUrl' | 'baseUrlHint' | 'engines' | 'enginesHint' | 'language' | 'languageHint' | 'overridden' | 'reset' | 'readOnly' | 'unavailable' | 'save' | 'saving' | 'saveFailed' | 'invalidValue';
+export type SearxngSearchSettingsLocaleKey = 'title' | 'description' | 'baseUrl' | 'baseUrlHint' | 'engines' | 'enginesHint' | 'language' | 'languageHint' | 'overridden' | 'reset' | 'readOnly' | 'unavailable' | 'save' | 'saving' | 'saveFailed' | 'invalidValue' | 'currentVersion' | 'checkUpdate' | 'checkingUpdate' | 'updateAvailable' | 'updateReleases' | 'updateHowTo' | 'updateLatest' | 'updateFailed';
 /** English copy. */
 export declare const en: Record<SearxngSearchSettingsLocaleKey, string>;
 /** Simplified Chinese copy. */

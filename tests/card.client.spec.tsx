@@ -80,4 +80,23 @@ describe('SearxngSearchCard', () => {
     ])
     expect(actions.resetField.mock.calls).toEqual([['baseURL'], ['engines'], ['language']])
   })
+
+  it('checks for updates only on click and reports a newer release', async () => {
+    const fetchMock = vi.fn(() => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ tag_name: 'v99.0.0' }),
+    })) as unknown as typeof fetch
+    vi.stubGlobal('fetch', fetchMock)
+    try {
+      renderCard()
+      expect(fetchMock).not.toHaveBeenCalled()
+
+      fireEvent.click(screen.getByRole('button', { name: en.checkUpdate }))
+
+      expect(await screen.findByText(new RegExp(en.updateAvailable))).toBeTruthy()
+      expect(fetchMock).toHaveBeenCalledTimes(1)
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
 })
