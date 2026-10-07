@@ -1,0 +1,35 @@
+{
+  "config": {
+    "PATCH": "/Users/pioneer/AIWork/dsh-web-search-searxng/benchmarks/e2e-searxng.patch.yml",
+    "JUDGE_MODEL": "deepseek-chat",
+    "RUN_TIMEOUT_MS": 420000
+  },
+  "results": [
+    {
+      "id": "c14",
+      "question": "What is the half-life of carbon-14 used in radiocarbon dating?",
+      "lang": "en",
+      "points": [
+        "约 5730 年（也常写 5,700/5730±40）",
+        "说明它用于放射性碳定年"
+      ],
+      "searxng": {
+        "code": 1,
+        "finalText": "",
+        "searches": 0,
+        "fetches": 0,
+        "bytes": 54,
+        "rawTail": "{\"type\":\"error\",\"message\":\"unknown option '--patch'\"}\n"
+      },
+      "official": {
+        "code": 0,
+        "finalText": "The half-life of carbon-14 (¹⁴C) used in radiocarbon dating is about **5,700 years** — commonly given as **5,730 ± 40 years** (the \"Cambridge\" value) [1][2], with the older \"Libby\" value of **5,568 years** still sometimes cited [3].\n\nNote that radiocarbon ages are conventionally reported in \"radiocarbon years\" using the Libby half-life and then calibrated to calendar years, so the precise half-life matters mainly for the calibration and for the method's usable range (~50,000 years) [4].\n\nSources:\n- [Radiocarbon dating — Nature Reviews Methods Primers](https://experiments.springernature.com/nature/primers/10.1038/s43586-021-00058-7)\n- [Education — Stable Isotopes, NOAA GML](https://gmd-int.cmdl.noaa.gov/infodata/isotopes/decay.html)\n- [Radiocarbon Dating — H. P. Schwarcz](https://www.taylorfrancis.com/chapters/edit/10.4324/9781315663999-12/radiocarbon-dating-schwarcz)\n- [The Half-Life of ¹⁴C — Why Is It So Long? (Radiocarbon, Cambridge Core)](http://core-prod.cambridgecore.org/core/journals/radiocarbon/article/abs/halflife-of-14cwhy-is-it-so-long/40C969D635697E923338763B56402862)\n\n[1] https://experiments.springernature.com/nature/primers/10.1038/s43586-021-00058-7\n[2] https://gmd-int.cmdl.noaa.gov/infodata/isotopes/decay.html\n[3] https://www.taylorfrancis.com/chapters/edit/10.4324/9781315663999-12/radiocarbon-dating-schwarcz\n[4] http://core-prod.cambridgecore.org/core/journals/radiocarbon/article/abs/halflife-of-14cwhy-is-it-so-long/40C969D635697E923338763B56402862",
+        "searches": 0,
+        "fetches": 0,
+        "bytes": 6064,
+        "rawTail": "d be? | CiNii Research](https://cir.nii.ac.jp/crid/1360857597029388800?lang=en)\\n\\n(Showing the first 8 sources. Refine the query for more.)\\n\\nCite the relevant URLs above as markdown links in your answer.\"}\n{\"type\":\"status\",\"phase\":\"step_end\",\"turn\":1,\"step\":1,\"usage\":{\"inputTokens\":6455,\"outputTokens\":74,\"cacheReadTokens\":640,\"cacheWriteTokens\":0,\"totalTokens\":7169}}\n{\"type\":\"status\",\"phase\":\"step_start\",\"turn\":1,\"step\":2}\n{\"type\":\"thinking\",\"text\":\"The search gave sources but no explicit value. I should answer based on known knowledge and cite. The half-life of carbon-14 is about 5,700 years (Libby half-life 5,568 years; Cambridge/current 5,730 years). Let me cite the sources.\"}\n{\"type\":\"text\",\"text\":\"The half-life of carbon-14 (¹⁴C) used in radiocarbon dating is about **5,700 years** — commonly given as **5,730 ± 40 years** (the \\\"Cambridge\\\" value) [1][2], with the older \\\"Libby\\\" value of **5,568 years** still sometimes cited [3].\\n\\nNote that radiocarbon ages are conventionally reported in \\\"radiocarbon years\\\" using the Libby half-life and then calibrated to calendar years, so the precise half-life matters mainly for the calibration and for the method's usable range (~50,000 years) [4].\\n\\nSources:\\n- [Radiocarbon dating — Nature Reviews Methods Primers](https://experiments.springernature.com/nature/primers/10.1038/s43586-021-00058-7)\\n- [Education — Stable Isotopes, NOAA GML](https://gmd-int.cmdl.noaa.gov/infodata/isotopes/decay.html)\\n- [Radiocarbon Dating — H. P. Schwarcz](https://www.taylorfrancis.com/chapters/edit/10.4324/9781315663999-12/radiocarbon-dating-schwarcz)\\n- [The Half-Life of ¹⁴C — Why Is It So Long? (Radiocarbon, Cambridge Core)](http://core-prod.cambridgecore.org/core/journals/radiocarbon/article/abs/halflife-of-14cwhy-is-it-so-long/40C969D635697E923338763B56402862)\\n\\n[1] https://experiments.springernature.com/nature/primers/10.1038/s43586-021-00058-7\\n[2] https://gmd-int.cmdl.noaa.gov/infodata/isotopes/decay.html\\n[3] https://www.taylorfrancis.com/chapters/edit/10.4324/9781315663999-12/radiocarbon-dating-schwarcz\\n[4] http://core-prod.cambridgecore.org/core/journals/radiocarbon/article/abs/halflife-of-14cwhy-is-it-so-long/40C969D635697E923338763B56402862\"}\n{\"type\":\"status\",\"phase\":\"step_end\",\"turn\":1,\"step\":2,\"usage\":{\"inputTokens\":508,\"outputTokens\":536,\"cacheReadTokens\":7168,\"cacheWriteTokens\":0,\"totalTokens\":8212}}\n{\"type\":\"status\",\"phase\":\"turn_end\",\"turn\":1,\"reason\":{\"kind\":\"completed\"}}\n{\"type\":\"final\",\"text\":\"The half-life of carbon-14 (¹⁴C) used in radiocarbon dating is about **5,700 years** — commonly given as **5,730 ± 40 years** (the \\\"Cambridge\\\" value) [1][2], with the older \\\"Libby\\\" value of **5,568 years** still sometimes cited [3].\\n\\nNote that radiocarbon ages are conventionally reported in \\\"radiocarbon years\\\" using the Libby half-life and then calibrated to calendar years, so the precise half-life matters mainly for the calibration and for the method's usable range (~50,000 years) [4].\\n\\nSources:\\n- [Radiocarbon dating — Nature Reviews Methods Primers](https://experiments.springernature.com/nature/primers/10.1038/s43586-021-00058-7)\\n- [Education — Stable Isotopes, NOAA GML](https://gmd-int.cmdl.noaa.gov/infodata/isotopes/decay.html)\\n- [Radiocarbon Dating — H. P. Schwarcz](https://www.taylorfrancis.com/chapters/edit/10.4324/9781315663999-12/radiocarbon-dating-schwarcz)\\n- [The Half-Life of ¹⁴C — Why Is It So Long? (Radiocarbon, Cambridge Core)](http://core-prod.cambridgecore.org/core/journals/radiocarbon/article/abs/halflife-of-14cwhy-is-it-so-long/40C969D635697E923338763B56402862)\\n\\n[1] https://experiments.springernature.com/nature/primers/10.1038/s43586-021-00058-7\\n[2] https://gmd-int.cmdl.noaa.gov/infodata/isotopes/decay.html\\n[3] https://www.taylorfrancis.com/chapters/edit/10.4324/9781315663999-12/radiocarbon-dating-schwarcz\\n[4] http://core-prod.cambridgecore.org/core/journals/radiocarbon/article/abs/halflife-of-14cwhy-is-it-so-long/40C969D635697E923338763B56402862\"}\n"
+      },
+      "judged": null
+    }
+  ]
+}

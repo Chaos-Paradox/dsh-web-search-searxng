@@ -1,0 +1,14 @@
+# E2E benchmark overlay for the searxng round: route the web row to the
+# searxng provider and point the plugin at the local instance. Applied via
+# `dsh --patch`; the profile's own files stay untouched.
+- id: web
+  config:
+    searchProvider: searxng
+    fetchProvider: http
+- id: web-search-searxng
+  config:
+    baseURL: http://127.0.0.1:8080
+    # Must be engines this instance actually has registered — check /config.
+    # Unknown names are silently dropped by SearXNG and the query falls back
+    # to the instance's default engine set.
+    engines: bing,yahoo

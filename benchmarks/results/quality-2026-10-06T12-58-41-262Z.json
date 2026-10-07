@@ -1,0 +1,978 @@
+{
+  "config": {
+    "SEARXNG_BASE_URL": "http://127.0.0.1:8080",
+    "SEARXNG_ENGINES": "bing,startpage",
+    "SEARCH_MODEL": "deepseek-v4-flash",
+    "ANSWER_MODEL": "deepseek-chat",
+    "TOP_K": 8
+  },
+  "summary": {
+    "searxng": {
+      "accuracy": 0.3,
+      "completeness": 0.3,
+      "citations": 0.1,
+      "wins": 2
+    },
+    "official": {
+      "accuracy": 1.2,
+      "completeness": 0.9,
+      "citations": 0.9,
+      "wins": 4
+    },
+    "ties": 4,
+    "questions": 10,
+    "meanDomainJaccard": 0.066
+  },
+  "results": [
+    {
+      "id": "c14",
+      "question": "What is the half-life of carbon-14 used in radiocarbon dating?",
+      "lang": "en",
+      "points": [
+        "约 5730 年（也常写 5,700/5730±40）",
+        "说明它用于放射性碳定年"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://symbolsdb.com/12-symbol",
+          "title": "1/2 symbol (½) - Copy and Paste - Symbolsdb.com",
+          "snippet": "Copy and paste 1/2 symbol (½). This symbol may be used to indicate the half of something."
+        },
+        {
+          "url": "https://www.merriam-webster.com/dictionary/half",
+          "title": "HALF Definition & Meaning - Merriam-Webster",
+          "snippet": "3 days ago · The meaning of HALF is either of two equal parts that compose something; also : a part approximately equal to one of …"
+        },
+        {
+          "url": "https://dictionary.cambridge.org/dictionary/english/half",
+          "title": "HALF | English meaning - Cambridge Dictionary",
+          "snippet": "HALF definition: 1. either of the two equal or nearly equal parts that together make up a whole: 2. a lot: 3. Half…. Learn more."
+        },
+        {
+          "url": "https://www.halff.com/",
+          "title": "Halff | Award-Winning Infrastructure Consulting Firm",
+          "snippet": "Halff is one of the nation’s top infrastructure consulting firms. Since 1950, our people-first firm commits to improving lives & …"
+        },
+        {
+          "url": "https://www.dictionary.com/browse/half",
+          "title": "HALF Definition & Meaning | Dictionary.com",
+          "snippet": "HALF definition: one of two equal or approximately equal parts of a divisible whole, as an object, or unit of measure or time; a part of …"
+        },
+        {
+          "url": "https://en.m.wiktionary.org/wiki/half",
+          "title": "half - Wiktionary, the free dictionary",
+          "snippet": "Sep 28, 2026 · In English, the first sense (half past) is the only sense in current use. The second sense (half-hour before) is almost …"
+        },
+        {
+          "url": "https://en.m.wikipedia.org/wiki/Half.com",
+          "title": "Half.com - Wikipedia",
+          "snippet": "Half.com was a fixed-price online marketplace for books, textbooks, music, movies, video games, and video game consoles. It was …"
+        },
+        {
+          "url": "https://dictionary.cambridge.org/us/dictionary/english/half",
+          "title": "HALF | definition in the Cambridge English Dictionary",
+          "snippet": "HALF meaning: 1. either of the two equal or nearly equal parts that together make up a whole: 2. a lot: 3. Half…. Learn more."
+        }
+      ],
+      "officialSources": [],
+      "answerSearxng": "The provided sources do not contain information about carbon-14 or radiocarbon dating. They only cover the general definition of the word \"half\" and unrelated topics. Therefore, the sources are insufficient to answer the question.",
+      "answerOfficial": "I don’t see any sources listed after your “Sources:” heading, so I can’t answer with citations as requested. Please provide the sources, and I’ll answer using only them.",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "winner": "tie",
+          "notes": "两份答案均未提供碳-14半衰期约5730年这一关键事实，完全未作答。"
+        }
+      }
+    },
+    {
+      "id": "http23",
+      "question": "What are the main differences between HTTP/2 and HTTP/3?",
+      "lang": "en",
+      "points": [
+        "HTTP/2 跑在 TCP 上，HTTP/3 跑在 QUIC/UDP 上",
+        "HTTP/3 解决了 TCP 层面的队头阻塞",
+        "HTTP/3 默认加密（TLS 1.3 内置于 QUIC）"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://www.merriam-webster.com/dictionary/main",
+          "title": "MAIN Definition & Meaning - Merriam-Webster",
+          "snippet": "The meaning of MAIN is physical strength : force —used in the phrase with might and main. How to use main in a sentence."
+        },
+        {
+          "url": "https://www.nmmainstreet.org/",
+          "title": "Home - New Mexico MainStreet",
+          "snippet": "A program of the New Mexico Economic Development Department, New Mexico MainStreet works throughout the state to help …"
+        },
+        {
+          "url": "https://www.mainevent.com/locations/new-mexico/albuquerque/",
+          "title": "Main Event Albuquerque | Bowling, Games & Food",
+          "snippet": "Sep 28, 2026 · Main Event Albuquerque has bowling lanes, arcade games, laser tag and a full menu. Check hours, pricing and …"
+        },
+        {
+          "url": "https://www.main.bank/",
+          "title": "Main Bank",
+          "snippet": "Main Bank is the premier community bank in New Mexico delivering trusted financial solutions and personalized customer service. …"
+        },
+        {
+          "url": "https://www.thefreedictionary.com/main",
+          "title": "Main - definition of main by The Free Dictionary",
+          "snippet": "(Nautical Terms) nautical of, relating to, or denoting any gear, such as a stay or sail, belonging to the mainmast. 5. (Civil …"
+        },
+        {
+          "url": "https://dictionary.cambridge.org/dictionary/english/main",
+          "title": "MAIN | English meaning - Cambridge Dictionary",
+          "snippet": "main thing The main thing is not to worry. main reason One of the main reasons I came to England was to study the language. main …"
+        },
+        {
+          "url": "https://mainstreamnm.org/",
+          "title": "Main Stream New Mexico",
+          "snippet": "Reservoirs have shaped life in New Mexico more than you might think. But drought, low snowpack, and a warming climate have …"
+        },
+        {
+          "url": "https://www.vocabulary.com/dictionary/main",
+          "title": "Main - Definition, Meaning & Synonyms | Vocabulary.com",
+          "snippet": "When you describe something as main, you mean it's the most important, well-known, or biggest of its kind. The main branch of the …"
+        }
+      ],
+      "officialSources": [],
+      "answerSearxng": "The sources provided do not contain any information about HTTP/2 or HTTP/3. They are definitions of the word \"main\" [1][5][6][8] and various New Mexico organizations/businesses [2][3][4][7]. Therefore, I cannot answer the question using only these sources.",
+      "answerOfficial": "I don't see any sources included in your message — only the question and the instruction. Please provide the sources you'd like me to use, and I'll answer using only those with inline citations.",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "winner": "B",
+          "notes": "Both fail to answer, but B correctly identifies that the provided sources are irrelevant rather than falsely claiming none were provided."
+        }
+      }
+    },
+    {
+      "id": "nobel25",
+      "question": "Who won the 2025 Nobel Prize in Physics, and for what?",
+      "lang": "en",
+      "points": [
+        "John Clarke、Michel H. Devoret、John M. Martinis",
+        "宏观量子隧穿与电路中能量量子化"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/South_Korean_won",
+          "title": "South Korean won - Wikipedia",
+          "snippet": "Each won (the base unit) is technically divided into 100 jeon, but the jeon is no longer used for everyday transactions and appears …"
+        },
+        {
+          "url": "https://www.merriam-webster.com/dictionary/won",
+          "title": "WON Definition & Meaning - Merriam-Webster",
+          "snippet": "The meaning of WON is past tense and past participle of win."
+        },
+        {
+          "url": "https://dictionary.cambridge.org/dictionary/english/won",
+          "title": "WON | English meaning - Cambridge Dictionary",
+          "snippet": "us / wʌn / past simple and past participle of win (Definition of won from the Cambridge Academic Content Dictionary © Cambridge …"
+        },
+        {
+          "url": "https://www.dictionary.com/browse/won",
+          "title": "WON Definition & Meaning | Dictionary.com",
+          "snippet": "WON definition: simple past tense and past participle of win. See examples of won used in a sentence."
+        },
+        {
+          "url": "https://www.thefreedictionary.com/won",
+          "title": "Won - definition of won by The Free Dictionary",
+          "snippet": "won past tense of win; basic unit of money in North and South Korea Not to be confused with: one – a single unit, object, or being"
+        },
+        {
+          "url": "https://www.vocabulary.com/dictionary/won",
+          "title": "Won - Definition, Meaning & Synonyms | Vocabulary.com",
+          "snippet": "Definitions of won adjective not subject to defeat “with that move it's a won game” see more"
+        },
+        {
+          "url": "https://themoneyconverter.com/KRW/USD",
+          "title": "Convert from South Korean Won (KRW) to United States Dollar (USD)",
+          "snippet": "12 hours ago · Currency converter to convert from South Korean Won (KRW) to United States Dollar (USD) including the latest …"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Korean_Empire_won",
+          "title": "Korean Empire won - Wikipedia",
+          "snippet": "Won is a cognate of the Chinese yuan and Japanese yen, which were both derived from the Spanish-American silver dollar. It is …"
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://english.news.cn/20251008/9c98401710bd48c5b1c19e28d481853f/c.html#1",
+          "title": "When quantum weirdness becomes visible -- the science behind 2025 Nobel Prize in Physics"
+        },
+        {
+          "url": "https://www.nasonline.org/news/nas-international-member-receives-nobel-prize/?include=living&primary_section_new=section-11-mathematics",
+          "title": "NAS Members Receive Nobel Prizes"
+        },
+        {
+          "url": "https://akp.gov.kh/post/detail/355823",
+          "title": "2025 Nobel Prizes awarded at Stockholm ceremony"
+        },
+        {
+          "url": "https://global.chinadaily.com.cn/a/202510/08/WS68e59eb1a310f735438b3c85.html#1",
+          "title": "Trio's work on quantum tech wins Nobel - Trio's work on quantum tech wins Nobel"
+        },
+        {
+          "url": "https://english.cctv.com/2025/12/11/ARTIP0EGOClt0X8ghFbW8Lej251211.shtml",
+          "title": "2025 Nobel Prizes awarded at Stockholm ceremony"
+        },
+        {
+          "url": "https://news.youth.cn/jsxw/202510/t20251008_16277846.htm",
+          "title": "三名量子物理学家获2025年诺贝尔物理学奖 他们在宏观尺度重现“薛定谔的猫”_新闻频道_中国青年网"
+        },
+        {
+          "url": "https://digitalpaper.stdaily.com/http_www.kjrb.com/ywtk/html/2025-10/11/content_595464.htm?div=-1#1",
+          "title": "Great Discoveries of 2025 Nobel Prize in Science --Science and Technology Daily - Great Discoveries of 2025 Nobel Prize in Science"
+        },
+        {
+          "url": "https://www.163.com/dy/article/KBBHVQVA05346RC6.html?clickfrom=w_tech",
+          "title": "三名量子物理学家获2025年诺贝尔物理学奖"
+        }
+      ],
+      "answerSearxng": "The provided sources do not contain information about the 2025 Nobel Prize in Physics; they only define or describe the word \"won\" and the Korean currency [1][2][3][4][5][6][7][8]. Therefore, the question cannot be answered using only these sources.",
+      "answerOfficial": "The 2025 Nobel Prize in Physics was awarded to three quantum physicists for work on quantum technology that made quantum weirdness visible at macroscopic scales, reproducing \"Schrödinger's cat\" at the macroscopic level [4][6].",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 3,
+            "completeness": 3,
+            "citations": 1
+          },
+          "winner": "B",
+          "notes": "B正确指出三人获奖及宏观量子现象但未给出姓名和“宏观量子隧穿/能量量子化”要点，引用也较薄弱；A以来源不足为由未作答，完全未命中。"
+        }
+      }
+    },
+    {
+      "id": "hongloumeng",
+      "question": "《红楼梦》的作者是谁？后四十回一般认为由谁续写？",
+      "lang": "zh",
+      "points": [
+        "曹雪芹著前八十回",
+        "后四十回一般认为高鹗续写（程伟元参与整理刊印）"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://www.gushiwen.cn/guwen/book.aspx?id=46653FD803893E4F3F8B9229F3CD9433",
+          "title": "红楼梦全文_古文岛_原古诗文网",
+          "snippet": "曹雪芹（约1715年5月28日—约1763年2月12日），名霑，字梦阮，号雪芹，又号芹溪、芹圃，中国古典名著《红楼梦》的作者，祖籍 …"
+        },
+        {
+          "url": "https://baike.baidu.com/item/%E7%BA%A2%E6%A5%BC%E6%A2%A6/15311",
+          "title": "红楼梦（清代作家曹雪芹所著小说）_百度百科",
+          "snippet": "《红楼梦》，别名《石头记》，中国古代章回体长篇小说，中国古典四大名著之一。 其通行本共120回，前80回为清代作家曹雪芹所 …"
+        },
+        {
+          "url": "https://zh.wikipedia.org/wiki/%E7%BA%A2%E6%A5%BC%E6%A2%A6",
+          "title": "红楼梦 - 维基百科，自由的百科全书",
+          "snippet": "红楼梦是章回体古典长篇小说，每个章回虽然彼此独立，却又各有相关，有学者指出红楼梦所采用的是一种全然不同于西方小说的结 …"
+        },
+        {
+          "url": "https://hongloumeng.5000yan.com/",
+          "title": "《红楼梦》小说原文全集在线阅读",
+          "snippet": "《红楼梦》以错综复杂的清代上层贵族社会为背景，以贾宝玉和林黛玉的爱情悲剧为主线，通过对贾、史、王、薛四大家族荣衰的描 …"
+        },
+        {
+          "url": "https://ctext.org/hongloumeng/zh",
+          "title": "紅樓夢 - 中國哲學書電子化計劃",
+          "snippet": "1. 甄士隱夢幻識通靈 賈雨村風塵懷閨秀 Zhen Shiyin's Dream and Illusion Reveal the Spiritual Jade; Jia Yucun, Amidst the Dust of …"
+        },
+        {
+          "url": "https://www.moshuyuan.com/book/jibu/hong-lou-meng.html",
+          "title": "《红楼梦》全文在线阅读_原文｜曹雪芹 - 墨书院",
+          "snippet": "红楼梦简介 本书为清代章回体小说，属集部小说类。 一般认为其主体成书于清乾隆年间。 全书以贾、史、王、薛四大家族为背景，以 …"
+        },
+        {
+          "url": "https://honglou.neocities.org/",
+          "title": "《红楼梦》- 全文在线阅读",
+          "snippet": "《红楼梦》，中国古典四大名著之首，清代作家曹雪芹创作的章回体长篇小说 ，又名《石头记》《金玉缘》《脂砚斋重评石头记》。 …"
+        },
+        {
+          "url": "https://zh.wikipedia.org/zh-tw/%E7%BA%A2%E6%A5%BC%E6%A2%A6",
+          "title": "紅樓夢 - 維基百科，自由的百科全書",
+          "snippet": "Aug 21, 2026 · ^ 趙鳳蘭. 87版《红楼梦》——让艺术之梦永不腐朽. 2017-06-28. （原始內容 存檔於2020-02-08）. ^ 网友签名反对重 …"
+        }
+      ],
+      "officialSources": [],
+      "answerSearxng": "《红楼梦》的作者是曹雪芹[1][2]；其通行本共120回，前80回为曹雪芹所著[2]。后四十回一般认为由谁续写，以上来源未明确说明。",
+      "answerOfficial": "来源不足，无法回答。《红楼梦》的作者及后四十回续写者的问题，未在所给来源中提供信息。",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 2,
+            "completeness": 2,
+            "citations": 1
+          },
+          "winner": "B",
+          "notes": "B正确指出曹雪芹前八十回，但未答出高鹗续写后四十回；A完全未作回答。"
+        }
+      }
+    },
+    {
+      "id": "gdp2024",
+      "question": "中国 2024 年的 GDP 总量是多少？",
+      "lang": "zh",
+      "points": [
+        "约 134.9 万亿元人民币（初步核算约134.9万亿）",
+        "同比增速约 5.0%"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B",
+          "title": "中國 - 维基百科，自由的百科全书",
+          "snippet": "中国最早成型于 新石器时期 与 青铜时期 之间的 过渡期，由发起自黄河中游流域 黄土高原 地区的 炎黄 部落联盟 击败并整合了东方的 …"
+        },
+        {
+          "url": "https://baike.baidu.com/item/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD/106554",
+          "title": "中华人民共和国_百度百科",
+          "snippet": "中华人民共和国（the People's Republic of China），简称“中国”，成立于1949年10月1日，位于亚洲东部，太平洋西岸，是工人阶级 …"
+        },
+        {
+          "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD",
+          "title": "中华人民共和国 - 维基百科，自由的百科全书",
+          "snippet": "中国以 漢族傳統領域 為核心，涵蓋鄰 太平洋 的 亞洲大陸 東側大部區域，並與14個國家以 陸地邊界接壤。 全国 行政区域 划分为23 …"
+        },
+        {
+          "url": "https://www.bbc.com/zhongwen/topics/ckr7mn6r003t/simp",
+          "title": "中国 - BBC News 中文",
+          "snippet": "5 days ago · BBC中文网提供关于中国的最新新闻、深入分析和评论，涵盖政治、经济、社会等多方面内容。"
+        },
+        {
+          "url": "https://baike.baidu.com/item/%E4%B8%AD%E5%9B%BD/1122445",
+          "title": "中国（世界四大文明古国之一）_百度百科",
+          "snippet": "中国各族人民共同创造了光辉灿烂的文化，具有光荣的革命传统。 中国是以汉族为主体民族的多民族国家，通用汉语、汉字，汉族与 …"
+        },
+        {
+          "url": "https://www.voachinese.com/",
+          "title": "美国之音中文网 您可靠的信息来源",
+          "snippet": "1 day ago · 美国联邦调查局 (FBI)星期天 (10月4日)逮捕一名加州华裔女子，指控她为中国政府从事间谍工作，秘密监视台湾总统赖清 …"
+        },
+        {
+          "url": "https://www.gov.cn/?home",
+          "title": "中国政府网_中央人民政府门户网站",
+          "snippet": "要闻 习近平总书记重要论述指引平安中国建设砥砺前行谱写新篇 李强出席第五届全球数字贸易博览会启动仪式并致辞 第48届世界技 …"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/China",
+          "title": "China - Wikipedia",
+          "snippet": "The shorter form of this name is 中国; Zhōngguó, from zhōng ('central') and guó ('state'), a term first used for the demesne of the …"
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "http://big5.www.gov.cn/gate/big5/www.gov.cn/lianbo/bumen/202502/content_7008605.htm#1",
+          "title": "中華人民共和國2024年國民經濟和社會發展統計公報"
+        },
+        {
+          "url": "http://big5.www.gov.cn/gate/big5/www.gov.cn/lianbo/bumen/202501/content_6999741.htm#1",
+          "title": "去年我國經濟總量首次超130萬億元，同比增長5%——經濟社會發展主要目標任務順利完成 - https://www"
+        },
+        {
+          "url": "https://www.gov.cn/lianbo/bumen/202501/content_6999704.htm#1",
+          "title": "去年国内生产总值增长5% 高质量发展成色十足——一份实属不易的经济年报"
+        },
+        {
+          "url": "http://www.jingjiribao.cn/static/detail.jsp?id=566579#1",
+          "title": "去年我国经济总量首次超130万亿元，同比增长5% 经济社会发展主要目标任务顺利完成"
+        },
+        {
+          "url": "http://www.scio.gov.cn/live/2025/35385/qwxz/202501/P020250120365875536224.pdf#3#1",
+          "title": "国新办举行新闻发布会介绍2024年国民经济运行情况文字实录"
+        },
+        {
+          "url": "https://www.ndrc.gov.cn/wsdwhfz/202502/t20250205_1395995_ext.html#1#1",
+          "title": "焦点访谈丨2024经济“年报”怎么看？"
+        },
+        {
+          "url": "https://jingji.cctv.com/2025/01/18/ARTIWLW701mzs7aVxzJSfpmu250118.shtml",
+          "title": "一份实属不易的经济年报"
+        },
+        {
+          "url": "http://big5.www.gov.cn/gate/big5/www.gov.cn/yaowen/liebiao/202501/content_6999626.htm#1",
+          "title": "躍上新臺階 奮進新航程——透視2024年中國經濟成績單 - https://www"
+        }
+      ],
+      "answerSearxng": "现有来源未提供中国2024年GDP总量的数据，因此无法据以回答。",
+      "answerOfficial": "依据来源，中国 2024 年经济总量首次超过 130 万亿元，同比增长 5% [2][4]；但所给来源未明确给出 GDP 总量的具体数值，因此无法据此给出精确数字。",
+      "retrieval": {
+        "domainJaccard": 0.091,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 4,
+            "completeness": 2,
+            "citations": 3
+          },
+          "winner": "B",
+          "notes": "B 准确命中增速约5%并提及总量超130万亿元，但未给出约134.9万亿元的具体数字，且引用尚能支撑所述论断；A 完全未提供任何有效信息。"
+        }
+      }
+    },
+    {
+      "id": "pnpm",
+      "question": "pnpm 的 link: 协议和 file: 协议有什么区别？",
+      "lang": "zh",
+      "points": [
+        "link: 创建符号链接指向本地目录，改动即时可见",
+        "file: 安装时打包/复制进 store，目录后续改动不生效"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://pnpm.io/",
+          "title": "Fast, disk space efficient package manager | pnpm",
+          "snippet": "Other package managers copy the same files into every project. pnpm keeps one copy and links to it — that single design decision is …"
+        },
+        {
+          "url": "https://pnpm.io/installation",
+          "title": "Installation - pnpm",
+          "snippet": "pnpm 12 is a native executable and does not require Node.js after it is installed. Installing it through npm requires Node.js 22.13 or …"
+        },
+        {
+          "url": "https://github.com/pnpm/pnpm",
+          "title": "GitHub - pnpm/pnpm: Fast, disk space efficient package manager",
+          "snippet": "Fast, disk space efficient package manager. Contribute to pnpm/pnpm development by creating an account on GitHub."
+        },
+        {
+          "url": "https://www.npmjs.com/package/pnpm",
+          "title": "pnpm - npm",
+          "snippet": "Fast, disk space efficient package manager. Latest version: 12.4.2, last published: 2 days ago. Start using pnpm in your project by …"
+        },
+        {
+          "url": "https://www.runoob.com/nodejs/nodejs-pnpm.html",
+          "title": "pnpm 使用介绍 | 菜鸟教程",
+          "snippet": "pnpm 使用介绍 作为 Node.js 开发者，你一定听说过 npm 和 yarn，它们是管理项目依赖的利器。 但你是否遇到过 node_modules 文 …"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Pnpm",
+          "title": "pnpm - Wikipedia",
+          "snippet": "pnpm (short for Performant npm)[2] is one of the main JavaScript package managers, [3] originally developed in 2016 by Rico Sta. …"
+        },
+        {
+          "url": "https://github.com/pnpm/pnpm/releases",
+          "title": "Releases · pnpm/pnpm - GitHub",
+          "snippet": "Fast, disk space efficient package manager. Contribute to pnpm/pnpm development by creating an account on GitHub."
+        },
+        {
+          "url": "https://www.pnpm.cn/",
+          "title": "pnpm - 极速高效利用磁盘空间的包管理器 | pnpm中文文档 | pnpm中文网",
+          "snippet": "By adopting the latest changes from @pnpmjs we got huge performance benefits in @bitdev_ ! still early to call true numbers, but i'm …"
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://pnpm.io/cli/link",
+          "title": "pnpm link | pnpm"
+        },
+        {
+          "url": "https://www.pnpm.cn/pt/10.x/cli/link",
+          "title": "pnpm link | pnpm"
+        },
+        {
+          "url": "https://www.pnpm.cn/cli/link",
+          "title": "pnpm link"
+        },
+        {
+          "url": "https://github.com/pnpm/pnpm/issues/9895#1",
+          "title": "Add `pnpm link` flag for `file:` protocol · Issue #9895 · pnpm/pnpm - Skip to content"
+        },
+        {
+          "url": "https://www.npmjs.com/package/hlinker?activeTab=code#1",
+          "title": "hlinker - hlinker"
+        },
+        {
+          "url": "https://socket.dev/npm/package/hlinker#1",
+          "title": "hlinker - npm Package Security Analysis - Socket - New:Microsoft Teams Notifications Are Now Available in Socket"
+        },
+        {
+          "url": "https://github.com/orgs/pnpm/discussions/11442#1",
+          "title": "idea: cross-repo development with a custom external-pnpm: protocol and .pnpmfile.cjs · pnpm · Discussion #11442 - Skip to content"
+        },
+        {
+          "url": "https://github.com/aspect-build/rules_js/pull/1328#1",
+          "title": "Support pnpm link and file protocols for external packages by twheys · Pull Request #1328 · aspect-build/rules_js - Skip to content"
+        }
+      ],
+      "answerSearxng": "现有来源没有说明 pnpm 中 `link:` 协议与 `file:` 协议的区别。",
+      "answerOfficial": "根据现有来源，无法明确说明 pnpm 中 `link:` 协议与 `file:` 协议的具体区别：来源主要涉及 `pnpm link` 命令、`file:` 协议的 flag 需求，以及外部包对 `pnpm link` 和 file 协议的支持，但没有给出两者差异的直接定义或对比 [1][4][8]。",
+      "retrieval": {
+        "domainJaccard": 0.571,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "winner": "tie",
+          "notes": "两者均未回答区别，只声称来源不足；A无引用，B引用也未支撑任何区别性结论，均不满足要点。"
+        }
+      }
+    },
+    {
+      "id": "searxng-json",
+      "question": "How do you enable JSON format output in SearXNG?",
+      "lang": "en",
+      "points": [
+        "在 settings.yml 的 search.formats 中加入 json",
+        "之后可用 /search?format=json"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://www.merriam-webster.com/dictionary/do",
+          "title": "DO Definition & Meaning - Merriam-Webster",
+          "snippet": "5 days ago · Feasible comes from faire, the French verb meaning “to do.” Doable and feasible therefore originally meant literally the …"
+        },
+        {
+          "url": "https://dictionary.cambridge.org/dictionary/english/do",
+          "title": "DO | English meaning - Cambridge Dictionary",
+          "snippet": "Do is one of three auxiliary verbs in English: be, do, have. We use do to make negatives (do + not), to make question forms, and to …"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=g0poc28x6mA",
+          "title": "Basic English Grammar | How To Use DO, DOES, DID, DONE",
+          "snippet": "May 14, 2024 · Today, you'll learn how to use DO, DOES, DID, and DONE in English. Improve your English fluency by learning …"
+        },
+        {
+          "url": "https://www.webmd.com/a-to-z-guides/difference-between-md-and-do",
+          "title": "DO vs. MD: What's the Difference - WebMD",
+          "snippet": "Jul 18, 2024 · Find out the differences between an MD and DO, and discover the pros, cons, risks, and benefits, and how it may …"
+        },
+        {
+          "url": "https://www.thefreedictionary.com/do",
+          "title": "Do - definition of do by The Free Dictionary",
+          "snippet": "1. To behave or conduct oneself; act: Do as I say and you won't get into trouble. 2. a. To get along; fare: students who do well at …"
+        },
+        {
+          "url": "https://www.vocabulary.com/dictionary/do",
+          "title": "Do - Definition, Meaning & Synonyms | Vocabulary.com",
+          "snippet": "To do is to act, perform, or undertake. When you do chores, you engage in the activity of cleaning the kitchen or taking out the trash. …"
+        },
+        {
+          "url": "https://www.dictionary.com/browse/do",
+          "title": "DO Definition & Meaning | Dictionary.com",
+          "snippet": "DO definition: to perform (an act, duty, role, etc.). See examples of do used in a sentence."
+        },
+        {
+          "url": "https://www.collinsdictionary.com/dictionary/english/do",
+          "title": "DO definition and meaning | Collins English Dictionary",
+          "snippet": "When you do something, you take some action or perform an activity or task. Do is often used instead of a more specific verb, to talk …"
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://github.com/NousResearch/hermes-agent/commit/135f235165b76381299b2e82616f9d1d2f19c31f",
+          "title": "docs: fix incorrect web search instructions · NousResearch/hermes-agent@135f235"
+        },
+        {
+          "url": "https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.toolsearxng",
+          "title": "SearXNG Tool | Nodes | n8n Docs"
+        },
+        {
+          "url": "https://github.com/NousResearch/hermes-agent/commit/5060d5cff17fc9ef87ad22689a45d39bc85001d6",
+          "title": "Merge branch 'main' into liuhao/cron-bugfix-54089-decompose-runtime-b… · NousResearch/hermes-agent@5060d5c"
+        },
+        {
+          "url": "https://scavio.dev/tutorials/how-to-self-host-searxng-and-when-to-pay-instead",
+          "title": "Self-Host SearXNG vs Pay: 2026 Decision"
+        },
+        {
+          "url": "https://github.com/BerriAI/serxng-deployment/blob/main/README.md",
+          "title": "serxng-deployment/README.md at main · BerriAI/serxng-deployment"
+        },
+        {
+          "url": "https://huggingface.co/spaces/timmo311/search/blob/main/searxng/settings.yml",
+          "title": "searxng/settings.yml · timmo311/search at main"
+        },
+        {
+          "url": "https://www.npmjs.com/package/searxng-bearer-mcp?activeTab=dependents#1",
+          "title": "searxng-bearer-mcp"
+        },
+        {
+          "url": "https://huggingface.co/spaces/timmo311/search/commit/e62fe8965e64c2eb96ef89f31fd86e4a2451caf5",
+          "title": "Update searxng/settings.yml · timmo311/search at e62fe89"
+        }
+      ],
+      "answerSearxng": "The provided sources do not contain information about SearXNG or enabling JSON format output. They are all dictionary/grammar/medical definitions of the word \"do\" [1][2][3][4][5][6][7][8]. Therefore, the sources are insufficient to answer the question.",
+      "answerOfficial": "Based on the provided sources, I cannot find a clear, direct answer to how to enable JSON format output in SearXNG.\n\nThe sources discuss SearXNG in general terms — a settings.yml file is referenced [6][8], an n8n tool integration is described [2], and self-hosting/deployment is covered [4][5] — but none explicitly state the configuration change needed to enable JSON output (which typically requires editing `settings.yml` to add `json` to the `search.formats` list and enabling the format).\n\nIf you have a source that covers SearXNG server settings in detail, I can revisit this.",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 3,
+            "completeness": 2,
+            "citations": 2
+          },
+          "winner": "B",
+          "notes": "B虽未明确给出完整答案，但正确指出需要将json加入settings.yml的search.formats并说明来源不足；A完全未回答问题且误判资料来源。"
+        }
+      }
+    },
+    {
+      "id": "vue-ref",
+      "question": "Vue 3 组合式 API 中 ref 和 reactive 的区别是什么？",
+      "lang": "zh",
+      "points": [
+        "ref 可包装基本类型，通过 .value 访问",
+        "reactive 只接受对象，直接改属性",
+        "模板中顶层 ref 自动解包"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://vuejs.org/",
+          "title": "Vue.js - The Progressive JavaScript Framework | Vue.js",
+          "snippet": "An approachable, performant and versatile framework for building web user interfaces. A rich, incrementally adoptable ecosystem …"
+        },
+        {
+          "url": "https://www.runoob.com/vue2/vue-tutorial.html",
+          "title": "Vue.js 教程 | 菜鸟教程",
+          "snippet": "Vue.js 教程 Vue.js（读音 /vjuː/, 类似于 view） 是一套构建用户界面的渐进式框架。 Vue 只关注视图层， 采用自底向上增量开发的设 …"
+        },
+        {
+          "url": "https://cn.vuejs.org/guide/introduction",
+          "title": "简介 - Vue.js",
+          "snippet": "什么是 Vue？ Vue (发音为 /vjuː/，类似 view) 是一款用于构建用户界面的 JavaScript 框架。 它基于标准 HTML、CSS 和 JavaScript …"
+        },
+        {
+          "url": "https://www.runoob.com/vue3/vue3-tutorial.html",
+          "title": "Vue3 教程 | 菜鸟教程",
+          "snippet": "Vue3 教程 Vue.js（读音 /vjuː/, 类似于 view） 是一套构建用户界面的渐进式框架。 Vue 只关注视图层， 采用自底向上增量开发的设计 …"
+        },
+        {
+          "url": "https://cn.vuejs.org/guide/quick-start",
+          "title": "快速上手 - Vue.js",
+          "snippet": "在本节中，我们将介绍如何在本地搭建 Vue 单页应用。 创建的项目将使用基于 Vite 的构建设置，并允许我们使用 Vue 的 单文件组件 …"
+        },
+        {
+          "url": "https://baike.baidu.com/item/Vue.js/19884851",
+          "title": "Vue.js_百度百科",
+          "snippet": "Vue.js（发音为/vjuː/，类似view）是由尤雨溪（Evan You）于2014年2月发布的渐进式JavaScript框架，基于标准HTML、CSS …"
+        },
+        {
+          "url": "https://vuejs.org/guide/introduction.html",
+          "title": "Introduction - Vue.js",
+          "snippet": "Dec 31, 2023 · Vue (pronounced /vjuː/, like view) is a JavaScript framework for building user interfaces. It builds on top of standard …"
+        },
+        {
+          "url": "https://blog.csdn.net/qingti_/article/details/123586667",
+          "title": "Vue框架详解：原理、引入与基本使用-CSDN博客",
+          "snippet": "Mar 19, 2022 · Vue对象将页面中 要改变的元素 和 data中变量 进行绑定，绑定后它会一直监听data中变量值的改变，当值发生改变 …"
+        }
+      ],
+      "officialSources": [],
+      "answerSearxng": "现有来源不足以回答该问题：这些来源主要介绍 Vue 是什么、教程入口和快速上手，未具体说明 Vue 3 组合式 API 中 `ref` 与 `reactive` 的区别 [1][2][3][4][5][6][7][8]。",
+      "answerOfficial": "来源不足，无法回答。请提供关于 Vue 3 组合式 API 中 ref 和 reactive 区别的相关资料。",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "winner": "tie",
+          "notes": "两份答案都未回答 ref 与 reactive 的区别，均只表示来源不足，因此按事实要点评分均为 0，无法判定更优。"
+        }
+      }
+    },
+    {
+      "id": "node-lts",
+      "question": "What is the latest LTS version of Node.js?",
+      "lang": "en",
+      "points": [
+        "给出一个具体的版本号",
+        "说明 LTS 发布节奏（偶数版本进入 LTS）"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://www.foxnews.com/?msockid=2e9f3e2be8de67210a2829c1e97f6622",
+          "title": "Fox News - Breaking News Updates | Latest News Headlines | Photos ...",
+          "snippet": "Breaking News, Latest News and Current News from FOXNews.com. Breaking news and video. Latest Current News: U.S., World, …"
+        },
+        {
+          "url": "https://www.cnn.com/",
+          "title": "Breaking News, Latest News and Videos | CNN",
+          "snippet": "View the latest news and breaking news today for U.S., world, weather, entertainment, politics and health at CNN.com."
+        },
+        {
+          "url": "https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtVnVHZ0pWVXlnQVAB",
+          "title": "Google News - Headlines",
+          "snippet": "Read full articles, watch videos, browse thousands of titles and more on the \"Headlines\" topic with Google News."
+        },
+        {
+          "url": "https://apnews.com/",
+          "title": "Associated Press News: Breaking News, Latest Headlines and Videos | AP News",
+          "snippet": "Read the latest headlines, breaking news, and videos at APNews.com, the definitive source for independent journalism from every …"
+        },
+        {
+          "url": "https://www.ms.now/top-stories",
+          "title": "Top Stories - MSNBC.com",
+          "snippet": "News In Nebraska, Trump tackles the GOP’s problem at the pump as voters decry ‘very high’ costs"
+        },
+        {
+          "url": "https://www.dawn.com/latest-news",
+          "title": "Latest - DAWN.COM",
+          "snippet": "Pakistan’s most trusted outlet for the breaking, latest and top news across the country and the world."
+        },
+        {
+          "url": "https://www.pbs.org/newshour/latest",
+          "title": "The Latest | PBS News",
+          "snippet": "Read the latest news, reports and analysis from PBS NewsHour."
+        },
+        {
+          "url": "https://abcnews.com/",
+          "title": "ABC News - Breaking News, Latest News and Videos",
+          "snippet": "Gleason was diagnosed with ALS in 2011. Stay informed with a redesigned home feed, personalized content, and a 24/7 live news …"
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://github.com/ScorpiusDraconis83/Release#1",
+          "title": "GitHub - ScorpiusDraconis83/Release: Node.js Release Working Group · GitHub - GitHub - ScorpiusDraconis83/Release: Node.js Release Working Group · GitHub"
+        },
+        {
+          "url": "https://nodesource.com/blog/vercel-github-actions-ending-nodejs-20-support",
+          "title": "Vercel and GitHub Actions Are Ending Support for Node.js 20: What You Need to Do"
+        },
+        {
+          "url": "https://github.com/pmndrs/react-spring/pull/2577",
+          "title": "chore(deps): update node.js to v24.21.0 by renovate[bot] · Pull Request #2577 · pmndrs/react-spring"
+        },
+        {
+          "url": "https://nodejs.org/fr/about/previous-releases",
+          "title": "Node.js — Versions de Node.js"
+        },
+        {
+          "url": "https://nodejs.org/ro/about/previous-releases",
+          "title": "Node.js — Lansări Node.js"
+        },
+        {
+          "url": "https://nodejs.org/zh-cn/about/previous-releases",
+          "title": "Node.js — Node.js 版本"
+        },
+        {
+          "url": "https://m.ithome.com/html/0946937.htm",
+          "title": "Node.js 26 发布：默认启用 Temporal API，10 月进入 LTS 阶段"
+        },
+        {
+          "url": "https://url.nodejs.cn/en/about/previous-releases",
+          "title": "Node.js 中文网"
+        }
+      ],
+      "answerSearxng": "The provided sources are all general news websites and do not contain information about Node.js versions. Therefore, the sources are insufficient to answer the question.",
+      "answerOfficial": "Based solely on the provided sources, I cannot give a definitive answer. Source [7] mentions that Node.js 26 will enter the LTS phase in October, but does not confirm it has already happened [7]. Source [3] references Node v24.21.0 but does not state whether it is LTS [3], and sources [4], [5], [6], and [8] point to Node.js release/version pages without providing extractable content here. Therefore, the sources are insufficient to determine the latest LTS version.",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 1,
+            "completeness": 1,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 2,
+            "completeness": 2,
+            "citations": 3
+          },
+          "winner": "B",
+          "notes": "B更具体地分析了各来源并指出无法确定的理由，引用更明确；A仅泛泛声称来源不足，未涉及任何版本或LTS节奏。"
+        }
+      }
+    },
+    {
+      "id": "cny2026",
+      "question": "2026 年春节是几月几号？",
+      "lang": "zh",
+      "points": [
+        "2026 年 2 月 17 日（星期二）",
+        "农历丙午年（马年）"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/2026",
+          "title": "2026 - Wikipedia",
+          "snippet": "This page was last edited on 6 October 2026, at 09:56 (UTC). Page was rendered with Parsoid. Text is available under the Creative …"
+        },
+        {
+          "url": "https://www.timeanddate.com/calendar/?year=2026&country=1",
+          "title": "Year 2026 Calendar – United States - timeanddate.com",
+          "snippet": "United States 2026 – Calendar with American holidays. Yearly calendar showing months for the year 2026. Calendars – online and …"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/2026_in_the_United_States",
+          "title": "2026 in the United States - Wikipedia",
+          "snippet": "The following is a list of events of the year 2026 in the United States, as well as predicted and scheduled events that have not yet …"
+        },
+        {
+          "url": "https://www.calendardate.com/2026.php",
+          "title": "2026 Calendar - United States",
+          "snippet": "Jan 1, 2026 · Untied States 2026 calendar online and printable for year 2026 with holidays, observances and full moons"
+        },
+        {
+          "url": "https://www.calendardate.com/year2026_holidays.php",
+          "title": "2026 Holidays - United States - CalendarDate.com",
+          "snippet": "United States 2026 holiday calendar with all major holidays and observances."
+        },
+        {
+          "url": "https://www.thefactsite.com/year/2026/",
+          "title": "2026: Facts & Events That Happened in This Year - The Fact Site",
+          "snippet": "Dec 8, 2025 · We’re still working on 2026, but here are some highlights from the year so far! We’ll also delve into fascinating facts …"
+        },
+        {
+          "url": "https://www.epochconverter.com/weeks/2026",
+          "title": "Week numbers for 2026 - Epoch Converter",
+          "snippet": "Week numbers for 2026 This page lists all 53 week numbers for 2026, providing the start and end dates for each week of the year. …"
+        },
+        {
+          "url": "https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill",
+          "title": "IRS releases tax inflation adjustments for tax year 2026, including ...",
+          "snippet": "Oct 9, 2025 · WASHINGTON — The Internal Revenue Service today announced the tax year 2026 annual inflation adjustments for …"
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://www.gov.cn/zhengce/zhengceku/202511/content_7047091.htm",
+          "title": "国务院办公厅关于2026年部分节假日安排的通知_国务院文件_中国政府网"
+        },
+        {
+          "url": "https://www.nmg.gov.cn/zwgk/zcjd/gjzcjd/202511/t20251105_2813149.html?slb=true",
+          "title": "图解：国务院办公厅关于2026年部分节假日安排的通知"
+        },
+        {
+          "url": "https://www.gov.cn/gongbao/2025/issue_12406/202511/content_7048922.html",
+          "title": "国务院办公厅关于2026年部分节假日安排的通知__2025年第32号国务院公报_中国政府网"
+        },
+        {
+          "url": "https://cq.gov.cn/ywdt/bmts/202511/t20251105_15141609.html",
+          "title": "2026年部分节假日安排公布 “史上最长” 明年春节连休9天"
+        },
+        {
+          "url": "https://www.news.cn/politics/20251104/37410b5829274623a8b98cca50cf640d/c.html",
+          "title": "新华社权威快报丨春节调休9天！2026年放假安排来了"
+        },
+        {
+          "url": "https://news.cctv.cn/2026/02/16/ARTIhUsVScSQMsQhJPJ6oeq1260216.shtml",
+          "title": "2026年为啥“晚春节”？"
+        },
+        {
+          "url": "http://big5.www.gov.cn/gate/big5/www.gov.cn/zhengce/zhengceku/202511/content_7047091.htm",
+          "title": "國務院辦公廳關於2026年部分節假日安排的通知_國務院文件_中國政府網"
+        },
+        {
+          "url": "https://m.gmw.cn/2026-01/06/content_1304292940.htm",
+          "title": "官宣：春节放假9天！史上最长"
+        }
+      ],
+      "answerSearxng": "无法确定。给出的来源中没有提供 2026 年春节（中国农历新年）的具体日期。[1][2][3][4][5][6][7][8]",
+      "answerOfficial": "根据现有来源，无法明确给出“2026年春节是几月几号”的具体日期；来源主要讲的是2026年放假安排，而不是直接标注春节日期。[1][2][4]",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "winner": "tie",
+          "notes": "双方均未给出2026年春节的正确日期（2月17日）及农历马年信息，答案均不可接受，引用虽标注来源但支撑的是“无法确定”的错误结论。"
+        }
+      }
+    }
+  ]
+}

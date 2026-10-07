@@ -13,6 +13,19 @@ A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) plug
 
 *The SearXNG search card on the Settings → Plugins page — endpoint, engines, and result language, applied to the next search without a restart.*
 
+## In plain terms: what does this plugin do?
+
+One line: **it lets your AI assistant search the web for free — no paid search service, and what you search stays known only to you.**
+
+An AI assistant can't browse the web by itself. To let it look things up, you normally pay for a "search service" — billed per query, requiring an API key, with your queries passing through someone else's servers. This plugin takes a different route: you run a small "search relay" on your own machine. It works like an errand runner — give it a question and it asks Google, Bing, and 70+ other search sites at the same time, then hands the combined results to the AI.
+
+As an analogy:
+
+- **The AI assistant** = you, wanting to look something up
+- **This plugin** = a phone line connecting you to the pickup point downstairs
+- **Your self-run search relay** = that pickup point, serving only you, fetching your packages from every courier (the big search engines)
+- **The payoff**: no handling fees, no membership card, and nobody else sees what you picked up
+
 ## Why SearXNG instead of a search API?
 
 | | Hosted search APIs | **This plugin** |
@@ -22,6 +35,8 @@ A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) plug
 | Privacy | Queries go to a third party | Queries go to **your** SearXNG, which aggregates 70+ engines for you |
 | Rate limit | Yes | Only what your instance allows |
 | Works offline / intranet | No | Yes — loopback and private-network endpoints are supported by design |
+
+**But does answer quality drop?** We benchmarked it end-to-end — a real dsh agent answering with real `web_search` calls, same model and prompts on both sides, blinded judging: **no quality difference observed (two 10-question runs: 6-2-2 and 3-4-3 win/loss/tie; average scores ≈4.8 vs ≈4.4)**. Methodology, per-question data, and honest limitations: [docs/quality-benchmark.md](docs/quality-benchmark.md).
 
 ## Features
 

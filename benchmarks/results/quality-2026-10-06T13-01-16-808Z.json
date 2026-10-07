@@ -1,0 +1,1044 @@
+{
+  "config": {
+    "SEARXNG_BASE_URL": "http://127.0.0.1:8080",
+    "SEARXNG_ENGINES": "startpage,mojeek",
+    "SEARCH_MODEL": "deepseek-v4-flash",
+    "ANSWER_MODEL": "deepseek-chat",
+    "TOP_K": 8
+  },
+  "summary": {
+    "searxng": {
+      "accuracy": 4.1,
+      "completeness": 3.6,
+      "citations": 3.7,
+      "wins": 9
+    },
+    "official": {
+      "accuracy": 1.5,
+      "completeness": 0.9,
+      "citations": 1.5,
+      "wins": 1
+    },
+    "ties": 0,
+    "questions": 10,
+    "meanDomainJaccard": 0.082
+  },
+  "results": [
+    {
+      "id": "c14",
+      "question": "What is the half-life of carbon-14 used in radiocarbon dating?",
+      "lang": "en",
+      "points": [
+        "约 5730 年（也常写 5,700/5730±40）",
+        "说明它用于放射性碳定年"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://anthromuseum.missouri.edu/radiocarbon-dating",
+          "title": "Radiocarbon Dating | Museum of Anthropology",
+          "snippet": "Carbon-12 is a stable isotope, and carbon-14 is an unstable radioactive isotope that decays over time. The half-life of carbon-14 is 5,730 years, meaning that ..."
+        },
+        {
+          "url": "https://news.uchicago.edu/explainer/what-is-carbon-14-dating",
+          "title": "Carbon-14 dating, explained - UChicago News",
+          "snippet": "Radiocarbon dating, or carbon-14 dating, is a scientific method that can accurately determine the age of organic materials as old as approximately 60,000 ..."
+        },
+        {
+          "url": "https://gml.noaa.gov/education/isotopes/decay.html",
+          "title": "14 C decays - Education - Stable Isotopes NOAA GML",
+          "snippet": "The time it takes for 14C to radioactively decay is described by its half-life. ... C has a half-life of 5,730 years. In other words, after 5,730 years, only half ..."
+        },
+        {
+          "url": "https://www.britannica.com/science/carbon-14",
+          "title": "Carbon-14 | Dating, Mass, & Half-life - Britannica",
+          "snippet": "Carbon-14, the longest-lived radioactive isotope of carbon, whose decay allows the accurate dating of archaeological artifacts from 500 to 50000 years old."
+        },
+        {
+          "url": "https://www.ciram-lab.com/en/our-techniques/dating-techniques/carbon-14-and-radiocarbon/",
+          "title": "Carbon-14 dating technique - CIRAM",
+          "snippet": "This radioactive isotope, absorbed by living beings during their lives, decays after their death at a regular rate, with a half-life of 5,730 years. CIRAM uses ..."
+        },
+        {
+          "url": "https://www.cambridge.org/core/journals/radiocarbon/article/halflife-of-14cwhy-is-it-so-long/40C969D635697E923338763B56402862",
+          "title": "The Half-Life of 14C—Why Is It So Long? | Radiocarbon",
+          "snippet": "Apr 15, 2019 ... The half-life of radiocarbon (14C) is 5700 ± 30 yr, which makes it particularly useful for dating in archaeology. However, only an ..."
+        },
+        {
+          "url": "https://earthsciences.anu.edu.au/research/facilities/anu-radiocarbon-laboratory/radiocarbon-dating-background",
+          "title": "Radiocarbon dating: background | ANU Research School of Earth ...",
+          "snippet": "14C is radioactive and has a half-life of 5730 years. The half-life is the ... Radiocarbon is a useful means for obtaining the age of death of a carbon-bearing ..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=AynvLWfrpt0",
+          "title": "Half-life of C-14, how radiocarbon dating works, half-life calculation ...",
+          "snippet": "May 12, 2021 ... Comments ; Two beta decays of Cs-137, decay equation calculation of beta and gamma energy. Decay of Cesium 137. Zak's Lab · 3.2K views ; Carbon 14 ..."
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://graphsearch.epfl.ch/en/concept/26197#1",
+          "title": "Radiocarbon dating - Are you an EPFL student looking for a semester project"
+        },
+        {
+          "url": "https://agupubs.onlinelibrary.wiley.com/doi/full-xml/10.1029/2020RG000720#16",
+          "title": "Reviews of Geophysics - ), but most of the fundamental work on its measurement and application as a radiometric dating tool is attributed to W"
+        },
+        {
+          "url": "https://www.cambridge.org/core/journals/radiocarbon/article/university-of-pennsylvania-radiocarbon-dates-vi/4870559BA5EE6C4F719F8735CB6FC6E8#1",
+          "title": "University of Pennsylvania Radiocarbon Dates VI | Radiocarbon | Cambridge Core - Hostname: page-component-8678677fb7-8d99f Total loading time: 0 Render date: 2026-09-29T19:38:38.811Z Has data issue: false hasC..."
+        },
+        {
+          "url": "http://core-prod.cambridgecore.org/core/journals/radiocarbon/article/university-of-pennsylvania-radiocarbon-dates-vi/4870559BA5EE6C4F719F8735CB6FC6E8#1",
+          "title": "University of Pennsylvania Radiocarbon Dates VI | Radiocarbon | Cambridge Core - Our systems are now restored following recent technical disruption, and we’re working hard to catch up on publishing"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/computer-science/radiocarbon-date#definition#1",
+          "title": "Radiocarbon Date - an overview - Chapters and Articles"
+        },
+        {
+          "url": "https://www.taylorfrancis.com/chapters/edit/10.4324/9781315663999-12/radiocarbon-dating-schwarcz",
+          "title": "Radiocarbon Dating | 12 | v2 | Human Evolution Source Book | H. P. Sch"
+        },
+        {
+          "url": "https://people.chem.ucsb.edu/kahn/kalju/chem1C/public/Caffeine_9.pdf#1#1",
+          "title": "**Caffeine Problems for Week 9:**    Chem 1C (Kahn)"
+        },
+        {
+          "url": "http://core-prod.cambridgecore.org/core/journals/radiocarbon/article/abs/halflife-of-14cwhy-is-it-so-long/40C969D635697E923338763B56402862#1",
+          "title": "The Half-Life of 14C—Why Is It So Long? | Radiocarbon | Cambridge Core - Hostname: page-component-586b7cd67f-gb8f7 Total loading time: 0 Render date: 2024-12-01T08:49:49.122Z Has data issue: false hasC..."
+        }
+      ],
+      "answerSearxng": "The half-life of carbon-14 used in radiocarbon dating is 5,730 years [1][3][5].",
+      "answerOfficial": "The provided sources are insufficient to answer the question. None of the listed sources state the half-life of carbon-14.",
+      "retrieval": {
+        "domainJaccard": 0.071,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 5,
+            "completeness": 4,
+            "citations": 5
+          },
+          "winner": "B",
+          "notes": "B 准确给出约5730年并附引用；A 未回答问题且无有效信息。"
+        }
+      }
+    },
+    {
+      "id": "http23",
+      "question": "What are the main differences between HTTP/2 and HTTP/3?",
+      "lang": "en",
+      "points": [
+        "HTTP/2 跑在 TCP 上，HTTP/3 跑在 QUIC/UDP 上",
+        "HTTP/3 解决了 TCP 层面的队头阻塞",
+        "HTTP/3 默认加密（TLS 1.3 内置于 QUIC）"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://www.logicmonitor.com/deep-dive/http3-vs-http2/introduction",
+          "title": "HTTP/2 vs. HTTP/3 - LogicMonitor",
+          "snippet": "Jun 11, 2026 ... In contrast, HTTP/2's TCP requires all subsequent packets to wait until the missing packet is retransmitted and received, causing head-of-line ..."
+        },
+        {
+          "url": "https://ably.com/topic/http-2-vs-http-3",
+          "title": "HTTP/2 vs HTTP/3: A Comparison - Ably Realtime",
+          "snippet": "The fundamental difference between HTTP/2 and HTTP/3 is that HTTP/3 runs over QUIC, and QUIC runs over connectionless UDP instead of the connection-oriented ..."
+        },
+        {
+          "url": "https://blog.cloudflare.com/http-3-vs-http-2/",
+          "title": "Comparing HTTP/3 vs. HTTP/2 Performance - Cloudflare Blog",
+          "snippet": "Apr 14, 2020 ... With HTTP/2, any interruption (packet loss) in the TCP connection blocks all streams (Head of line blocking). Because HTTP/3 is UDP-based, if a ..."
+        },
+        {
+          "url": "https://www.geeksforgeeks.org/computer-networks/what-is-http-3-how-it-is-different-from-http-2/",
+          "title": "What is HTTP/3? How it is Different From HTTP/2? - GeeksforGeeks",
+          "snippet": "Jul 23, 2025 ... HTTP/3 makes website connections start up to 80-90% faster than HTTP/2. That means pages begin loading almost instantly. No Waiting in Line In ..."
+        },
+        {
+          "url": "https://medium.com/@bharathofficial05/http-2-vs-http-3-6adb15a8ffae",
+          "title": "HTTP/2 vs HTTP/3 - Medium",
+          "snippet": "Jan 4, 2026 ... 1. No TCP Head-of-Line Blocking · 2. Faster Connection Setup (0-RTT) · 3. Built-in Encryption (TLS 1.3 Only) · 4. Connection Migration (Perfect for ..."
+        },
+        {
+          "url": "https://www.reddit.com/r/webdev/comments/1c656pv/http2_and_http3_explained/",
+          "title": "HTTP/2 and HTTP/3 explained : r/webdev - Reddit",
+          "snippet": "Apr 17, 2024 ... HTTP/3, utilizing Google's QUIC protocol over UDP, addresses TCP's head-of-line blocking and introduces packet-by-packet encryption for enhanced ..."
+        },
+        {
+          "url": "https://www.linkedin.com/posts/ankit-pangasa_systemdesign-backendengineering-networking-activity-7483002044560220160-Sb2j",
+          "title": "HTTP/2 vs HTTP/3: Understanding the Key Differences - LinkedIn",
+          "snippet": "Jul 14, 2026 ... \"Explain the difference between HTTP/2 and HTTP/3.\" It looks like a simple interview question. But many engineers answer with just one line: ..."
+        },
+        {
+          "url": "https://www.debugbear.com/blog/http3-vs-http2-performance",
+          "title": "HTTP/3 vs HTTP/2 Performance: Is the Upgrade Worth It? - DebugBear",
+          "snippet": "Jun 30, 2025 ... While HTTP/2 delivered major performance gains over HTTP/1.1, the differences between HTTP/3 vs HTTP/2 are more subtle. HTTP/3 doesn't add ..."
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://dt-main.dev.ietf.org/meeting/98/agenda/httpbis-drafts.pdf?__cf_chl_tk=U3_u53i9yUTgHnKvIhIYRTTDsUlsZPzxlw5iuPDt5.c-1779556649-1.0.1.1-t_EusWtSR8KQqZAQDwy5KSBMXP0T_xCJ7nWwgXTbhfM#22#20",
+          "title": "HTTP/3 begins from the premise that similarity to HTTP/2 is preferable, but not a hard requirement"
+        },
+        {
+          "url": "https://datatracker.ietf.org/doc/html/draft-ietf-quic-http#7",
+          "title": "HTTP/3 - - Belshe, M"
+        },
+        {
+          "url": "https://archive.softwareheritage.org/browse/content/sha1_git:de6cc9a85209a6a4c0f84d3b84a211de66b7c0ef/?branch=refs/heads/jri/persistent&path=draft-ietf-quic-http.md&snapshot_id=b6823bdce965c3dfad629c9a32e1645043421311#7",
+          "title": "Content - de6cc9a85209a6a4c0f84d3b84a211de66b7c0ef - 85aff61/draft-ietf-quic-http.md - : Which endpoint on an HTTP/3 connection may initiate a stream of this type"
+        },
+        {
+          "url": "https://ftp.nic.ad.jp/mirror/ftp.rfc-editor.org/in-notes/rfc9114.html#7",
+          "title": "RFC 9114: HTTP/3 - - Fielding, R"
+        },
+        {
+          "url": "https://blog.apnic.net/2022/11/30/http-3-and-quic-prioritization-and-head-of-line-blocking/#article-content#1",
+          "title": "HTTP/3 and QUIC — prioritization and head-of-line blocking | APNIC Blog - Earlier this year, the IETF standardized HTTP/3, the latest version of the Hyper-Text Transport Protocol (HTTP)"
+        },
+        {
+          "url": "https://archive.softwareheritage.org/browse/content/sha1_git:6d1fba2e97a6b0a3dfb3b4fe2095af3509713c3a/?path=draft-ietf-quic-http.md&release=draft-ietf-quic-invariants-12&snapshot_id=b6823bdce965c3dfad629c9a32e1645043421311#7",
+          "title": "Content - 6d1fba2e97a6b0a3dfb3b4fe2095af3509713c3a - 8aa43cd/draft-ietf-quic-http.md - registrations in this registry MUST include the following fields:"
+        },
+        {
+          "url": "https://www.rfc-editor.org/info/rfc9114/",
+          "title": "RFC 9114: HTTP/3 | RFC Editor"
+        },
+        {
+          "url": "https://web.nic.ad.jp/ja/basics/terms/http3.html",
+          "title": "インターネット用語1分解説～HTTP/3とは～"
+        }
+      ],
+      "answerSearxng": "The main difference is the transport protocol: HTTP/2 runs over TCP, while HTTP/3 runs over QUIC, which is built on connectionless UDP [2][3].\n\nThis architectural change addresses TCP's head-of-line blocking: with HTTP/2, packet loss on the TCP connection blocks all streams until the missing packet is retransmitted, whereas HTTP/3's UDP-based approach avoids this [1][3][6].\n\nOther notable differences cited: HTTP/3 offers faster connection setup (e.g., 0-RTT) and built-in encryption (TLS 1.3), and it supports connection migration [5]. One source claims HTTP/3 can make website connections start up to 80–90% faster than HTTP/2 [4], though another notes the performance differences between HTTP/3 and HTTP/2 are more subtle than the earlier HTTP/1.1-to-HTTP/2 gains [8].",
+      "answerOfficial": "Based solely on the provided sources, the main documented difference is that HTTP/3 is designed to be similar to HTTP/2, but this similarity is preferred rather than required [1]. Additionally, HTTP/3 is associated with QUIC and involves stream types, including which endpoint may initiate a stream [3], as well as QUIC-related prioritization and head-of-line blocking considerations [5]. The sources do not provide a detailed, explicit comparison of all main differences between HTTP/2 and HTTP/3.",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 5,
+            "completeness": 5,
+            "citations": 5
+          },
+          "B": {
+            "accuracy": 1,
+            "completeness": 0,
+            "citations": 1
+          },
+          "winner": "A",
+          "notes": "A准确完整覆盖HTTP/2与HTTP/3在传输层、队头阻塞和内置加密等核心差异且引用恰当；B仅泛泛提及相似性与来源限制，未回答问题。"
+        }
+      }
+    },
+    {
+      "id": "nobel25",
+      "question": "Who won the 2025 Nobel Prize in Physics, and for what?",
+      "lang": "en",
+      "points": [
+        "John Clarke、Michel H. Devoret、John M. Martinis",
+        "宏观量子隧穿与电路中能量量子化"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://www.nobelprize.org/prizes/physics/2025/summary/",
+          "title": "Nobel Prize in Physics 2025 - NobelPrize.org",
+          "snippet": "Nobel Prize in Physics 2025 · John Clarke · Michel H. Devoret · John M. Martinis."
+        },
+        {
+          "url": "https://www.nobelprize.org/prizes/physics/2025/press-release/",
+          "title": "Press release: Nobel Prize in Physics 2025 - NobelPrize.org",
+          "snippet": "Oct 7, 2025 ... John Clarke, born 1942 in Cambridge, UK. PhD 1968 from University of Cambridge, UK. Professor at University of California, Berkeley, USA. Michel ..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=m9FUkAis62s",
+          "title": "Announcement of the 2025 Nobel Prize in Physics - YouTube",
+          "snippet": "Oct 7, 2025 ... The Nobel Prize in Physics 2025 was awarded to John Clarke, Michel H. Devoret and John M. Martinis \"for the discovery of macroscopic quantum ..."
+        },
+        {
+          "url": "https://ls.berkeley.edu/news/john-clarke-uc-berkeley-emeritus-professor-awarded-2025-nobel-prize-physics",
+          "title": "John Clarke, UC Berkeley emeritus professor, awarded 2025 Nobel ...",
+          "snippet": "Oct 7, 2025 ... John Clarke, an emeritus professor of physics at the University of California, Berkeley, was awarded the 2025 Nobel Prize in Physics for his ..."
+        },
+        {
+          "url": "https://www.nature.com/collections/fhdggghifa",
+          "title": "Nobel Prize in Physics 2025 - Nature",
+          "snippet": "Oct 7, 2025 ... The Nobel Prize in Physics 2025 was awarded to John Clarke, Michel H. Devoret and John M. Martinis \"for the discovery of macroscopic quantum ..."
+        },
+        {
+          "url": "https://www.reddit.com/r/Physics/comments/1o0acnm/the_2025_nobel_prize_in_physics_is_awarded_to_to/",
+          "title": "The 2025 Nobel Prize in Physics is awarded to to John Clarke ...",
+          "snippet": "Oct 7, 2025 ... r/Physics - The 2025 Nobel Prize in Physics is awarded to to John Clarke. nobelprize."
+        },
+        {
+          "url": "https://news.ucsb.edu/2025/022111/ucsb-physics-professors-john-martinis-and-michel-devoret-win-2025-nobel-prize-physics",
+          "title": "UCSB physics professors John Martinis and Michel Devoret win ...",
+          "snippet": "Oct 7, 2025 ... UC Santa Barbara physicists John Martinis and Michel Devoret have been awarded the 2025 Nobel Prize in Physics . Selected for the honor ..."
+        },
+        {
+          "url": "https://eps.org/the-nobel-prize-in-physics-2025/",
+          "title": "The Nobel Prize in Physics 2025",
+          "snippet": "Oct 7, 2025 ... The Nobel Prize in Physics 2025 · John Clarke University of California, Berkeley, USA · Michel H. Devoret Yale University, New Haven, CT and ..."
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://english.news.cn/20251008/9c98401710bd48c5b1c19e28d481853f/c.html#1",
+          "title": "When quantum weirdness becomes visible -- the science behind 2025 Nobel Prize in Physics"
+        },
+        {
+          "url": "https://english.news.cn/20251008/88e070cde5e045699e54e08d3efc5031/c.html#1",
+          "title": "Explainer: When quantum weirdness becomes visible -- the science behind 2025 Nobel Prize in Physics - Explainer: When quantum weirdness becomes visible -- the science behind 2025 Nobel Prize in Physics"
+        },
+        {
+          "url": "https://www.nasonline.org/news/nas-international-member-receives-nobel-prize/?include=living&primary_section_new=section-11-mathematics",
+          "title": "NAS Members Receive Nobel Prizes"
+        },
+        {
+          "url": "https://akp.gov.kh/post/detail/355823",
+          "title": "2025 Nobel Prizes awarded at Stockholm ceremony"
+        },
+        {
+          "url": "https://global.chinadaily.com.cn/a/202510/08/WS68e59eb1a310f735438b3c85.html#1",
+          "title": "Trio's work on quantum tech wins Nobel - Trio's work on quantum tech wins Nobel"
+        },
+        {
+          "url": "https://english.cctv.com/2025/12/11/ARTIP0EGOClt0X8ghFbW8Lej251211.shtml",
+          "title": "2025 Nobel Prizes awarded at Stockholm ceremony"
+        },
+        {
+          "url": "https://news.youth.cn/jsxw/202510/t20251008_16277846.htm",
+          "title": "三名量子物理学家获2025年诺贝尔物理学奖 他们在宏观尺度重现“薛定谔的猫”_新闻频道_中国青年网"
+        },
+        {
+          "url": "https://digitalpaper.stdaily.com/http_www.kjrb.com/ywtk/html/2025-10/11/content_595464.htm?div=-1#1",
+          "title": "Great Discoveries of 2025 Nobel Prize in Science --Science and Technology Daily - Great Discoveries of 2025 Nobel Prize in Science"
+        }
+      ],
+      "answerSearxng": "John Clarke, Michel H. Devoret, and John M. Martinis won the 2025 Nobel Prize in Physics \"for the discovery of macroscopic quantum [tunneling/effects]\" [3][5].",
+      "answerOfficial": "The 2025 Nobel Prize in Physics was awarded to three quantum physicists for their work on quantum technology, specifically for reproducing \"Schrödinger's cat\" at the macroscopic scale [7]. Their work relates to making quantum weirdness visible [1][2][5]. The prize was awarded at the Stockholm ceremony [4][6].\n\nNote: The sources identify the laureates as \"three quantum physicists\" [7] and describe the achievement as \"Trio's work on quantum tech\" [5], but they do not provide the individual names of the winners.",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 1,
+            "completeness": 1,
+            "citations": 2
+          },
+          "B": {
+            "accuracy": 5,
+            "completeness": 4,
+            "citations": 4
+          },
+          "winner": "B",
+          "notes": "B正确列出三位获奖者及宏观量子隧穿成就，A未给出姓名且核心表述不准确。"
+        }
+      }
+    },
+    {
+      "id": "hongloumeng",
+      "question": "《红楼梦》的作者是谁？后四十回一般认为由谁续写？",
+      "lang": "zh",
+      "points": [
+        "曹雪芹著前八十回",
+        "后四十回一般认为高鹗续写（程伟元参与整理刊印）"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://zh.wikipedia.org/zh-hans/%E7%B4%85%E6%A8%93%E5%A4%A2%E7%9A%84%E4%BD%9C%E8%80%85%E5%95%8F%E9%A1%8C",
+          "title": "红楼梦的作者问题 - 维基百科",
+          "snippet": "虽然毛泽东根据阶级斗争观点严厉批评胡适新红学，但是毛泽东也相信后四十回为续作。根据周汝昌的回忆史料，官方正式传达毛泽东最高指示：“前八十回是曹雪芹作的，后四十回 ..."
+        },
+        {
+          "url": "https://www.shm.com.cn/szb/ytrb/paper/pc/content/202605/08/content_268056.html",
+          "title": "《红楼梦》后四十回著作权应属于曹雪芹- 烟台",
+          "snippet": "May 8, 2026 ... 由人民文学出版社出版、中国艺术研究院红楼梦研究所校注的《红楼梦》，作者署名是：前八十回，曹雪芹著，后四十回，无名氏续，程伟元、高鹗整理。人民文学 ..."
+        },
+        {
+          "url": "https://zh.wikipedia.org/zh-hans/%E9%AB%98%E9%B9%97",
+          "title": "高鹗- 维基百科，自由的百科全书",
+          "snippet": "高鹗对中国文学的最大贡献是与程伟元一起收集整理了寻获的《红楼梦》后四十回，并以活字印刷于1791年（乾隆56年）和1792年（乾隆57年）出版，为“程高本”。他别号红楼外史。"
+        },
+        {
+          "url": "https://www.guancha.cn/kelan/2017_10_05_429851.shtml",
+          "title": "文学界的百年奇冤——高鹗伪造《红楼梦》-观察者网",
+          "snippet": "Oct 5, 2017 ... 1921年，胡适作《红楼梦考证》，认定《红楼梦》后四十回非曹雪芹所作，而是高鹗自己所作假冒曹雪芹的作品。高鹗就这样被确定为《红楼梦》后四十回的作者， ..."
+        },
+        {
+          "url": "https://english.hnu.edu.cn/__local/5/6D/84/A3034230ACE35BE56E234D61A1B_71208634_1299BD.pdf",
+          "title": "专著||宋丹《日藏林语堂<红楼梦>英译稿整理与研究》",
+          "snippet": "... 作者在日本发现的林语堂《红楼梦》英译原稿，是首部系统研究林稿. 的学术专著 ... 后40 回与侍女故事是其有别于其他编译本的两大特征。整理篇的22 个表格含中国 ..."
+        },
+        {
+          "url": "https://news.uibe.edu.cn/info/1395/24255.htm",
+          "title": "[原创] 通行本《红楼梦》后四十回的几处破绽",
+          "snippet": "Nov 26, 2010 ... 也许《红楼梦》作者是谁，哪个版本更有价值，这些问题并不是那么重要。但是将前八十回文字与后四十回续书安排成为一个整体，这种做法无疑在很大程度上 ..."
+        },
+        {
+          "url": "https://www.yicai.com/news/5401524.html",
+          "title": "白先勇谈《红楼梦》后四十回，“理想国”幻灭升华出中国最伟大的小说",
+          "snippet": "Feb 23, 2018 ... 近百年来，红学界最大的一个争论题目就是《红楼梦》后四十回到底是曹雪芹的原稿，还是高鹗或其他人的续书。这场争论牵涉甚广，不仅对后四十回的作者 ..."
+        },
+        {
+          "url": "https://www.xgll.com.cn/oldepaper/dqrb/html/2018-04/11/content_98670.htm",
+          "title": "迪庆日报社数字报刊平台 - 香格里拉网",
+          "snippet": "Apr 11, 2018 ... “《红楼梦》续书作者是不是高鹗，也是红学研究中最有争议的话题之一。”张庆善说，《红楼梦》后四十回的作者是谁，主要有三种观点：一是认为前八十回与后四 ..."
+        }
+      ],
+      "officialSources": [],
+      "answerSearxng": "《红楼梦》前八十回一般认为是曹雪芹所作，后四十回通常被看作续作[1][2]；人民文学出版社版本即署“前八十回，曹雪芹著；后四十回，无名氏续，程伟元、高鹗整理”[2]。至于后四十回续写者，学界争议较大：胡适曾认定后四十回为高鹗所作[4]，高鹗也与程伟元一起整理出版过后四十回[3]，但后四十回作者究竟是谁仍有不同观点[7][8]。",
+      "answerOfficial": "根据现有来源，无法回答《红楼梦》的作者是谁，也无法说明后四十回一般认为由谁续写，因为未提供任何相关来源内容。",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 5,
+            "completeness": 5,
+            "citations": 5
+          },
+          "B": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "winner": "A",
+          "notes": "A准确涵盖曹雪芹前八十回与高鹗续后四十回要点并给出支撑引用，B未作答。"
+        }
+      }
+    },
+    {
+      "id": "gdp2024",
+      "question": "中国 2024 年的 GDP 总量是多少？",
+      "lang": "zh",
+      "points": [
+        "约 134.9 万亿元人民币（初步核算约134.9万亿）",
+        "同比增速约 5.0%"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://www.stats.gov.cn/sj/zxfb/202512/t20251226_1962144.html",
+          "title": "国家统计局关于2024年国内生产总值最终核实的公告",
+          "snippet": "Dec 26, 2025 ... 注：本表中GDP总量、构成等数据中，有的不等于各产业（行业）之和，是由于数值修约误差所致，未作机械调整。 附件2. 中国GDP年度核算说明."
+        },
+        {
+          "url": "https://www.stats.gov.cn/sj/zxfbhjd/202606/t20260602_1963862.html",
+          "title": "十四五”经济社会发展成就系列报告之三 - 国家统计局",
+          "snippet": "Jun 2, 2026 ... “十四五”时期，世界经济复苏乏力，我国经济顶压前行，展现了强大的发展韧性。经济总量不断跃升，稳居世界第二大经济体。世界银行数据显示，2024年，我国 ..."
+        },
+        {
+          "url": "https://zh.wikipedia.org/wiki/%E5%90%84%E5%9B%BD%E5%90%8D%E4%B9%89%E5%9B%BD%E5%86%85%E7%94%9F%E4%BA%A7%E6%80%BB%E5%80%BC%E5%88%97%E8%A1%A8",
+          "title": "各國/地區名目GDP列表- 維基百科，自由的百科全書",
+          "snippet": "2024年依名目GDP劃分的全球最大經濟體根據國際貨幣基金組織的估計. 本條目列出各國家或地區的名目國內生產毛額（GDP）列表，按政府官方匯率所估算，單位是當 ..."
+        },
+        {
+          "url": "https://zwfwj.beijing.gov.cn/zwgk/mtbd/202502/t20250218_4013580.html",
+          "title": "多地公布2024年“经济成绩单” “GDP万亿城市”再扩容",
+          "snippet": "Feb 18, 2025 ... 再看经济总量。2024年的“GDP万亿城市”名单中，上海市位居榜首，去年其GDP达53926.71亿元，同比增长5% ..."
+        },
+        {
+          "url": "http://www.news.cn/fortune/20251226/94522224a23e406c868f5e634f36c035/c.html",
+          "title": "2024年我国GDP最终核实为1348066亿元 - 新华网",
+          "snippet": "Dec 26, 2025 ... 新华社北京12月26日电（记者王雨萧）国家统计局26日发布关于2024年国内生产总值最终核实的公告，经最终核实，2024年，GDP现价总量为1348066亿元，比 ..."
+        },
+        {
+          "url": "https://www.stdaily.com/web/gdxw/2025-12/26/content_453541.html",
+          "title": "国家统计局：经最终核实，2024年GDP现价总量为1348066亿元",
+          "snippet": "Dec 26, 2025 ... 按照我国国内生产总值（GDP）核算和数据发布制度规定，年度GDP核算包括初步核算和最终核实两个步骤。近日，根据国家统计局统计年报、财政部财政决算和有关 ..."
+        },
+        {
+          "url": "https://m.huaon.com/channel/chinadata/1114500.html",
+          "title": "2024年中国GDP、人均GDP、产业增加值及人均国民总收入统计",
+          "snippet": "Oct 23, 2025 ... 2024年中国GDP为187438.03亿美元，同比增长4.98%；人均GDP为13303.15美元，同比增长5.11%；国民总收入（GNI）为186130.42亿美元，农业增加值占GDP的 ..."
+        },
+        {
+          "url": "https://www.br-cn.com/static/content/news/ch_news/2025-12-27/1454483115275888005.html",
+          "title": "中国2024年GDP现价总量逾134.8万亿人民币",
+          "snippet": "Dec 26, 2025 ... 中国国家统计局26日发布关于2024年国内生产总值最终核实的公告，经最终核实，2024年，GDP现价总量为1348066亿元（人民币，下同），比初步核算数减少1018亿 ..."
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "http://big5.www.gov.cn/gate/big5/www.gov.cn/lianbo/bumen/202502/content_7008605.htm#1",
+          "title": "中華人民共和國2024年國民經濟和社會發展統計公報"
+        },
+        {
+          "url": "http://big5.www.gov.cn/gate/big5/www.gov.cn/lianbo/bumen/202501/content_6999741.htm#1",
+          "title": "去年我國經濟總量首次超130萬億元，同比增長5%——經濟社會發展主要目標任務順利完成 - https://www"
+        },
+        {
+          "url": "https://www.gov.cn/lianbo/bumen/202501/content_6999704.htm#1",
+          "title": "去年国内生产总值增长5% 高质量发展成色十足——一份实属不易的经济年报"
+        },
+        {
+          "url": "http://www.jingjiribao.cn/static/detail.jsp?id=566579#1",
+          "title": "去年我国经济总量首次超130万亿元，同比增长5% 经济社会发展主要目标任务顺利完成"
+        },
+        {
+          "url": "http://www.scio.gov.cn/live/2025/35385/qwxz/202501/P020250120365875536224.pdf#3#1",
+          "title": "国新办举行新闻发布会介绍2024年国民经济运行情况文字实录"
+        },
+        {
+          "url": "https://www.ndrc.gov.cn/wsdwhfz/202502/t20250205_1395995_ext.html#1#1",
+          "title": "焦点访谈丨2024经济“年报”怎么看？"
+        },
+        {
+          "url": "https://jingji.cctv.com/2025/01/18/ARTIWLW701mzs7aVxzJSfpmu250118.shtml",
+          "title": "一份实属不易的经济年报"
+        },
+        {
+          "url": "http://big5.www.gov.cn/gate/big5/www.gov.cn/yaowen/liebiao/202501/content_6999626.htm#1",
+          "title": "躍上新臺階 奮進新航程——透視2024年中國經濟成績單 - https://www"
+        }
+      ],
+      "answerSearxng": "经最终核实，2024年中国GDP现价总量为1348066亿元[5][6]。",
+      "answerOfficial": "依据来源，2024年中国经济总量首次超过130万亿元，同比增长5% [2][4]。但上述来源未给出精确的GDP总量数值，因此无法据此提供确切数字。",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 5,
+            "completeness": 4,
+            "citations": 4
+          },
+          "B": {
+            "accuracy": 3,
+            "completeness": 3,
+            "citations": 2
+          },
+          "winner": "A",
+          "notes": "A给出与官方最终核实数一致的精确GDP总量并附引用，B仅称超130万亿且缺失精确值与增速引用。"
+        }
+      }
+    },
+    {
+      "id": "pnpm",
+      "question": "pnpm 的 link: 协议和 file: 协议有什么区别？",
+      "lang": "zh",
+      "points": [
+        "link: 创建符号链接指向本地目录，改动即时可见",
+        "file: 安装时打包/复制进 store，目录后续改动不生效"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://pnpm.io/zh/10.x/cli/link",
+          "title": "pnpm link",
+          "snippet": "pnpm link 和使用 file: 协议有什么区别？​ ... 当你使用 pnpm link 时，链接的包是从源代码进行符号链接的。你可以修改链接包的源代码，所做的更改将反映在你的项目中。使用 ..."
+        },
+        {
+          "url": "https://pnpm.io/zh/cli/link",
+          "title": "pnpm link",
+          "snippet": "pnpm link 和使用 file: 协议有什么区别？# ; 符号链接/硬链接, 符号链接, 硬链接 ; 反映源代码修改, 是, 是 ; 安装链接包的依赖项, 否（需要手动安装）, 是（覆盖链接包的 ..."
+        },
+        {
+          "url": "https://www.pnpm.cn/cli/link",
+          "title": "pnpm link | pnpm中文文档| pnpm中文网",
+          "snippet": "May 12, 2026 ... pnpm link 和使用 file: 协议有什么区别？​ ... 当你使用 pnpm link 时，链接的包是从源代码进行符号链接的。 你可以修改链接包的源代码，所做的更改将反映 ..."
+        },
+        {
+          "url": "https://pnpm.nodejs.cn/cli/link",
+          "title": "pnpm link | pnpm 中文网",
+          "snippet": "在处理同伴依赖时，建议使用 file: 协议。它可以更好地从项目依赖中解析同伴依赖，确保链接的依赖正确使用主项目中指定的依赖版本，从而带来更一致和预期的行为。"
+        },
+        {
+          "url": "https://blog.csdn.net/Vivien_CC/article/details/148586718",
+          "title": "【踩坑】本地软链接pnpm link 没生效 - CSDN博客",
+          "snippet": "Jun 11, 2025 ... 一、手动删掉node_module 文件夹下的组件库（因为本来我们使用npm下载下来的） · 二、用命令pnpm uninstall <组件库名> 删干净 · 三、重新链接 pnpm link -- ..."
+        },
+        {
+          "url": "https://pnpm.io/zh/11.x/workspaces",
+          "title": "工作空间（Workspace） - PNPM",
+          "snippet": "如果[link-workspace-packages] 设置为 true ，则pnpm 将在可用包与声明的范围匹配时链接工作区中的包。例如，如果 bar 在其依赖项中具有 \"foo\": \"^1.0.0\" 并且 foo@1.0."
+        },
+        {
+          "url": "https://pnpm.io/zh/package_json",
+          "title": "package.json - PNPM",
+          "snippet": "一个包的清单文件。它包含包的所有元数据，包括依赖项、标题、作者等等。这是所有主要的Node.js 包管理工具，包括pnpm 的保留标准。"
+        },
+        {
+          "url": "http://www.qborfy.com/today/20230219.html",
+          "title": "从pnpm工具了解整个npm包核心管理原理 - Qborfy",
+          "snippet": "Mar 1, 2023 ... Linux文件链接分为软链接和硬链接，两者有什么区别？ Linux中的符号链接，就是我们平时说的软连接，可以针对文件、目录创建，但是源文件删除后链接 ..."
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://pnpm.io/cli/link",
+          "title": "pnpm link | pnpm"
+        },
+        {
+          "url": "https://www.pnpm.cn/pt/10.x/cli/link",
+          "title": "pnpm link | pnpm"
+        },
+        {
+          "url": "https://www.pnpm.cn/cli/link",
+          "title": "pnpm link"
+        },
+        {
+          "url": "https://github.com/pnpm/pnpm/issues/9895#1",
+          "title": "Add `pnpm link` flag for `file:` protocol · Issue #9895 · pnpm/pnpm - Skip to content"
+        },
+        {
+          "url": "https://www.npmjs.com/package/hlinker?activeTab=code#1",
+          "title": "hlinker - hlinker"
+        },
+        {
+          "url": "https://socket.dev/npm/package/hlinker#1",
+          "title": "hlinker - npm Package Security Analysis - Socket - New:Microsoft Teams Notifications Are Now Available in Socket"
+        },
+        {
+          "url": "https://github.com/orgs/pnpm/discussions/11442#1",
+          "title": "idea: cross-repo development with a custom external-pnpm: protocol and .pnpmfile.cjs · pnpm · Discussion #11442 - Skip to content"
+        },
+        {
+          "url": "https://github.com/aspect-build/rules_js/pull/1328#1",
+          "title": "Support pnpm link and file protocols for external packages by twheys · Pull Request #1328 · aspect-build/rules_js - Skip to content"
+        }
+      ],
+      "answerSearxng": "根据现有来源，pnpm 的 `link:` 与 `file:` 协议的主要区别是：`link:` 使用符号链接，会从源代码进行符号链接，因此修改链接包的源代码会反映到项目中；而 `file:` 据来源表格显示为硬链接，且也会反映源代码修改 [2]。此外，两者在“安装链接包的依赖项”上不同：`link:` 为“否（需要手动安装）”，`file:` 为“是（覆盖链接包的依赖项）” [2]。来源还建议在处理同伴依赖时使用 `file:` 协议，以便更好地从项目依赖中解析同伴依赖 [4]。\n\n不过，现有来源对 `file:` 协议的说明较少，尤其没有完整解释其链接机制和适用场景，因此只能作出以上有限对比。",
+      "answerOfficial": "依据现有来源，无法明确说明 pnpm 的 `link:` 协议与 `file:` 协议之间的区别。来源主要涉及 `pnpm link` 命令本身 [1][2][3]，以及关于为 `file:` 协议添加 `pnpm link` 标志的 issue [4] 等，但没有对两者协议差异作出直接说明。",
+      "retrieval": {
+        "domainJaccard": 0.25,
+        "sharedUrls": 1
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 1,
+            "completeness": 0,
+            "citations": 2
+          },
+          "B": {
+            "accuracy": 1,
+            "completeness": 1,
+            "citations": 2
+          },
+          "winner": "B",
+          "notes": "B 尝试给出部分正确对比，但未命中核心要点（link 改动即时可见、file 安装时打包/复制且后续改动不生效），A 几乎未作答。"
+        }
+      }
+    },
+    {
+      "id": "searxng-json",
+      "question": "How do you enable JSON format output in SearXNG?",
+      "lang": "en",
+      "points": [
+        "在 settings.yml 的 search.formats 中加入 json",
+        "之后可用 /search?format=json"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://docs.searxng.org/dev/engines/json_engine.html",
+          "title": "JSON Engine - SearXNG Documentation (2026.10.2+19ffbcd30)",
+          "snippet": "Here is a simple example of a JSON engine configure in the engines: section, further read Engine Overview. ... JSON query for the list of result items. The ..."
+        },
+        {
+          "url": "https://github.com/searxng/searxng/discussions/1789",
+          "title": "Get results in JSON format? #1789 - GitHub",
+          "snippet": "Sep 20, 2022 ... Is there a way I could get the results from a searxng search in a JSON file? ... Would you be interested if I enable all the other result formats ..."
+        },
+        {
+          "url": "https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.toolsearxng",
+          "title": "SearXNG Tool | Nodes - n8n Docs",
+          "snippet": "Sep 23, 2026 ... This node requires results in JSON format, which isn't enabled in the default SearXNG configuration. To enable JSON output, add json to the ..."
+        },
+        {
+          "url": "https://docs.litellm.ai/docs/search/searxng",
+          "title": "SearXNG Search - LiteLLM",
+          "snippet": "JSON Format Not Enabled​ · Test with curl: Use the curl command above to verify JSON output · Self-host your own instance: Use our deployment repo with JSON pre- ..."
+        },
+        {
+          "url": "https://medium.com/@rosgluk/selfhosting-searxng-a3cb66a196e9",
+          "title": "Selfhosting SearXNG - Medium",
+          "snippet": "Feb 10, 2025 ... Customization: Users can configure SearXNG within Perplexica, including setting up JSON format for integration with other tools or applications."
+        },
+        {
+          "url": "https://smithery.ai/skills/YPares/searxng-search",
+          "title": "searxng-search - Skill - Smithery",
+          "snippet": "Create a minimal config with JSON output enabled; Start SearXNG on http://localhost:8888; Wait until ready. Stop SearXNG: podman stop searxng # or: docker stop ..."
+        },
+        {
+          "url": "https://docs.openclaw.ai/tools/searxng-search",
+          "title": "SearXNG search - OpenClaw Docs",
+          "snippet": "For SearXNG JSON API to work, make sure your SearXNG instance has the json format enabled in its settings.yml under search.formats . Related. Web Search ..."
+        },
+        {
+          "url": "https://railway.com/deploy/searxng-search-api-private-metasearch-for-ai--searxng-valkey-ai-search",
+          "title": "Deploy & Host SearXNG Search API — Private Metasearch for AI",
+          "snippet": "Jul 22, 2026 ... The bigger reason to run your own is AI. With json added to its output formats, SearXNG becomes a drop-in web-search tool for n8n, LangChain, ..."
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://github.com/NousResearch/hermes-agent/commit/135f235165b76381299b2e82616f9d1d2f19c31f",
+          "title": "docs: fix incorrect web search instructions · NousResearch/hermes-agent@135f235"
+        },
+        {
+          "url": "https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.toolsearxng",
+          "title": "SearXNG Tool | Nodes | n8n Docs"
+        },
+        {
+          "url": "https://github.com/NousResearch/hermes-agent/commit/5060d5cff17fc9ef87ad22689a45d39bc85001d6",
+          "title": "Merge branch 'main' into liuhao/cron-bugfix-54089-decompose-runtime-b… · NousResearch/hermes-agent@5060d5c"
+        },
+        {
+          "url": "https://scavio.dev/tutorials/how-to-self-host-searxng-and-when-to-pay-instead",
+          "title": "Self-Host SearXNG vs Pay: 2026 Decision"
+        },
+        {
+          "url": "https://github.com/yoloshii/gigaxity-deep-research/blob/main/companions/searxng/settings.yml.example#1",
+          "title": "gigaxity-deep-research/companions/searxng/settings.yml.example at main · yoloshii/gigaxity-deep-research · GitHub"
+        },
+        {
+          "url": "https://www.npmjs.com/package/searxng-bearer-mcp?activeTab=dependents#1",
+          "title": "searxng-bearer-mcp"
+        },
+        {
+          "url": "https://www.npmjs.com/package/@postapsis/sibyl?activeTab=dependencies#1",
+          "title": "@postapsis/sibyl - ⚠️"
+        },
+        {
+          "url": "https://www.npmjs.com/package/agent-searchkit?activeTab=dependents#1",
+          "title": "agent-searchkit - ⚠️"
+        }
+      ],
+      "answerSearxng": "To enable JSON output in SearXNG, add `json` to the `search.formats` setting in your `settings.yml` file [3][7].",
+      "answerOfficial": "The provided sources do not contain information on how to enable JSON format output in SearXNG. Sources [4], [5], and [6] relate to SearXNG but do not address JSON output configuration, and the remaining sources are unrelated. Therefore, the sources are insufficient to answer this question.",
+      "retrieval": {
+        "domainJaccard": 0.2,
+        "sharedUrls": 1
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 4,
+            "completeness": 3,
+            "citations": 4
+          },
+          "winner": "B",
+          "notes": "B准确命中settings.yml中search.formats加入json的要点并有引用支撑，A未回答问题。"
+        }
+      }
+    },
+    {
+      "id": "vue-ref",
+      "question": "Vue 3 组合式 API 中 ref 和 reactive 的区别是什么？",
+      "lang": "zh",
+      "points": [
+        "ref 可包装基本类型，通过 .value 访问",
+        "reactive 只接受对象，直接改属性",
+        "模板中顶层 ref 自动解包"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://juejin.cn/post/7291680355799056395",
+          "title": "「全网最详细」Vue3中ref和reactive的区别，很多人还搞不明白！",
+          "snippet": "Oct 19, 2023 ... ref 主要用于创建单个的响应式数据。 · 对于基本类型（例如：数字，布尔值）的变量定义，推荐使用ref，如果需要响应式包装对象或数组，推荐使用reactive。"
+        },
+        {
+          "url": "https://www.reddit.com/r/vuejs/comments/1exo0gp/ref_vs_reactive/?tl=zh-hans",
+          "title": "Ref与Reactive。 : r/vuejs - Reddit",
+          "snippet": "Aug 21, 2024 ... 不能替换整个对象：由于Vue 的响应式跟踪是通过属性访问来工作的 ... 问ChatGPT ：“在Vue 3 中，解释一下ref 和reactive 的区别，以及为什么我 ..."
+        },
+        {
+          "url": "https://antfu.me/posts/binfe-2020-zh",
+          "title": "import { reactive } from 'vue' - Anthony Fu",
+          "snippet": "Sep 26, 2020 ... 这是一个面向Vue 2 的插件，它在Vue 2 中增加了Vue 3 的Composition API 的支持。 ... 响应式是跟组合式的区别，就是他们是有两个不同的包提供的，在 ..."
+        },
+        {
+          "url": "https://juejin.cn/post/7211055301205934138",
+          "title": "Vue中ref()和reactive() 的区别 - 稀土掘金",
+          "snippet": "Mar 16, 2023 ... ref() 和 reactive() 都是接收一个普通的原始数据，再将其转换为响应式对象，例如上面代码中的 user 和 age 。却别在于： ref 可以同时处理基本数据类型和 ..."
+        },
+        {
+          "url": "https://github.com/vuejs/composition-api/blob/main/README.zh-CN.md",
+          "title": "composition-api/README.zh-CN.md at main - GitHub",
+          "snippet": "尽管Vue 3 暂时没有给出确定的SSR 的API，这个插件实现了 onServerPrefetch 生命周期钩子函数。这个钩子允许你使用传统API 中的 serverPrefetch 函数。 import { ..."
+        },
+        {
+          "url": "https://zhuanlan.zhihu.com/p/683373091",
+          "title": "源码视角，Vue3为什么推荐使用ref而不是reactive - 知乎专栏",
+          "snippet": "Feb 22, 2024 ... ref 和reactive 是Vue3 中实现响应式数据的核心API。ref 用于包装基本数据类型，而reactive 用于处理对象和数组。尽管reactive 似乎更适合处理对象， ..."
+        },
+        {
+          "url": "https://cn.vuejs.org/guide/essentials/reactivity-fundamentals",
+          "title": "响应式基础 - Vue.js",
+          "snippet": "现在你选择的是选项式API组合式API。 ... reactive() ​. 还有另一种声明响应式状态的方式，即使用 reactive() API。与将内部值包装在特殊对象中的ref 不同， reactive() 将使 ..."
+        },
+        {
+          "url": "https://blog.csdn.net/qq_30193097/article/details/144745193",
+          "title": "ref 和reactive 的用法和区别原创 - CSDN博客",
+          "snippet": "Dec 26, 2024 ... Vue3 中的ref 和reactive 都是用于创建响应式数据的工具，但它们在数据类型、响应式转换以及访问方式等方面存在差异。以下是详细的对比分析：."
+        }
+      ],
+      "officialSources": [],
+      "answerSearxng": "在 Vue 3 组合式 API 中，`ref` 主要用于创建单个响应式数据，适合基本类型（如数字、布尔值），而 `reactive` 更适合包装对象或数组 [1]；`ref` 可以同时处理基本数据类型和对象，`reactive` 则用于对象类型 [4]。此外，`reactive` 不能替换整个对象，因为其响应式跟踪是通过属性访问工作的 [2]。",
+      "answerOfficial": "来源不足，无法依据给定材料回答“Vue 3 组合式 API 中 ref 和 reactive 的区别是什么”。目前没有提供任何可引用的来源内容。",
+      "retrieval": {
+        "domainJaccard": 0,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "citations": 0
+          },
+          "B": {
+            "accuracy": 3,
+            "completeness": 2,
+            "citations": 3
+          },
+          "winner": "B",
+          "notes": "A 未作答，B 正确覆盖 ref 与 reactive 的主要区别但遗漏了 .value 访问和模板自动解包等关键细节。"
+        }
+      }
+    },
+    {
+      "id": "node-lts",
+      "question": "What is the latest LTS version of Node.js?",
+      "lang": "en",
+      "points": [
+        "给出一个具体的版本号",
+        "说明 LTS 发布节奏（偶数版本进入 LTS）"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://nodejs.org/en/about/previous-releases",
+          "title": "Node.js Releases",
+          "snippet": "Starting with Node.js 27, the release cycle will be annual and every major version will move to LTS status after its six-month Current phase (and six additional ..."
+        },
+        {
+          "url": "https://nodejs.org/en/download",
+          "title": "Download Node.js",
+          "snippet": "js version instead and try the latest improvements! # Download and install ... v24.21.0Latest LTSv26.10.0Latest Release. Copyright OpenJS Foundation and ..."
+        },
+        {
+          "url": "https://endoflife.date/nodejs",
+          "title": "Node.js | endoflife.date",
+          "snippet": "Sep 24, 2026 ... Node.js ; 24 ( LTS ), 1 year and 5 months ago. (06 May 2025). Ends in 2 weeks and 1 day. (20 Oct 2026) ; 23, 1 year and 11 months ago. (16 Oct ..."
+        },
+        {
+          "url": "https://www.herodevs.com/blog-posts/node-js-end-of-life-dates-you-should-be-aware-of",
+          "title": "Node.js Version Support: EOL Dates and Latest Releases (July 2026)",
+          "snippet": "Jun 23, 2026 ... js 22: The Current LTS Anchor ... Node.js 22 is in Maintenance LTS and reaches EOL on April 30, 2027. Teams on EOL versions that want the longest ..."
+        },
+        {
+          "url": "https://hidekazu-konishi.com/entry/nodejs_release_and_eol_timeline.html",
+          "title": "Node.js Release and EOL Timeline - LTS Schedule, Active LTS and ...",
+          "snippet": "Jul 26, 2026 ... ... js merge and Node.js 4 to the current lines - the LTS release model of odd-numbered short-lived versions versus even-numbered Long Term ..."
+        },
+        {
+          "url": "https://blog.risingstack.com/update-node-js-latest-version/",
+          "title": "Download & Update Node.js to the Latest Version! Node v26.5.1 ...",
+          "snippet": "Aug 3, 2026 ... Direct download links to update to the latest Node.js versions: Node v21.1.0 / LTS v20.9.0."
+        },
+        {
+          "url": "https://nodejs.org/en",
+          "title": "Node.js",
+          "snippet": "for EOL Node.js versions ... js is able to offer with our Learning materials. v24.21.0Latest LTSv26.10.0Latest Release."
+        },
+        {
+          "url": "https://github.com/nodejs/node/releases",
+          "title": "Releases · nodejs/node - GitHub",
+          "snippet": "Releases: nodejs/node · Release list · 2026-09-23, Version 22.23.3 'Jod' (LTS), @aduh95 prepared by @juanarbol."
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://github.com/ScorpiusDraconis83/Release#1",
+          "title": "GitHub - ScorpiusDraconis83/Release: Node.js Release Working Group · GitHub - GitHub - ScorpiusDraconis83/Release: Node.js Release Working Group · GitHub"
+        },
+        {
+          "url": "https://nodesource.com/blog/vercel-github-actions-ending-nodejs-20-support",
+          "title": "Vercel and GitHub Actions Are Ending Support for Node.js 20: What You Need to Do"
+        },
+        {
+          "url": "https://github.com/pmndrs/react-spring/pull/2577",
+          "title": "chore(deps): update node.js to v24.21.0 by renovate[bot] · Pull Request #2577 · pmndrs/react-spring"
+        },
+        {
+          "url": "https://nodejs.org/fr/about/previous-releases",
+          "title": "Node.js — Versions de Node.js"
+        },
+        {
+          "url": "https://nodejs.org/ro/about/previous-releases",
+          "title": "Node.js — Lansări Node.js"
+        },
+        {
+          "url": "https://nodejs.org/zh-cn/about/previous-releases",
+          "title": "Node.js — Node.js 版本"
+        },
+        {
+          "url": "https://m.ithome.com/html/0946937.htm",
+          "title": "Node.js 26 发布：默认启用 Temporal API，10 月进入 LTS 阶段"
+        },
+        {
+          "url": "https://url.nodejs.cn/en/about/previous-releases",
+          "title": "Node.js 中文网"
+        }
+      ],
+      "answerSearxng": "Based on the sources, the latest LTS version of Node.js is v24.21.0, as stated on the official Node.js site [2][7]. Note that source [6] lists an older LTS (v20.9.0), and source [8] mentions version 22 releases, but these are not identified as the latest LTS in the available material.",
+      "answerOfficial": "Based on the provided sources, I cannot definitively determine the latest LTS version of Node.js.\n\n- Source [7] mentions that Node.js 26 was released and will enter the LTS phase in October, indicating it is not yet LTS at the time of that article [7].\n- Source [4] is titled \"Versions de Node.js\" (Node.js versions) and points to the official previous-releases page, but the actual content listing the LTS versions is not included in the sources provided [4].\n- Source [3] references Node.js v24.21.0, but does not state whether this is an LTS version [3].\n- Source [2] discusses Node.js 20 losing support, implying it is an older LTS line [2].\n- Sources [1], [5], [6], and [8] do not provide the specific latest LTS version number [1][5][6][8].\n\nTherefore, the sources are insufficient to answer the question with a specific version number.",
+      "retrieval": {
+        "domainJaccard": 0.222,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": true,
+        "scores": {
+          "A": {
+            "accuracy": 3,
+            "completeness": 3,
+            "citations": 2
+          },
+          "B": {
+            "accuracy": 4,
+            "completeness": 2,
+            "citations": 5
+          },
+          "winner": "B",
+          "notes": "A 给出了具体版本号 v24.21.0 但引用支撑较弱且未说明 LTS 节奏；B 未给出具体版本号但严格依据来源说明无法确定，引用支撑更可靠。"
+        }
+      }
+    },
+    {
+      "id": "cny2026",
+      "question": "2026 年春节是几月几号？",
+      "lang": "zh",
+      "points": [
+        "2026 年 2 月 17 日（星期二）",
+        "农历丙午年（马年）"
+      ],
+      "searxngSources": [
+        {
+          "url": "https://www.eoffcn.com/kszx/detail/1863114.html",
+          "title": "2026年春节是几月几日 - 中公网校",
+          "snippet": "马年祝福你，生活顺遂无烦恼，日子过得红红火火，幸福满满。 创意版. 马年到，祝你“ ..."
+        },
+        {
+          "url": "http://sz.bendibao.com/news/2025114/994231.htm",
+          "title": "2026年春节是几月几日 - 深圳本地宝",
+          "snippet": "Nov 4, 2025 ... 导语2026年春节是公历2月17日，对应的农历日期是丙午年正月初一。2026年春节2月15日（农历腊月二十八、周日）至23日（农历正月初七、周一）放假调休， ..."
+        },
+        {
+          "url": "https://www.eoffcn.com/kszx/detail/1978449.html",
+          "title": "2026春节假期几号开始放假|2026年春节放假安排时间表 - 中公网校",
+          "snippet": "2026年春节放假安排，具体如下：。春节：2月15日(农历腊月二十八、周日)至23日(农历正月初七、周一)放假调休，共9天，2026年没有大年三十这一天。2月14日(周六)、2月28 ..."
+        },
+        {
+          "url": "https://m.huangli.com/wenhua/15828.html",
+          "title": "今年什么时候过年？2026年春节假期安排及习俗 - 老黄历",
+          "snippet": "Jan 27, 2026 ... 2026年的春节将在2月17日（星期二）迎来，正好是农历新年的初一。春节假期从2月15日（星期日）开始，到2月23日（星期一）结束，总共有9天。不过， ..."
+        },
+        {
+          "url": "https://blog.104.com.tw/2026-taiwan-government-calendar/",
+          "title": "2026行事曆》雙十連假、光復節各放3天！115年連假日曆與請假攻略！",
+          "snippet": "農曆春節：2/14（六）～2/22（日），共休9天; 228連假：2/27（五）～3/1（日），共休3天. 農曆春節+228請假 ..."
+        },
+        {
+          "url": "https://wannianrili.bmcx.com/2026-02__wannianrili/",
+          "title": "2026年日历查询 - 万年历",
+          "snippet": "2026年02月 ... 年为十三个月（朔望月），是闰年。一般每经过十九年就会有七个闰年。区别于一年有 ..."
+        },
+        {
+          "url": "https://zhuanlan.zhihu.com/p/1984929631443370013",
+          "title": "2026年春节直接把人整懵！2月17号才过年就算了，居然连年三十都 ...",
+          "snippet": "2026年春节直接把人整懵！2月17号才过年就算了，居然连年三十都没有，除夕直接缩水成腊月二十九！为什么会这样呢？因为2025年闰六月，所以2026年春节才推迟到情人节后 ..."
+        },
+        {
+          "url": "https://www.news.cn/20260216/9bafab68a9194ff8b7e1036f83b29d27/c.html",
+          "title": "2026年为啥“晚春节”？ - 新华网",
+          "snippet": "Feb 16, 2026 ... 新华社天津2月16日电（记者周润健）2026年的春节姗姗来迟，在2月17日才缓缓登场。这是近十年来最晚的春节。那么，2026年为啥“晚春节”？ 据中国天文学会 ..."
+        }
+      ],
+      "officialSources": [
+        {
+          "url": "https://www.gov.cn/zhengce/zhengceku/202511/content_7047091.htm",
+          "title": "国务院办公厅关于2026年部分节假日安排的通知_国务院文件_中国政府网"
+        },
+        {
+          "url": "https://www.gov.cn/gongbao/2025/issue_12406/202511/content_7048922.html",
+          "title": "国务院办公厅关于2026年部分节假日安排的通知__2025年第32号国务院公报_中国政府网"
+        },
+        {
+          "url": "https://cq.gov.cn/ywdt/bmts/202511/t20251105_15141609.html",
+          "title": "2026年部分节假日安排公布 “史上最长” 明年春节连休9天"
+        },
+        {
+          "url": "https://www.nmg.gov.cn/zwgk/zcjd/gjzcjd/202511/t20251105_2813149.html?slb=true",
+          "title": "图解：国务院办公厅关于2026年部分节假日安排的通知"
+        },
+        {
+          "url": "https://m.henan.gov.cn/2025/11-04/3242081.html",
+          "title": "2026年放假安排，来了！"
+        },
+        {
+          "url": "https://www.news.cn/politics/20251104/37410b5829274623a8b98cca50cf640d/c.html",
+          "title": "新华社权威快报丨春节调休9天！2026年放假安排来了"
+        },
+        {
+          "url": "https://news.cctv.cn/2026/02/16/ARTIhUsVScSQMsQhJPJ6oeq1260216.shtml",
+          "title": "2026年为啥“晚春节”？"
+        },
+        {
+          "url": "https://m.gmw.cn/2026-01/06/content_1304292940.htm",
+          "title": "官宣：春节放假9天！史上最长"
+        }
+      ],
+      "answerSearxng": "2026年春节是公历2月17日，对应农历丙午年正月初一[2][4]。",
+      "answerOfficial": "根据来源，2026 年春节是 2 月 17 日[7]。",
+      "retrieval": {
+        "domainJaccard": 0.077,
+        "sharedUrls": 0
+      },
+      "judged": {
+        "searxngIsA": false,
+        "scores": {
+          "A": {
+            "accuracy": 5,
+            "completeness": 3,
+            "citations": 3
+          },
+          "B": {
+            "accuracy": 5,
+            "completeness": 5,
+            "citations": 3
+          },
+          "winner": "B",
+          "notes": "两者日期均正确，但B额外补充农历丙午年正月初一，完整性更好；引用均仅标注来源编号，支撑度相同。"
+        }
+      }
+    }
+  ]
+}
