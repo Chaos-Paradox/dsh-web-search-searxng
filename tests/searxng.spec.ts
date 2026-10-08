@@ -1,4 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { mkdtempSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { Context } from '@deepseek-ai/cordis'
 import WebRuntime from '@deepseek-ai/dsh-web'
 import { SearxngSearchProvider, SEARXNG_PROVIDER_ID } from '../src/index.ts'
@@ -212,15 +215,38 @@ describe('SearxngSearchProvider error handling', () => {
 })
 
 describe('web-search-searxng plugin registration', () => {
+  // The activation gate reads settled state only: the loader's composed rows
+  // and the journaled profile patch text. Tests stub both seams.
+  const journalFixture = (ownsRoute = true): string => {
+    const file = join(mkdtempSync(join(tmpdir(), 'searxng-gate-')), 'cordis.patch.yml')
+    const journal = ownsRoute
+      ? '{"dsh-web-search-searxng":{"web":{"searchProvider":{"hadConfig":false,"track":false,"before":{"present":false},"after":{"present":true,"value":"searxng"}}}}}'
+      : '{"dsh-web-search-searxng":{"web-search-searxng":{"allowOfficialFallback":{"hadConfig":false,"track":true,"before":{"present":false},"after":{"present":true,"value":false}}}}}'
+    writeFileSync(file, `[]\n#dsh-config-effects/v1: ${journal}\n`)
+    return file
+  }
+  function stubGate(ctx: Context, route: string): void {
+    ctx.provide('profileContext', { patchPath: journalFixture() })
+    ctx.provide('loader', { entries: () => [{ options: { id: 'web', config: { searchProvider: route } } }] })
+  }
+
   it('refuses activation on an unmodified host', async () => {
     const ctx = new Context()
     await ctx.plugin(WebRuntime)
     await expect(ctx.plugin(searxngPlugin, { baseURL: 'http://searxng.test' }).await()).rejects.toThrow('bundle config-effects integration')
   })
 
+  it('refuses activation when the journal does not own the route', async () => {
+    const ctx = new Context()
+    ctx.provide('profileContext', { patchPath: journalFixture(false) })
+    ctx.provide('loader', { entries: () => [{ options: { id: 'web', config: { searchProvider: 'searxng' } } }] })
+    await ctx.plugin(WebRuntime, { searchProvider: SEARXNG_PROVIDER_ID })
+    await expect(ctx.plugin(searxngPlugin, { baseURL: 'http://searxng.test' }).await()).rejects.toThrow('bundle config-effects integration')
+  })
+
   it('refuses an overridden route instead of claiming the plugin is active', async () => {
     const ctx = new Context()
-    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'other' } } } }] })
+    stubGate(ctx, 'other')
     await ctx.plugin(WebRuntime, { searchProvider: 'other' })
     await expect(ctx.plugin(searxngPlugin, { baseURL: 'http://searxng.test' }).await()).rejects.toThrow('remove conflicting home/CLI overrides')
   })
@@ -228,7 +254,7 @@ describe('web-search-searxng plugin registration', () => {
   it('registers the provider into ctx.web (HMR-safe)', async () => {
     stubFetch(async () => jsonResponse({ results: [] }))
     const ctx = new Context()
-    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'searxng' } } } }] })
+    stubGate(ctx, 'searxng')
     await ctx.plugin(WebRuntime, { searchProvider: SEARXNG_PROVIDER_ID })
     const fiber = await ctx.plugin(searxngPlugin, { baseURL: 'http://searxng.test' })
     await expect(ctx.web.search({ query: 'q' })).resolves.toMatchObject({ sources: [], truncated: false })
@@ -244,7 +270,7 @@ describe('web-search-searxng plugin registration', () => {
   it('threads engines and language config into the request', async () => {
     const fetchMock = stubFetch(async () => jsonResponse({ results: [] }))
     const ctx = new Context()
-    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'searxng' } } } }] })
+    stubGate(ctx, 'searxng')
     await ctx.plugin(WebRuntime, { searchProvider: SEARXNG_PROVIDER_ID })
     const fiber = await ctx.plugin(searxngPlugin, { baseURL: 'http://searxng.test', engines: 'bing', language: 'en' })
     await ctx.web.search({ query: 'q' })
@@ -259,7 +285,7 @@ describe('web-search-searxng plugin registration', () => {
     try {
       const fetchMock = stubFetch(async () => jsonResponse({ results: [] }))
       const ctx = new Context()
-    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'searxng' } } } }] })
+      stubGate(ctx, 'searxng')
       await ctx.plugin(WebRuntime, { searchProvider: SEARXNG_PROVIDER_ID })
       const fiber = await ctx.plugin(searxngPlugin, {})
       await ctx.web.search({ query: 'q' })
@@ -276,7 +302,7 @@ describe('web-search-searxng plugin registration', () => {
     delete process.env.SEARXNG_BASE_URL
     try {
       const ctx = new Context()
-    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'searxng' } } } }] })
+      stubGate(ctx, 'searxng')
       await ctx.plugin(WebRuntime, { searchProvider: SEARXNG_PROVIDER_ID })
       await ctx.plugin(searxngPlugin, {})
       await expect(ctx.web.search({ query: 'q' }))

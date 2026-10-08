@@ -167,7 +167,16 @@ interface Config {
   allowOfficialFallback: Volatile<boolean | undefined>;
 }
 declare const Config: Schemastery;
+/**
+ * Why activation must refuse, or undefined when search is routed to the
+ * journaled SearXNG route. Pure so tests can drive it directly; apply()
+ * wires the loader's composed rows and the profile patch text into it.
+ * @param route - the effective `web` row's searchProvider value.
+ * @param patchText - the profile patch file's text, when readable.
+ * @returns the refusal message, or undefined to proceed.
+ */
+declare function activationGate(route: unknown, patchText: string | undefined): string | undefined;
 /** Register SearXNG with opt-in fallback and warn about a missing endpoint. */
 declare function apply(ctx: Context, config: Config): void;
 //#endregion
-export { Config, type FallbackRecord, type OfficialFallback, SEARXNG_PROVIDER_ID, SearxngFallbackProvider, type SearxngResult, SearxngSearchProvider, type SearxngSearchProviderOptions, type SearxngSearchResponse, apply, createOfficialFallbackResolver, fallbackNotice, inject, mapSearxngResponse, mapSearxngResult, name };
+export { Config, type FallbackRecord, type OfficialFallback, SEARXNG_PROVIDER_ID, SearxngFallbackProvider, type SearxngResult, SearxngSearchProvider, type SearxngSearchProviderOptions, type SearxngSearchResponse, activationGate, apply, createOfficialFallbackResolver, fallbackNotice, inject, mapSearxngResponse, mapSearxngResult, name };

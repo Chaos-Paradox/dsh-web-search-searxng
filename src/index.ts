@@ -7,6 +7,7 @@
  * @module dsh-web-search-searxng
  */
 
+import { readFileSync } from 'node:fs'
 import type { Context, Volatile } from '@deepseek-ai/cordis'
 import z from '@deepseek-ai/schemastery'
 import { launchEnvironmentOf } from '@deepseek-ai/dsh-launch-environment'
@@ -104,19 +105,61 @@ function resolveOptions(
   }
 }
 
+/** Marker comment of the host's journaled config-effects transaction in the profile patch. */
+const JOURNAL_MARKER = 'dsh-config-effects/v1: '
+
+/**
+ * Field-ownership fragment in the journal JSON: some bundle owns
+ * `web.searchProvider`. Ownership uniqueness is enforced host-side at
+ * reconcile time, so the gate does not care which package name owns it —
+ * fixture profiles and forks may mount this plugin under another name.
+ */
+const ROUTE_OWNER_FRAGMENT = '"web":{"searchProvider":{'
+
+/** The structural slice of the Loader service this plugin reads at activation. */
+interface LoaderLike {
+  entries(): Iterable<{ options?: { id?: string; config?: { searchProvider?: string } } }>
+}
+
+/** The structural slice of the profile context this plugin reads at activation. */
+interface ProfileContextLike {
+  patchPath?: string
+}
+
+/**
+ * Why activation must refuse, or undefined when search is routed to the
+ * journaled SearXNG route. Pure so tests can drive it directly; apply()
+ * wires the loader's composed rows and the profile patch text into it.
+ * @param route - the effective `web` row's searchProvider value.
+ * @param patchText - the profile patch file's text, when readable.
+ * @returns the refusal message, or undefined to proceed.
+ */
+export function activationGate(route: unknown, patchText: string | undefined): string | undefined {
+  if (patchText === undefined || !patchText.includes(JOURNAL_MARKER) || !patchText.includes(ROUTE_OWNER_FRAGMENT)) {
+    return 'web-search-searxng requires DSH bundle config-effects integration for default routing and uninstall restoration; apply host-integration/dsh-config-effects.patch before enabling this bundle'
+  }
+  if (route !== 'searxng') {
+    return `web-search-searxng expected the installed SearXNG route, but web.searchProvider is ${String(route)}; remove conflicting home/CLI overrides, or re-apply the bundle route by disabling and re-enabling the bundle (dsh plugin disable/enable or remove/add)`
+  }
+  return undefined
+}
+
 /** Register SearXNG with opt-in fallback and warn about a missing endpoint. */
 export function apply(ctx: Context, config: Config): void {
-  const editor = ctx.get('configEditor') as {
-    supportsBundleConfigEffects: boolean
-    configuration(): { entry: { options: { id: string; config?: { searchProvider?: string } } } }[]
-  } | undefined
-  if (editor?.supportsBundleConfigEffects !== true) {
-    throw new Error('web-search-searxng requires DSH bundle config-effects integration for default routing and uninstall restoration; apply host-integration/dsh-config-effects.patch before enabling this bundle')
+  // The gate reads only settled state — loader rows are composed before any
+  // fiber activates, and the journal was reconciled before this bundle was
+  // enabled — so it is race-free without waiting on other services. Reading
+  // a service like configEditor here would race its own fiber's start.
+  const profile = ctx.get('profileContext') as ProfileContextLike | undefined
+  let patchText: string | undefined
+  if (profile?.patchPath !== undefined) {
+    try { patchText = readFileSync(profile.patchPath, 'utf8') } catch { patchText = undefined }
   }
-  const route = editor.configuration().find(row => row.entry.options.id === 'web')?.entry.options.config?.searchProvider
-  if (route !== 'searxng') {
-    throw new Error(`web-search-searxng expected the installed SearXNG route, but web.searchProvider is ${String(route)}; remove conflicting home/CLI overrides, or re-apply the bundle route by disabling and re-enabling the bundle (dsh plugin disable/enable or remove/add)`)
-  }
+  const loader = ctx.get('loader') as LoaderLike | undefined
+  const route = [...loader?.entries() ?? []]
+    .find(entry => entry.options?.id === 'web')?.options?.config?.searchProvider
+  const refusal = activationGate(route, patchText)
+  if (refusal !== undefined) throw new Error(refusal)
   const provider = new SearxngSearchProvider(() => resolveOptions(ctx, {
     baseURL: config.baseURL.get(),
     engines: config.engines.get(),
