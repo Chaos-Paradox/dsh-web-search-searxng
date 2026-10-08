@@ -31,33 +31,35 @@ Each question (10 total, 5 zh + 5 en)
 
 > **Layering note (config-effects host)**: installation applies `web.searchProvider: searxng` as a journaled write in the profile patch, so an *unpatched* official round would silently search through SearXNG too. Both rounds therefore pin their route explicitly at the invocation layer (the official round also disables the plugin row, so its activation gate stays silent). The published results below predate this mechanism: their SearXNG round pinned the route through an equivalent overlay and their official round used the base default — the measured configurations are identical to the current explicit-pin setup, so the numbers remain valid.
 
-### Results (two full runs: 2026-10-06 and 2026-10-07)
+### Results (three full runs: 2026-10-06, 2026-10-07 and 2026-10-08)
 
-| Dimension (0-5) | Run 1 SearXNG | Run 1 Official | Run 2 SearXNG | Run 2 Official |
-|---|---|---|---|---|
-| Accuracy | 4.6 | 4.4 | 5.0 | 4.5 |
-| Completeness | 4.6 | 4.1 | 4.9 | 4.4 |
-| Citation support | 4.2 | 4.0 | 4.1 | 4.3 |
-| Wins / losses / ties | 6 / 2 / 2 | | 3 / 4 / 3 | |
+| Dimension (0-5) | Run 1 SearXNG | Run 1 Official | Run 2 SearXNG | Run 2 Official | Run 3 SearXNG | Run 3 Official |
+|---|---|---|---|---|---|---|
+| Accuracy | 4.6 | 4.4 | 5.0 | 4.5 | 4.4 | 4.2 |
+| Completeness | 4.6 | 4.1 | 4.9 | 4.4 | 4.1 | 4.2 |
+| Citation support | 4.2 | 4.0 | 4.1 | 4.3 | 3.9 | 3.9 |
+| Wins / losses / ties | 6 / 2 / 2 | | 3 / 4 / 3 | | 3 / 5 / 2 | |
 
 Per-question scores (a/c/c = accuracy/completeness/citations):
 
-| Question | Run 1 SX | Run 1 OF | Run 2 SX | Run 2 OF |
-|---|---|---|---|---|
-| Carbon-14 half-life (en) | 5/5/4 ✓ | 5/4/4 | 5/5/4 | 5/5/5 ✓ |
-| HTTP/2 vs HTTP/3 (en) | 4/4/3 | 5/5/5 ✓ | 5/4/4 | 5/5/5 ✓ |
-| 2025 Nobel Physics (en) | 5/5/5 ✓ | 5/5/4 | 5/5/5 | 5/5/5 |
-| Red Chamber author (zh) | 5/5/4 ✓ | 4/4/4 | 5/5/3 ✓ | 5/4/4 |
-| China 2024 GDP (zh) | 5/5/5 ✓ | 3/2/4 | 5/5/5 ✓ | 4/4/4 |
-| pnpm link vs file (zh) | 2/2/1 | 4/4/3 ✓ | 5/5/4 | 5/5/5 ✓ |
-| Enable SearXNG JSON (en) | 5/5/5 ✓ | 5/4/3 | 5/5/4 | 5/5/4 |
-| Vue ref vs reactive (zh) | 5/5/5 | 5/5/5 | 5/5/4 | 5/5/4 |
-| Latest Node.js LTS (en) | 5/5/5 ✓ | 3/3/3 | 5/5/5 ✓ | 1/1/2 |
-| 2026 CNY date (zh) | 5/5/5 | 5/5/5 | 5/5/3 | 5/5/5 ✓ |
+| Question | Run 1 SX | Run 1 OF | Run 2 SX | Run 2 OF | Run 3 SX | Run 3 OF |
+|---|---|---|---|---|---|---|
+| Carbon-14 half-life (en) | 5/5/4 ✓ | 5/4/4 | 5/5/4 | 5/5/5 ✓ | 5/4/4 | 5/5/5 ✓ |
+| HTTP/2 vs HTTP/3 (en) | 4/4/3 | 5/5/5 ✓ | 5/4/4 | 5/5/5 ✓ | 5/5/4 ✓ | 5/4/4 |
+| 2025 Nobel Physics (en) | 5/5/5 ✓ | 5/5/4 | 5/5/5 | 5/5/5 | 5/5/5 | 5/5/5 |
+| Red Chamber author (zh) | 5/5/4 ✓ | 4/4/4 | 5/5/3 ✓ | 5/4/4 | 4/4/3 | 5/5/5 ✓ |
+| China 2024 GDP (zh) | 5/5/5 ✓ | 3/2/4 | 5/5/5 ✓ | 4/4/4 | 5/5/5 ✓ | 4/4/4 |
+| pnpm link vs file (zh) | 2/2/1 | 4/4/3 ✓ | 5/5/4 | 5/5/5 ✓ | 1/3/2 | 3/2/3 ✓ |
+| Enable SearXNG JSON (en) | 5/5/5 ✓ | 5/4/3 | 5/5/4 | 5/5/4 | 5/5/5 | 5/5/4 |
+| Vue ref vs reactive (zh) | 5/5/5 | 5/5/5 | 5/5/4 | 5/5/4 | 4/3/3 | 5/5/4 ✓ |
+| Latest Node.js LTS (en) | 5/5/5 ✓ | 3/3/3 | 5/5/5 ✓ | 1/1/2 | 5/3/5 ✓ | 0/2/0 |
+| 2026 CNY date (zh) | 5/5/5 | 5/5/5 | 5/5/3 | 5/5/5 ✓ | 5/4/3 | 5/5/5 ✓ |
 
-✓ = per-question winner. Across both runs that's **9 SearXNG wins, 6 official wins, 5 ties**, with near-identical averages — read this as "no quality difference", not "one side is better". Note the pnpm question flipped completely between runs (2/2/1 ↔ 5/5/4), so single-question deltas carry real judge/model noise; only the aggregate means anything.
+✓ = per-question winner. Across all three runs that's **12 SearXNG wins, 11 official wins, 7 ties**, with near-identical averages — read this as "no quality difference", not "one side is better". Note the pnpm question flipped completely between runs (2/2/1 ↔ 5/5/4 ↔ 1/3/2), so single-question deltas carry real judge/model noise; only the aggregate means anything.
 
-All 40 runs **actually searched** (12 `web_search` calls per SearXNG-side run, 20 per official-side run) — not one degraded into answering from memory.
+All 60 runs **actually searched** (12 `web_search` calls per SearXNG side in runs 1-2 and 15 in run 3; 20 per official-side run) — not one degraded into answering from memory.
+
+> **Run 3 environment notes.** Run 3 exercised the config-effects host end to end: the SearXNG route came from the install-time journal, and the official round pinned `deepseek-official` while disabling the plugin row. The local instance ran from a source checkout (searxng master `d48c4b5`, Python venv) instead of the Docker image used in runs 1-2 — same `bing,yahoo` engine restriction and JSON settings. An earlier run-3 attempt was invalidated before publication: a load-order race in the plugin's first activation gate kept the provider from registering, and every SearXNG-side answer loudly reported `configured web provider "searxng" is not registered` instead of searching — the fail-closed design worked as intended (citation average 0.6 made the breakage obvious in the aggregate too). The gate was made race-free ([the fix reads settled loader state plus the journal](https://github.com/Chaos-Paradox/dsh-web-search-searxng)), and the run above is the rerun.
 
 ### How do we know the two rounds really took different paths?
 
