@@ -1,4 +1,4 @@
-# dsh-web-search-searxng
+# Free & Private Web Search for DeepSeek Harness
 
 **English** | [中文](README.zh.md)
 
@@ -7,26 +7,35 @@
 [![SearXNG](https://img.shields.io/badge/search-SearXNG-3050ff?logo=searxng&logoColor=white)](https://github.com/searxng/searxng)
 [![DeepSeek Harness](https://img.shields.io/badge/plugin-DeepSeek%20Harness-4D6BFE)](https://github.com/deepseek-ai/deepseek-harness)
 
-A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) plugin that gives your AI agent **free, unlimited, privacy-friendly web search** through your own self-hosted [SearXNG](https://github.com/searxng/searxng) metasearch instance — **no API key, no per-search model cost, no query logs leaving your machine**. Installing it also adds a **SearXNG search** card to the *Settings → Plugins* page of the Web and Desktop apps, so the endpoint, engine restriction, and result language are editable from the GUI.
+Give [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) web search through your own self-hosted [SearXNG](https://github.com/searxng/searxng) instance.
+
+✅ **No API key**
+✅ **No per-search API cost**
+✅ **Self-hosted & private** — queries go to *your* instance, nowhere else
+✅ **Configure directly in DSH Settings** — *Settings → Plugins → SearXNG search*
+✅ **Tested end-to-end against the official web search** — [no quality difference observed](docs/quality-benchmark.md)
 
 ![SearXNG settings card in Settings → Plugins](docs/settings-card.en.png)
 
 *The SearXNG search card on the Settings → Plugins page — endpoint, engines, and result language, applied to the next search without a restart.*
 
-## In plain terms: what does this plugin do?
+## Quick Start
 
-One line: **it lets your AI assistant search the web for free — no paid search service, and what you search stays known only to you.**
+Prerequisite: use DSH with the [companion host integration](host-integration/README.md). A host without these APIs cannot support this uninstall journal.
 
-An AI assistant can't browse the web by itself. To let it look things up, you normally pay for a "search service" — billed per query, requiring an API key, with your queries passing through someone else's servers. This plugin takes a different route: you run a small "search relay" on your own machine. It works like an errand runner — give it a question and it asks Google, Bing, and 70+ other search sites at the same time, then hands the combined results to the AI.
+**1. Install the plugin:**
 
-As an analogy:
+```sh
+dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
+```
 
-- **The AI assistant** = you, wanting to look something up
-- **This plugin** = a phone line connecting you to the pickup point downstairs
-- **Your self-run search relay** = that pickup point, serving only you, fetching your packages from every courier (the big search engines)
-- **The payoff**: no handling fees, no membership card, and nobody else sees what you picked up
+**2. Point it at your SearXNG instance:** open **Settings → Plugins → SearXNG search** and set the endpoint (e.g. `http://localhost:8080`). No instance yet? [2-minute Docker setup](#running-a-searxng-instance).
 
-## Why SearXNG instead of a search API?
+With the [DSH host integration](host-integration/README.md), installing selects SearXNG by default. Failed searches report an error and make no official search request. To opt in to paid backup, check **Allow official fallback** on the card and save. Uninstall restores the recorded pre-install configuration, preserving any later manual edits as reported conflicts.
+
+## Why use it?
+
+An AI assistant can't browse the web by itself — to let it look things up you normally pay for a hosted search API: billed per query, API key required, queries passing through someone else's servers. This plugin takes a different route: you run a small search relay (SearXNG) on your own machine, and it asks Google, Bing, and 70+ other engines at the same time, then hands the combined results to the agent.
 
 | | Hosted search APIs | **This plugin** |
 |---|---|---|
@@ -36,19 +45,13 @@ As an analogy:
 | Rate limit | Yes | Only what your instance allows |
 | Works offline / intranet | No | Yes — loopback and private-network endpoints are supported by design |
 
-**But does answer quality drop?** We benchmarked it end-to-end — a real dsh agent answering with real `web_search` calls, same model and prompts on both sides, blinded judging: **no quality difference observed (two 10-question runs: 6-2-2 and 3-4-3 win/loss/tie; average scores ≈4.8 vs ≈4.4)**. Methodology, per-question data, and honest limitations: [docs/quality-benchmark.md](docs/quality-benchmark.md).
+## Benchmark
 
-## Features
+**Does answer quality drop?** We benchmarked it end-to-end — a real dsh agent answering with real `web_search` calls, same model and prompts on both sides, blinded judging: **no quality difference observed (two 10-question runs: 6-2-2 and 3-4-3 win/loss/tie; average scores ≈4.8 vs ≈4.4)**. Methodology, per-question data, and honest limitations: [docs/quality-benchmark.md](docs/quality-benchmark.md).
 
-- 🔍 **Metasearch provider** — registers a provider with the stable id `searxng` into the dsh `ctx.web` seam; every agent web search is served by `GET {baseURL}/search?format=json`.
-- 🖥️ **GUI settings card** — a *SearXNG search* card appears under *Settings → Plugins*; edit endpoint, engines, and language without touching config files. Changes apply to the **next search, no restart**.
-- 🔒 **Safe by default** — no credentials to leak; HTTP redirects fail closed (`WEB_PROVIDER_ERROR`) so a redirect can never forward your query text to another origin; a 403 response tells you exactly that the instance's JSON format is disabled.
-- 🏠 **Self-host friendly** — loopback (`http://localhost:8080`), private IPs, and subpath mounts (`http://host/searxng`) all work; `/search` is appended correctly.
-- 🌐 **Engine & language control** — restrict to specific engines (`bing,duckduckgo`) and prefer a result language (`zh-CN`, `en`, `ja`…) via SearXNG's native parameters.
-- 📎 **Citeable sources** — each result maps to a source with URL, title, engine excerpt as snippet, and publication date when present, ready for the agent to cite.
-- ⚡ **Zero build step for consumers** — `lib/` is committed, so installing from the git URL works immediately.
+## Architecture
 
-## How it works
+The plugin registers the `searxng` provider into `ctx.web`. Each search starts with `GET {baseURL}/search?format=json`; official search is eligible only after failure with the saved fallback checkbox enabled.
 
 ```
 ┌─────────────┐   web search   ┌──────────────┐   JSON API   ┌────────────────┐
@@ -62,15 +65,35 @@ As an analogy:
                                                           └─────────────────────┘
 ```
 
-SearXNG returns no generated answer, so results carry **sources only** — the agent reads the pages itself with `fetch` when it needs content.
+SearXNG returns no generated answer, so results carry **sources only** — the agent reads the pages itself with `fetch` when it needs content. Each result maps to a citeable source:
 
-## Requirements
+| SearXNG field | dsh source field | Notes |
+|---|---|---|
+| `url` | `url` | entries without one are dropped |
+| `title` | `title` | omitted when blank |
+| `content` | `snippet` | the engine's excerpt |
+| `publishedDate` | `publishedAt` | when the engine provides it |
+
+`truncated` is always `false` (the web service owns `maxResults` truncation), and no generated `content` answer is attached because SearXNG has none the seam could vouch for.
+
+## Security
+
+- 🔒 **No credentials to leak** — the provider is credential-free by design.
+- ⛔ **Redirects fail closed** — HTTP redirects raise `WEB_PROVIDER_ERROR`, so a redirect can never forward your query text to another origin.
+- 🏠 **Self-host friendly** — loopback (`http://localhost:8080`), private IPs, and subpath mounts (`http://host/searxng`) all work; `/search` is appended correctly.
+- 💬 **Actionable errors** — a 403 response tells you exactly that the instance's JSON format is disabled.
+
+Redirect fail-closed and credential-free are design constraints, not missing features (see [Contributing](#contributing)).
+
+## Configuration
+
+### Requirements
 
 - A DeepSeek Harness installation whose `ctx.web` seam is present (any `dsh` release carrying `dsh-web`).
-- Node.js `^22.19 || >=24` (for development; consumers just need dsh).
 - A SearXNG instance with **JSON output enabled** — its `settings.yml` must list `json` under `search.formats` (SearXNG's default serves HTML only).
+- Node.js `^22.19 || >=24` (for development only; consumers just need dsh).
 
-### Quick SearXNG setup with Docker
+### Running a SearXNG instance
 
 ```sh
 mkdir -p searxng && cd searxng
@@ -94,38 +117,32 @@ Verify JSON is enabled:
 curl "http://localhost:8080/search?q=test&format=json"
 ```
 
-## Install (import into dsh)
+### Install options
 
-**Option 1 — from GitHub (tracks latest):**
+**From GitHub (tracks latest):**
 
 ```sh
 dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-**Option 2 — pin a release version (recommended for reproducibility):**
+**Pin a release version (recommended for reproducibility):**
 
 ```sh
-dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.1.0
+dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.2.0
 ```
 
 See all versions on the [Releases page](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases).
 
-**Option 3 — from a local clone or tarball:** the same command takes an absolute path, e.g. `dsh plugin --profile <name> add /path/to/dsh-web-search-searxng`. No build step needed — `lib/` is committed.
+**From a local clone or tarball:** the same command takes an absolute path, e.g. `dsh plugin --profile <name> add /path/to/dsh-web-search-searxng`. No build step needed — `lib/` is committed.
 
-Installing activates the bundle's patch layer, which registers the provider row. Verify the import:
+The bundle registers SearXNG. The integrated host records and applies `web.searchProvider: searxng` while preserving your fetch provider. Verify the import:
 
 ```sh
 dsh plugin --profile <name> list        # dsh-web-search-searxng should appear
-```
 
-```sh
-# remove
+# remove — restore the recorded pre-install route and settings
 dsh plugin --profile <name> remove dsh-web-search-searxng
 ```
-
-## Configure and select
-
-Registration alone does not route searches. Two switches, both yours:
 
 ### 1. Point it at your instance
 
@@ -143,44 +160,33 @@ export SEARXNG_BASE_URL="http://localhost:8080"
 | `engines` | Engines / 引擎限制 | — | Comma-separated engine restriction, e.g. `bing,duckduckgo`. |
 | `language` | Language / 结果语言 | — | Preferred result language, e.g. `zh-CN`, `en`, `ja`. |
 
-### 2. Select it for search
+⚠️ **While the takeover is active without an endpoint, searches fail loudly** (provider unavailable) instead of silently falling back to DeepSeek — a silent fallback is exactly the kind of billing surprise this plugin exists to prevent. The failure surfaces in the search result itself and the host log carries a warning. (The card deliberately shows no endpoint alert: an empty field can still mean `$SEARXNG_BASE_URL` is set, and only the host knows.)
 
-Patch the profile's `web` row (a patch replaces the row's whole config, so restate `fetchProvider`):
+### 2. Optional official fallback
 
-```yaml
-# $DSH_HOME/profiles/<name>/cordis.patch.yml
-- id: web
-  config:
-    searchProvider: searxng
-    fetchProvider: http
-```
+The **Allow official fallback (may incur search fees)** checkbox is off by default. Check it and save to try SearXNG first, then the registered DeepSeek official provider if that request fails. Each fallback attempt is logged before dispatch; successful fallback results include a cost notice. If both searches fail, the error reports both failures. Cancelling a request never starts a fallback. Unchecking and saving writes an explicit `false`, including when a lower layer sets it to `true`.
 
-To switch back, drop the patch (or set `searchProvider: deepseek-official`). With no endpoint configured the provider reports itself unavailable and nothing changes.
+Fallback uses the host's existing official provider, credentials, model and limits. A disabled, absent, or unavailable official provider is not recreated. No SearXNG endpoint means search is unavailable even with fallback enabled. This controls additional search-provider charges; ordinary model use and your SearXNG deployment have their own costs.
 
-## What a search returns
+### 3. Uninstall and restoration
 
-Each SearXNG result maps to a citeable source:
+The host stores a field-level journal in the profile YAML comment `dsh-config-effects/v1`, alongside the same atomic write as the changed values. It records the owner, original value/presence, and last written value, without a whole-file backup. Installation selects SearXNG and turns official fallback off; card writes update the tracked settings fields.
 
-| SearXNG field | dsh source field | Notes |
-|---|---|---|
-| `url` | `url` | entries without one are dropped |
-| `title` | `title` | omitted when blank |
-| `content` | `snippet` | the engine's excerpt |
-| `publishedDate` | `publishedAt` | when the engine provides it |
-
-`truncated` is always `false` (the web service owns `maxResults` truncation), and no generated `content` answer is attached because SearXNG has none the seam could vouch for.
+Use the Plugins page or `dsh plugin --profile <name> remove dsh-web-search-searxng`. The host reverses still-owned fields before live removal and also supports CLI removal after the package files are gone. Originally absent values are removed; original values are restored. Later manual edits are retained and reported as conflicts. Updates, restarts and HMR do not reset the recorded baseline. The prior route can be any provider, not only DeepSeek.
 
 ## Troubleshooting
 
 | Symptom | Cause | Fix |
 |---|---|---|
 | `SearXNG error (HTTP 403); the instance may refuse JSON output` | `settings.yml` lacks `json` in `search.formats` | Add it as shown above and restart the container |
-| Provider unavailable / nothing changes | No endpoint configured | Set the card field or `SEARXNG_BASE_URL` |
-| `search request failed` / ECONNREFUSED | Instance down or wrong port | Check `docker ps`, try the curl verify command |
+| Search fails with provider unavailable (`WEB_PROVIDER_CONFIGURED_UNAVAILABLE`) | Takeover active but no endpoint configured | Set the card field or `SEARXNG_BASE_URL` |
+| Search went to another provider | Higher-priority home/CLI override or a later manual edit | Check `--dump-config` and your overrides |
+| `search request failed` / ECONNREFUSED | Instance down or wrong port | Check `docker ps`, try the curl verify command; or enable the official fallback for a per-request safety net |
+| A search result opens with a ⚠️ fallback notice | The official fallback is allowed and SearXNG just failed once | Check the instance; disable the fallback on the card to return to strict mode |
 | `WEB_PROVIDER_ERROR` mentioning a redirect | A proxy in front of SearXNG redirects | Point `baseURL` at the final address; redirects fail closed by design |
 | Empty `sources` | Engines returned nothing usable (or all entries lacked URLs) | Loosen `engines`, check the instance in a browser |
 
-## Develop
+## Development
 
 ```sh
 pnpm install        # dependencies come from npm (@deepseek-ai/* 0.2.1-alpha.1 train)
@@ -193,6 +199,7 @@ pnpm run typecheck  # tsc --noEmit
 src/
   index.ts      plugin entry: config schema, env fallback, provider registration
   provider.ts   SearxngSearchProvider: JSON API call, result mapping, error policy
+  fallback.ts   opt-in official fallback: per-request degrade, bilingual notice, host log
   types.ts      SearXNG response types
   client/       browser bundle: the Settings → Plugins card (React)
 tests/          vitest suites incl. redirect & egress policy
@@ -201,6 +208,12 @@ tests/          vitest suites incl. redirect & egress policy
 `lib/` is committed on purpose: installing from a git URL gives the consumer the built artifacts without a build step. **Rebuild and recommit `lib/` whenever `src/` changes.**
 
 Known gap: the card's apply-level registration test lives upstream for now — the published `@deepseek-ai/dsh-client-test-runtime` references source files its npm package does not ship, so this repo keeps local stand-ins (`tests/helpers.ts`) for the two helpers the remaining card specs use.
+
+## Known Limitations
+
+- This change requires the companion [DSH host integration](host-integration/README.md). An unmodified host rejects plugin activation with an explicit error; merely installing the plugin cannot add a reliable uninstall transaction to DSH.
+- Home/CLI overrides retain their normal priority. They can reject SearXNG activation; inspect `--dump-config` before using an intentional route override.
+- Use DSH's plugin manager for removal. Raw `pnpm remove` and deleting package files bypass the host transaction; the journal remains available for subsequent reconciliation.
 
 ## Contributing
 

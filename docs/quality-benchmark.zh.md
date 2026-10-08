@@ -15,15 +15,19 @@
 ```
 每道题 (10题, 中英各半)
   ├─ SearXNG 轮: dsh --profile headless --patch e2e-searxng.patch.yml "<题>"
-  │              (补丁只做两件事: web 行 searchProvider: searxng
-  │               + 插件行配置本地实例地址与引擎 bing,yahoo)
-  ├─ 官方轮:     dsh --profile headless "<题>"
-  │              (profile 原样, searchProvider: deepseek-official)
+  │              (安装时已把 web.searchProvider: searxng 作为账本写入
+  │               记录在 profile 补丁中; 覆盖补丁只携带本地实例地址与
+  │               引擎 bing,yahoo)
+  ├─ 官方轮:     dsh --profile headless --patch e2e-official.patch.yml "<题>"
+  │              (调用层覆盖把 searchProvider 钉回 deepseek-official,
+  │               仅对这一个进程生效)
   │   —— 两轮用同一个智能体模型、同一套预设、同一份提示词,
   │      唯一变量是搜索提供方; 每题提示词要求先用 web_search 再作答
   └─ 评判: 盲评——评委模型 (deepseek-chat) 看不到答案来自哪边,
            对照每题参考要点按 0-5 打 事实准确性/完整性/引用支撑
 ```
+
+> **分层说明（config-effects 宿主）**：安装时 `web.searchProvider: searxng` 作为带账本的写入落进 profile 补丁，不加补丁的"官方轮"会静默地走 SearXNG。因此两轮都通过调用层显式钉住各自路线（官方轮同时禁用插件行，激活闸门保持静默）。下面已发布的结果早于该机制：当时 SearXNG 轮用等效覆盖补丁钉路线、官方轮用 base 默认值——被测配置与现在的显式双钉完全等价，数据仍然有效。
 
 ### 结果（两次完整运行：2026-10-06 与 2026-10-07）
 
@@ -57,7 +61,7 @@
 
 发布前做过三组取证（细节见[下文](#引擎取证)）：
 
-1. **配置树**：`--dump-config` 显示无补丁时 `web` 行 `searchProvider: deepseek-official`（来自 dsh-base bundle），叠加补丁后变为 `searxng`。
+1. **配置树**：安装插件后 `--dump-config` 显示 `web` 行为 `searchProvider: searxng`（安装时的账本写入覆盖了 dsh-base 默认值）；官方轮的调用层覆盖把该进程钉回 `deepseek-official`。
 2. **因果探针**：把补丁里的 `baseURL` 改成一个无监听的端口，SearXNG 轮的 `web_search` 立刻报插件自己的错误文案（`SearXNG search request failed: fetch failed`）——证明该轮搜索确实由本插件的 provider 执行；官方轮不受影响。
 3. **服务器侧日志**：本地 SearXNG 实例的日志里，每道题目只出现一次（来自 SearXNG 轮）——官方轮从未触碰本地实例；若两轮同源，结果与分数不会呈现差异。
 

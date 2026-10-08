@@ -1,7 +1,7 @@
 {
   "name": "dsh-web-search-searxng",
   "description": "SearXNG-backed self-hosted metasearch provider for DeepSeek Harness (ctx.web), with a Plugins-page settings card",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,7 +26,27 @@
       "platform": "web"
     },
     "bundle": {
-      "patch": "./cordis.patch.yml"
+      "patch": "./cordis.patch.yml",
+      "configEffects": [
+        {
+          "id": "web",
+          "set": {
+            "searchProvider": "searxng"
+          }
+        },
+        {
+          "id": "web-search-searxng",
+          "set": {
+            "allowOfficialFallback": false
+          },
+          "track": [
+            "baseURL",
+            "engines",
+            "language",
+            "allowOfficialFallback"
+          ]
+        }
+      ]
     }
   },
   "scripts": {
@@ -40,7 +60,9 @@
     "cordis.patch.yml",
     "lib/client.js",
     "lib/client.js.map",
-    "lib/client/**/*.d.ts"
+    "lib/client/**/*.d.ts",
+    "host-integration/dsh-config-effects.patch",
+    "host-integration/README.md"
   ],
   "license": "MIT",
   "engines": {
@@ -98,6 +120,7 @@
     "typescript": "~6.0.3",
     "use-sync-external-store": "^1.7.0",
     "vitest": "^4.1.8",
-    "zustand": "~4.4.7"
+    "zustand": "~4.4.7",
+    "yaml": "^2.9.1"
   }
 }

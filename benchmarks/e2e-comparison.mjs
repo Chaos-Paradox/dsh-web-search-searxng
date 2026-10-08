@@ -2,10 +2,15 @@
 /**
  * End-to-end quality comparison through the REAL product path: each question
  * is answered by an actual dsh agent (headless profile) that must call the
- * web_search tool. Round "searxng" applies benchmarks/e2e-searxng.patch.yml
- * via `dsh --patch`; round "official" runs the profile as-is
- * (searchProvider: deepseek-official). The agent model, preset, tools, and
- * prompts are identical across rounds — only the provider differs.
+ * web_search tool. With the config-effects host, installation journals
+ * web.searchProvider: searxng into the profile patch, so BOTH rounds pin
+ * their route explicitly through an invocation-layer `dsh --patch`: round
+ * "searxng" applies benchmarks/e2e-searxng.patch.yml (endpoint only — the
+ * journal owns the route), round "official" applies
+ * benchmarks/e2e-official.patch.yml (pins searchProvider: deepseek-official
+ * back and disables the plugin row so its activation gate stays silent).
+ * The agent model, preset, tools, and prompts are identical across rounds —
+ * only the provider differs.
  *
  * A blinded judge model grades both final answers per question. Raw events,
  * answers, and scores land in benchmarks/results/.
@@ -24,6 +29,7 @@ import { spawn } from 'node:child_process'
 const HERE = dirname(fileURLToPath(import.meta.url))
 const DSH = ['/Users/pioneer/AIWork/deepseek-harness/apps/cli/lib/bin.js']
 const PATCH = join(HERE, 'e2e-searxng.patch.yml')
+const OFFICIAL_PATCH = join(HERE, 'e2e-official.patch.yml')
 const CHAT_BASE = process.env.DEEPSEEK_CHAT_BASE_URL ?? 'https://api.deepseek.com'
 const JUDGE_MODEL = process.env.DEEPSEEK_ANSWER_MODEL ?? 'deepseek-chat'
 const RUN_TIMEOUT_MS = +(process.env.E2E_TIMEOUT_MS ?? 420_000)
@@ -78,7 +84,11 @@ function runAgent(question, mode) {
   return new Promise((resolve) => {
     // Launcher flags first: once an unknown app flag (--json) appears, the
     // launcher passes the rest to the app verbatim, so --patch must precede it.
-    const args = ['--profile', 'headless', ...mode === 'searxng' ? ['--patch', PATCH] : [], '--json', taskPrompt(question)]
+    // Both rounds pin their route explicitly: installation journaled the
+    // SearXNG route into the profile patch, so an unpatched "official" round
+    // would search through SearXNG too.
+    const patch = mode === 'searxng' ? PATCH : OFFICIAL_PATCH
+    const args = ['--profile', 'headless', '--patch', patch, '--json', taskPrompt(question)]
     const child = spawn('node', [...DSH, ...args], { cwd: HERE, env: process.env })
     let out = ''
     const killer = setTimeout(() => { child.kill('SIGKILL') }, RUN_TIMEOUT_MS)
@@ -160,7 +170,7 @@ async function run() {
   const dir = join(HERE, 'results')
   await mkdir(dir, { recursive: true })
   const file = join(dir, `e2e-${new Date().toISOString().replace(/[:.]/g, '-')}.json`)
-  await writeFile(file, JSON.stringify({ config: { PATCH, JUDGE_MODEL, RUN_TIMEOUT_MS }, results }, null, 2))
+  await writeFile(file, JSON.stringify({ config: { PATCH, OFFICIAL_PATCH, JUDGE_MODEL, RUN_TIMEOUT_MS }, results }, null, 2))
   console.log(`\nwrote ${file}`)
   // compact summary
   let wins = { searxng: 0, official: 0, tie: 0 }

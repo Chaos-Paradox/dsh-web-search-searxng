@@ -87,4 +87,30 @@ describe('SearxngSearchCardController', () => {
       expect(face.hooks.searxngSearchCard.getSnapshot().engines).toMatchObject({ text: '', overridden: false })
     })
   })
+
+  it('writes explicit booleans so inherited true can be disabled', async () => {
+    const host = stubConfigForm<SearxngSearchSettings>()
+    acceptWrites(host)
+    const controller = new SearxngSearchCardController(host.scope)
+    host.publish({ status: 'ready', writable: true, value: {}, base: {}, user: {} })
+    const face = controller.inject()
+
+    expect(face.hooks.searxngSearchCard.getSnapshot().allowOfficialFallback.text).toBe('false')
+    face.edit('allowOfficialFallback', 'true')
+    face.save()
+    await vi.waitFor(() => { expect(host.mutate).toHaveBeenCalledTimes(1) })
+    expect(host.mutate.mock.calls.map(([ops]) => ops)).toEqual([[{ op: 'set', path: ['allowOfficialFallback'], value: true }]])
+    await vi.waitFor(() => {
+      expect(face.hooks.searxngSearchCard.getSnapshot().allowOfficialFallback).toMatchObject({ text: 'true', overridden: true })
+    })
+
+    host.publish({ status: 'ready', writable: true, value: { allowOfficialFallback: true }, base: { allowOfficialFallback: true }, user: {} })
+    face.edit('allowOfficialFallback', 'false')
+    face.save()
+    await vi.waitFor(() => { expect(host.mutate).toHaveBeenCalledTimes(2) })
+    expect(host.mutate.mock.calls.map(([ops]) => ops)[1]).toEqual([{ op: 'set', path: ['allowOfficialFallback'], value: false }])
+    await vi.waitFor(() => {
+      expect(face.hooks.searxngSearchCard.getSnapshot().allowOfficialFallback).toMatchObject({ text: 'false', overridden: true })
+    })
+  })
 })

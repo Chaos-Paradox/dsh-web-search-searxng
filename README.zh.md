@@ -1,4 +1,4 @@
-# dsh-web-search-searxng
+# 免费、私密的 DeepSeek Harness 网页搜索
 
 [English](README.md) | **中文**
 
@@ -7,26 +7,35 @@
 [![SearXNG](https://img.shields.io/badge/search-SearXNG-3050ff?logo=searxng&logoColor=white)](https://github.com/searxng/searxng)
 [![DeepSeek Harness](https://img.shields.io/badge/plugin-DeepSeek%20Harness-4D6BFE)](https://github.com/deepseek-ai/deepseek-harness)
 
-一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）插件：通过你自己托管的 [SearXNG](https://github.com/searxng/searxng) 元搜索实例，为 AI 智能体提供**免费、无限制、保护隐私的网页搜索**——**无需 API 密钥、没有按次计费的模型成本、查询记录不离开你的机器**。安装后还会在 Web 与桌面应用的 设置 → 插件 页添加 **SearXNG 搜索**卡片，实例地址、引擎限制与结果语言都可以在图形界面里直接编辑。
+通过你自己托管的 [SearXNG](https://github.com/searxng/searxng) 实例，为 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）提供网页搜索能力。
+
+✅ **无需 API 密钥**
+✅ **没有按次计费的搜索成本**
+✅ **自托管、保护隐私**——查询只发往*你自己的*实例
+✅ **直接在 DSH 设置中配置**——设置 → 插件 → SearXNG 搜索
+✅ **与官方网页搜索做过端到端对照**——[未观察到质量差异](docs/quality-benchmark.zh.md)
 
 ![设置 → 插件 页中的 SearXNG 搜索卡片](docs/settings-card.zh.png)
 
 *设置 → 插件 页中的 SearXNG 搜索卡片——实例地址、引擎限制与结果语言，改动对下一次搜索立即生效，无需重启。*
 
-## 通俗版：这个插件是干嘛的？
+## 快速开始
 
-一句话：**让 AI 助手能免费上网搜东西，不用花钱买搜索服务，你搜了什么也只有自己知道。**
+前提：使用已应用[配套宿主集成](host-integration/README.md)的 DSH。缺少这些接口的宿主无法支持这套卸载账本。
 
-AI 助手本身不会上网。想让它查资料，通常得买"搜索服务"——按次收费、要办"钥匙"（API 密钥）、你搜的内容还会经过别人的服务器。这个插件的做法是：在你自己电脑上开一个"搜索中转站"。它像个跑腿小弟——你给它一个问题，它同时去问谷歌、必应等 70 多个搜索网站，把各家结果汇总起来交给 AI。
+**1. 安装插件：**
 
-打个比方：
+```sh
+dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
+```
 
-- **AI 助手** = 你，想查资料
-- **这个插件** = 一根电话线，把你和你家楼下的代收点连起来
-- **你自己搭的搜索站** = 楼下代收点，只认你一个人，帮你去各个快递点（各大搜索引擎）把包裹取回来
-- **好处**：不收手续费、不用办会员卡、你取过什么包裹没有外人知道
+**2. 指向你的 SearXNG 实例：** 打开 **设置 → 插件 → SearXNG 搜索**，填写实例地址（例如 `http://localhost:8080`）。还没有实例？[两分钟 Docker 搭建](#搭建-searxng-实例)。
 
-## 为什么用 SearXNG 而不是搜索 API？
+配合 [DSH 宿主集成](host-integration/README.md)，安装后默认使用 SearXNG。搜索失败会明确报错，不发起官方搜索请求。如需付费备用，在卡片勾选「允许官方备用」并保存。卸载会恢复账本记录的安装前配置；后续手动修改会保留并报告冲突。
+
+## 为什么用它？
+
+AI 助手本身不会上网。想让它查资料，通常得买托管搜索 API——按次收费、要 API 密钥、你搜的内容还会经过别人的服务器。这个插件的做法是：在你自己电脑上跑一个搜索中转站（SearXNG），它同时去问谷歌、必应等 70 多个搜索引擎，把汇总结果交给智能体。
 
 | | 托管搜索 API | **本插件** |
 |---|---|---|
@@ -36,19 +45,13 @@ AI 助手本身不会上网。想让它查资料，通常得买"搜索服务"—
 | 速率限制 | 有 | 只取决于你自己实例的限制 |
 | 离线 / 内网可用 | 否 | 是——设计上支持回环地址与内网地址 |
 
-**那答案质量会下降吗？** 我们做了端到端对照实验——真实的 dsh 智能体真实调用 `web_search`，两侧同一模型同一提示词，盲评打分：**未观察到质量差异（两次 10 题运行：胜负平 6-2-2 与 3-4-3，平均分 ≈4.8 vs ≈4.4）**。实验方法、逐题数据与诚实的限制说明：[docs/quality-benchmark.zh.md](docs/quality-benchmark.zh.md)。
+## 基准测试
 
-## 功能特性
+**答案质量会下降吗？** 我们做了端到端对照实验——真实的 dsh 智能体真实调用 `web_search`，两侧同一模型同一提示词，盲评打分：**未观察到质量差异（两次 10 题运行：胜负平 6-2-2 与 3-4-3，平均分 ≈4.8 vs ≈4.4）**。实验方法、逐题数据与诚实的限制说明：[docs/quality-benchmark.zh.md](docs/quality-benchmark.zh.md)。
 
-- 🔍 **元搜索提供方**——以稳定 id `searxng` 注册进 dsh 的 `ctx.web` 能力缝；每一次智能体网页搜索都由 `GET {baseURL}/search?format=json` 提供服务。
-- 🖥️ **GUI 设置卡片**——设置 → 插件 页出现 **SearXNG 搜索**卡片；无需编辑配置文件即可修改实例地址、引擎限制与结果语言，改动对**下一次搜索立即生效，无需重启**。
-- 🔒 **默认安全**——没有可泄露的凭据；HTTP 重定向直接失败（`WEB_PROVIDER_ERROR`），查询文本永远不会被重定向转发到别的源；403 响应会明确提示实例的 JSON 格式未启用。
-- 🏠 **自托管友好**——回环地址（`http://localhost:8080`）、内网 IP、子路径挂载（`http://host/searxng`）全部支持，`/search` 会被正确拼接。
-- 🌐 **引擎与语言控制**——通过 SearXNG 原生参数限制引擎（`bing,duckduckgo`）并偏好结果语言（`zh-CN`、`en`、`ja`……）。
-- 📎 **可引用来源**——每条结果映射为带来源 URL、标题、引擎摘录（snippet）和发布日期（如有）的可引用对象，供智能体引用。
-- ⚡ **消费者零构建**——`lib/` 已提交，从 git 地址安装即可直接使用。
+## 架构
 
-## 工作原理
+插件以稳定 id `searxng` 注册进 dsh 的 `ctx.web` 能力缝；每一次智能体网页搜索都由 `GET {baseURL}/search?format=json` 提供服务。
 
 ```
 ┌─────────────┐   网页搜索     ┌──────────────┐   JSON API   ┌────────────────┐
@@ -62,15 +65,35 @@ AI 助手本身不会上网。想让它查资料，通常得买"搜索服务"—
                                                           └─────────────────────┘
 ```
 
-SearXNG 不返回生成答案，因此结果只带**来源**——需要正文时智能体会自行用 `fetch` 读取页面。
+SearXNG 不返回生成答案，因此结果只带**来源**——需要正文时智能体会自行用 `fetch` 读取页面。每项结果映射为可引用的来源：
 
-## 前提条件
+| SearXNG 字段 | dsh 来源字段 | 说明 |
+|---|---|---|
+| `url` | `url` | 缺失的条目被丢弃 |
+| `title` | `title` | 空白时省略 |
+| `content` | `snippet` | 引擎摘录 |
+| `publishedDate` | `publishedAt` | 引擎提供时才有 |
+
+`truncated` 恒为 `false`（`maxResults` 截断由 web 服务负责）；不附带生成式 `content` 答案，因为 SearXNG 没有可供能力缝担保的答案。
+
+## 安全
+
+- 🔒 **没有可泄露的凭据**——提供方在设计上就是无凭据的。
+- ⛔ **重定向直接失败**——HTTP 重定向抛出 `WEB_PROVIDER_ERROR`，查询文本永远不会被重定向转发到别的源。
+- 🏠 **自托管友好**——回环地址（`http://localhost:8080`）、内网 IP、子路径挂载（`http://host/searxng`）全部支持，`/search` 会被正确拼接。
+- 💬 **可操作的错误信息**——403 响应会明确提示实例的 JSON 格式未启用。
+
+「无凭据」与「重定向失败关闭」是设计约束，不是缺失的功能（见[参与贡献](#参与贡献)）。
+
+## 配置
+
+### 前提条件
 
 - 安装了带有 `ctx.web` 能力缝的 DeepSeek Harness（任何携带 `dsh-web` 的 dsh 版本）。
-- Node.js `^22.19 || >=24`（仅开发需要；使用者只需 dsh）。
 - 一个**启用 JSON 输出**的 SearXNG 实例——其 `settings.yml` 的 `search.formats` 必须包含 `json`（SearXNG 默认只提供 HTML）。
+- Node.js `^22.19 || >=24`（仅开发需要；使用者只需 dsh）。
 
-### 用 Docker 快速搭建 SearXNG
+### 搭建 SearXNG 实例
 
 ```sh
 mkdir -p searxng && cd searxng
@@ -94,38 +117,32 @@ docker run -d --name searxng -p 8080:8080 \
 curl "http://localhost:8080/search?q=test&format=json"
 ```
 
-## 安装（导入 dsh）
+### 安装选项
 
-**方式一 —— 从 GitHub 直接导入（跟踪最新 main）：**
+**从 GitHub 直接导入（跟踪最新 main）：**
 
 ```sh
 dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-**方式二 —— 指定发布版本（推荐，可复现）：**
+**指定发布版本（推荐，可复现）：**
 
 ```sh
-dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.1.0
+dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.2.0
 ```
 
 所有版本见 [Releases 页面](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases)。
 
-**方式三 —— 本地克隆或 tarball：** 同一命令填绝对路径即可，例如 `dsh plugin --profile <名称> add /path/to/dsh-web-search-searxng`。无需构建——`lib/` 已提交。
+**本地克隆或 tarball：** 同一命令填绝对路径即可，例如 `dsh plugin --profile <名称> add /path/to/dsh-web-search-searxng`。无需构建——`lib/` 已提交。
 
-安装会激活 bundle 的补丁层并注册提供方行。验证导入结果：
+Bundle 注册 SearXNG；集成后的宿主记录并应用 `web.searchProvider: searxng`，同时保留原有 fetch 提供方。验证导入结果：
 
 ```sh
 dsh plugin --profile <名称> list        # 应能看到 dsh-web-search-searxng
-```
 
-```sh
-# 卸载
+# 卸载 —— 恢复账本记录的安装前路由与设置
 dsh plugin --profile <名称> remove dsh-web-search-searxng
 ```
-
-## 配置与启用
-
-注册不等于启用。两个开关都由你决定：
 
 ### 1. 指向你的实例
 
@@ -143,40 +160,29 @@ export SEARXNG_BASE_URL="http://localhost:8080"
 | `engines` | 引擎限制 | — | 逗号分隔的引擎白名单，例如 `bing,duckduckgo`。 |
 | `language` | 结果语言 | — | 偏好的结果语言，例如 `zh-CN`、`en`、`ja`。 |
 
-### 2. 选择它执行搜索
+⚠️ **接管中但未配置端点时，搜索会明确报错**（提供方不可用），而不会静默回退 DeepSeek——沉默的回退正是计费惊喜的来源，本插件拒绝这么做。失败会体现在搜索结果本身中，host 日志也会给出警告。（卡片刻意不显示端点警告：字段留空仍可能来自 `$SEARXNG_BASE_URL`，只有宿主知道真相。）
 
-给 profile 的 `web` 行打补丁（补丁会整段替换一行的 config，因此需要重申 `fetchProvider`）：
+### 2. 可选官方备用
 
-```yaml
-# $DSH_HOME/profiles/<名称>/cordis.patch.yml
-- id: web
-  config:
-    searchProvider: searxng
-    fetchProvider: http
-```
+「允许官方备用（可能产生搜索费用）」复选框默认关闭。勾选并保存后，仍优先调用 SearXNG，仅在该次请求失败时尝试已注册的 DeepSeek 官方提供方。每次备用尝试都会在发出请求前写入日志；成功的备用结果带有费用提醒。两条路线都失败时，错误会明确报告两次失败。取消请求不会启动备用。取消勾选并保存会明确写入 `false`，即使下层配置开启了备用，也能关闭。
 
-想切回去，删掉这个补丁即可（或写 `searchProvider: deepseek-official`）。未配置端点时提供方报告不可用，不改变任何现有行为。
+备用复用宿主已有官方提供方的凭据、模型和限额。官方提供方被禁用、未注册或不可用时，不会自行创建实例绕过这些设置。未配置 SearXNG 地址时，即使开启备用，搜索仍报告不可用。这控制的是额外搜索提供方费用；正常模型使用及自建 SearXNG 的成本另计。
 
-## 搜索返回什么
+### 3. 卸载与恢复
 
-每项 SearXNG 结果映射为可引用的来源：
+宿主在 profile YAML 的 `dsh-config-effects/v1` 注释中保存逐字段账本，与配置值一起原子写入。账本记录所有者、原值、原先是否存在以及最后写入值，不备份整个文件。安装时选择 SearXNG 并关闭官方备用；卡片修改会更新需要追踪的设置字段。
 
-| SearXNG 字段 | dsh 来源字段 | 说明 |
-|---|---|---|
-| `url` | `url` | 缺失的条目被丢弃 |
-| `title` | `title` | 空白时省略 |
-| `content` | `snippet` | 引擎摘录 |
-| `publishedDate` | `publishedAt` | 引擎提供时才有 |
-
-`truncated` 恒为 `false`（`maxResults` 截断由 web 服务负责）；不附带生成式 `content` 答案，因为 SearXNG 没有可供能力缝担保的答案。
+通过插件页或 `dsh plugin --profile <名称> remove dsh-web-search-searxng` 卸载。宿主在实时移除前撤销仍属于插件的字段，CLI 也可在包文件已删除后按账本恢复。原本不存在的值会删除，原有值会恢复；后续手动修改会保留并报告冲突。更新、重启和 HMR 不会重置安装前基线。原路由可以是任何提供方，不固定为 DeepSeek。
 
 ## 故障排查
 
 | 症状 | 原因 | 解决办法 |
 |---|---|---|
 | `SearXNG error (HTTP 403); the instance may refuse JSON output` | `settings.yml` 的 `search.formats` 缺少 `json` | 按上文添加并重启容器 |
-| 提供方不可用 / 无任何变化 | 未配置端点 | 填写卡片字段或设置 `SEARXNG_BASE_URL` |
-| `search request failed` / ECONNREFUSED | 实例未运行或端口不对 | 检查 `docker ps`，用 curl 验证命令测试 |
+| 搜索报提供方不可用（`WEB_PROVIDER_CONFIGURED_UNAVAILABLE`） | 接管已生效但未配置端点 | 填写卡片字段或设置 `SEARXNG_BASE_URL` |
+| 搜索走了其他提供方 | 更高优先级的 home/CLI 覆盖或后续手动修改 | 检查 `--dump-config` 与覆盖配置 |
+| `search request failed` / ECONNREFUSED | 实例未运行或端口不对 | 检查 `docker ps`，用 curl 验证命令测试；或开启官方备用作为逐请求兜底 |
+| 搜索结果开头出现 ⚠️ 降级提醒 | 官方备用已允许且 SearXNG 刚失败了一次 | 检查实例；在卡片关闭备用即恢复严格模式 |
 | `WEB_PROVIDER_ERROR` 提到 redirect | SearXNG 前有代理发生重定向 | 将 `baseURL` 指向最终地址；重定向按设计直接失败 |
 | `sources` 为空 | 引擎没有返回可用结果（或条目都缺 URL） | 放宽 `engines`，在浏览器里检查实例 |
 
@@ -193,6 +199,7 @@ pnpm run typecheck  # tsc --noEmit
 src/
   index.ts      插件入口：配置 schema、环境变量回退、提供方注册
   provider.ts   SearxngSearchProvider：JSON API 调用、结果映射、错误策略
+  fallback.ts   可选官方备用：逐请求降级、中英双语提醒、host 日志
   types.ts      SearXNG 响应类型
   client/       浏览器 bundle：设置 → 插件 页卡片（React）
 tests/          vitest 套件，含重定向与 egress 策略
@@ -201,6 +208,12 @@ tests/          vitest 套件，含重定向与 egress 策略
 `lib/` 被刻意提交：从 git 地址安装时消费者直接拿到构建产物，无需构建链。**`src/` 变更后请重建并重新提交 `lib/`。**
 
 已知缺口：卡片的 apply 级注册测试暂留在上游——已发布的 `@deepseek-ai/dsh-client-test-runtime` 引用了其 npm 包未携带的源文件，因此本仓库为其余卡片测试所需的两个 helper 保留了本地替身（`tests/helpers.ts`）。
+
+## 已知限制
+
+- 本次改动需要配套 [DSH 宿主集成](host-integration/README.md)。未修改的宿主会明确拒绝激活；单独安装插件无法给 DSH 补上可靠的卸载事务。
+- home/CLI 覆盖保留正常优先级，可能导致 SearXNG 激活失败。使用有意覆盖的路由前，请检查 `--dump-config`。
+- 请通过 DSH 插件管理流程卸载。直接 `pnpm remove` 或删除包文件会绕过宿主事务；账本仍保留，可供后续协调恢复。
 
 ## 参与贡献
 

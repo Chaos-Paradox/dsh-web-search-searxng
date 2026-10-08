@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-/** The SearXNG search page as the Plugins page renders it: its three fields and their resets. */
+/** The SearXNG search page as the Plugins page renders it: its three fields, two switches, and their resets. */
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -30,6 +30,7 @@ function cardStore(state: Partial<SearxngSearchCardState> = {}) {
     baseURL: field(''),
     engines: field(''),
     language: field(''),
+    allowOfficialFallback: field(''),
     ...state,
   })
 }
@@ -97,6 +98,41 @@ describe('SearxngSearchCard', () => {
       expect(fetchMock).toHaveBeenCalledTimes(1)
     } finally {
       vi.unstubAllGlobals()
+    }
+  })
+
+  it('defaults to an unchecked paid-fallback checkbox without a route status', () => {
+    const actions = renderCard()
+    const checkbox = screen.getByRole('checkbox', { name: en.fallbackLabel })
+    expect(checkbox).toHaveProperty('checked', false)
+    fireEvent.click(checkbox)
+    expect(actions.edit.mock.calls).toEqual([['allowOfficialFallback', 'true']])
+    expect(actions.save).not.toHaveBeenCalled()
+    expect(actions.resetField).not.toHaveBeenCalled()
+    expect(screen.queryByText('SearXNG (this plugin)')).toBeNull()
+  })
+
+  it('unchecking writes false even when the value was inherited', () => {
+    const actions = renderCard({ allowOfficialFallback: field('true') })
+    fireEvent.click(screen.getByRole('checkbox', { name: en.fallbackLabel }))
+    expect(actions.edit.mock.calls).toEqual([['allowOfficialFallback', 'false']])
+    expect(actions.resetField).not.toHaveBeenCalled()
+  })
+
+  it('renders no endpoint alert: an empty field can still mean $SEARXNG_BASE_URL', () => {
+    // The removed alert inferred a missing endpoint from the blank text
+    // field alone and cried wolf whenever the endpoint came from the
+    // environment. Unavailability now surfaces at search time, per request.
+    renderCard()
+    expect(screen.queryByRole('alert')).toBeNull()
+  })
+
+  it('disables fallback while unavailable, read-only, or saving', () => {
+    for (const state of [{ available: false }, { writable: false }, { saving: true }]) {
+      renderCard(state)
+      if (state.available === false) expect(screen.queryByRole('checkbox')).toBeNull()
+      else expect(screen.getByRole('checkbox', { name: en.fallbackLabel })).toHaveProperty('disabled', true)
+      cleanup()
     }
   })
 })

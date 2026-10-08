@@ -1,7 +1,5 @@
-# Optional Profile Bundle: register the SearXNG search provider row.
-# The bundle never repoints the web row's `searchProvider`: selection stays
-# with the deployment's own patch, so installing this layer alone changes no
-# search behavior until the endpoint is configured and the provider selected.
+# The host applies and journals the manifest's web.searchProvider change.
+# Removing the bundle reverses that recorded change and restores the prior route.
 - insert:
     - id: web-search-searxng
       name: 'dsh-web-search-searxng'

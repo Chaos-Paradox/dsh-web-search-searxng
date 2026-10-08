@@ -8,6 +8,7 @@ export type SearxngSearchSettingsLocaleKey =
   | 'baseUrl' | 'baseUrlHint' | 'engines' | 'enginesHint' | 'language' | 'languageHint'
   | 'overridden' | 'reset' | 'readOnly' | 'unavailable'
   | 'save' | 'saving' | 'saveFailed' | 'invalidValue'
+  | 'fallbackLabel' | 'fallbackHint'
   | 'currentVersion' | 'checkUpdate' | 'checkingUpdate'
   | 'updateAvailable' | 'updateReleases' | 'updateHowTo' | 'updateLatest' | 'updateFailed'
 
@@ -29,6 +30,8 @@ export const en: Record<SearxngSearchSettingsLocaleKey, string> = {
   saving: 'Saving…',
   saveFailed: 'The deployment did not accept these values; they were left for you to correct.',
   invalidValue: 'Enter text, or leave blank to use the default.',
+  fallbackLabel: 'Allow official fallback (may incur search fees)',
+  fallbackHint: 'Default off: SearXNG failures report a search error. Enable and save to try official DeepSeek search after a failed SearXNG request. Each fallback includes a cost notice; the next request still starts with SearXNG.',
   currentVersion: 'Installed version',
   checkUpdate: 'Check for updates',
   checkingUpdate: 'Checking…',
@@ -57,6 +60,8 @@ export const zh: Record<SearxngSearchSettingsLocaleKey, string> = {
   saving: '保存中…',
   saveFailed: '本部署没有接受这些值，已保留供你修改。',
   invalidValue: '请填文本；留空表示使用默认值。',
+  fallbackLabel: '允许官方备用（可能产生搜索费用）',
+  fallbackHint: '默认关闭：SearXNG 失败时明确报告搜索失败。勾选并保存后，失败的单次请求可改用 DeepSeek 官方搜索，并提示可能产生费用；下一次请求仍优先 SearXNG。',
   currentVersion: '当前版本',
   checkUpdate: '检查更新',
   checkingUpdate: '正在检查…',

@@ -1,4 +1,3 @@
-import z from "@deepseek-ai/schemastery";
 import { WebSearchProvider, WebSearchRequest, WebSearchResult, WebSearchSource } from "@deepseek-ai/dsh-web";
 import { Context, Volatile } from "@deepseek-ai/cordis";
 //#region src/types.d.ts
@@ -77,7 +76,74 @@ declare class SearxngSearchProvider implements WebSearchProvider {
   search(request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearchResult>;
 }
 //#endregion
+//#region src/fallback.d.ts
+/** One recorded degradation from SearXNG to the official route. */
+interface FallbackRecord {
+  /** The primary failure's message (query text deliberately excluded). */
+  readonly reason: string;
+  /** ISO-8601 time the degraded result was served. */
+  readonly at: string;
+  /** Sources the official route returned for the degraded request. */
+  readonly sources: number;
+}
+/** Collaborators the fallback wrapper reads per request. */
+interface OfficialFallback {
+  /** Whether the deployment currently allows degradation (volatile field). */
+  readonly enabled: () => boolean;
+  /** Resolve the official provider, or undefined when unavailable here. */
+  readonly official: () => Promise<WebSearchProvider | undefined>;
+  /** Record the paid attempt before dispatch, including attempts which fail. */
+  readonly onAttempt: (reason: string) => void;
+  /** Record one served degradation (host log owns the sink). */
+  readonly onDegraded: (record: FallbackRecord) => void;
+}
+/**
+ * Build the model-visible notice prepended to a degraded result's `content`.
+ * Bilingual on purpose: the notice feeds the model's tool result, and the
+ * model relays it to a user whose UI language this package cannot know.
+ * @param reason - the primary failure's message, truncated.
+ * @returns the notice text.
+ */
+declare function fallbackNotice(reason: string): string;
+/**
+ * The SearXNG provider with an opt-in per-request escape hatch. Registered
+ * under the SearXNG id: it IS the SearXNG route — the fallback never changes
+ * selection, it only answers one failed request through the official route
+ * when the deployment explicitly allowed it. Availability stays the primary's:
+ * an unconfigured endpoint means "search unavailable", never "silently serve
+ * everything from the official route".
+ */
+declare class SearxngFallbackProvider implements WebSearchProvider {
+  private readonly primary;
+  private readonly fallback;
+  readonly id = "searxng";
+  /**
+   * @param primary - the SearXNG provider every request tries first.
+   * @param fallback - the per-request collaborators.
+   */
+  constructor(primary: WebSearchProvider, fallback: OfficialFallback);
+  available(): boolean;
+  search(request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearchResult>;
+}
+/** Resolve an adapter to the host's registered official provider, never a new credentialed instance.
+ * Disabled, missing, or unavailable providers fail through the host's normal selection errors.
+ * @param ctx Plugin context supplying the web service.
+ * @returns Resolver for one official request without changing the default route.
+ */
+declare function createOfficialFallbackResolver(ctx: Context): () => Promise<WebSearchProvider | undefined>;
+//#endregion
 //#region src/index.d.ts
+/**
+ * The Loader emits this on the owning fiber after committing a volatile
+ * write. Declared here with its verbatim signature because this package does
+ * not depend on the Loader package; interface merging keeps it compatible
+ * with the host's own augmentation.
+ */
+declare module '@deepseek-ai/cordis' {
+  interface Events {
+    'loader/volatile-update'(paths: readonly (readonly string[])[]): void;
+  }
+}
 /** Cordis plugin name used by loader diagnostics. */
 declare const name = "web-search-searxng";
 /** The web seam this provider registers into. */
@@ -90,9 +156,18 @@ interface Config {
   engines: Volatile<string | undefined>;
   /** Preferred result language sent as SearXNG's `language` parameter (for example `zh-CN`). */
   language: Volatile<string | undefined>;
+  /**
+   * Per-request official-route escape hatch. Absent or `false` (the default):
+   * a failed SearXNG search fails loudly and the official route is never
+   * called, so an unnoticed failure cannot silently bill the deployment.
+   * `true`: one failed request degrades to the built-in DeepSeek provider for
+   * that request only, the result carries a bilingual cost notice, and every
+   * degradation hits the host log. The route itself never changes.
+   */
+  allowOfficialFallback: Volatile<boolean | undefined>;
 }
-declare const Config: z<Config>;
-/** Register the SearXNG search provider with `ctx.web`. */
+declare const Config: Schemastery;
+/** Register SearXNG with opt-in fallback and warn about a missing endpoint. */
 declare function apply(ctx: Context, config: Config): void;
 //#endregion
-export { Config, SEARXNG_PROVIDER_ID, type SearxngResult, SearxngSearchProvider, type SearxngSearchProviderOptions, type SearxngSearchResponse, apply, inject, mapSearxngResponse, mapSearxngResult, name };
+export { Config, type FallbackRecord, type OfficialFallback, SEARXNG_PROVIDER_ID, SearxngFallbackProvider, type SearxngResult, SearxngSearchProvider, type SearxngSearchProviderOptions, type SearxngSearchResponse, apply, createOfficialFallbackResolver, fallbackNotice, inject, mapSearxngResponse, mapSearxngResult, name };

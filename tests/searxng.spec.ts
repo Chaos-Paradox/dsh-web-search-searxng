@@ -212,9 +212,23 @@ describe('SearxngSearchProvider error handling', () => {
 })
 
 describe('web-search-searxng plugin registration', () => {
+  it('refuses activation on an unmodified host', async () => {
+    const ctx = new Context()
+    await ctx.plugin(WebRuntime)
+    await expect(ctx.plugin(searxngPlugin, { baseURL: 'http://searxng.test' }).await()).rejects.toThrow('bundle config-effects integration')
+  })
+
+  it('refuses an overridden route instead of claiming the plugin is active', async () => {
+    const ctx = new Context()
+    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'other' } } } }] })
+    await ctx.plugin(WebRuntime, { searchProvider: 'other' })
+    await expect(ctx.plugin(searxngPlugin, { baseURL: 'http://searxng.test' }).await()).rejects.toThrow('remove conflicting home/CLI overrides')
+  })
+
   it('registers the provider into ctx.web (HMR-safe)', async () => {
     stubFetch(async () => jsonResponse({ results: [] }))
     const ctx = new Context()
+    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'searxng' } } } }] })
     await ctx.plugin(WebRuntime, { searchProvider: SEARXNG_PROVIDER_ID })
     const fiber = await ctx.plugin(searxngPlugin, { baseURL: 'http://searxng.test' })
     await expect(ctx.web.search({ query: 'q' })).resolves.toMatchObject({ sources: [], truncated: false })
@@ -230,6 +244,7 @@ describe('web-search-searxng plugin registration', () => {
   it('threads engines and language config into the request', async () => {
     const fetchMock = stubFetch(async () => jsonResponse({ results: [] }))
     const ctx = new Context()
+    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'searxng' } } } }] })
     await ctx.plugin(WebRuntime, { searchProvider: SEARXNG_PROVIDER_ID })
     const fiber = await ctx.plugin(searxngPlugin, { baseURL: 'http://searxng.test', engines: 'bing', language: 'en' })
     await ctx.web.search({ query: 'q' })
@@ -244,6 +259,7 @@ describe('web-search-searxng plugin registration', () => {
     try {
       const fetchMock = stubFetch(async () => jsonResponse({ results: [] }))
       const ctx = new Context()
+    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'searxng' } } } }] })
       await ctx.plugin(WebRuntime, { searchProvider: SEARXNG_PROVIDER_ID })
       const fiber = await ctx.plugin(searxngPlugin, {})
       await ctx.web.search({ query: 'q' })
@@ -260,6 +276,7 @@ describe('web-search-searxng plugin registration', () => {
     delete process.env.SEARXNG_BASE_URL
     try {
       const ctx = new Context()
+    ctx.provide('configEditor', { supportsBundleConfigEffects: true, configuration: () => [{ entry: { options: { id: 'web', config: { searchProvider: 'searxng' } } } }] })
       await ctx.plugin(WebRuntime, { searchProvider: SEARXNG_PROVIDER_ID })
       await ctx.plugin(searxngPlugin, {})
       await expect(ctx.web.search({ query: 'q' }))

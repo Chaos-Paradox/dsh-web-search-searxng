@@ -18,6 +18,13 @@ export interface SearxngSearchSettings {
     engines?: string;
     /** Preferred result language; blank uses the instance default. */
     language?: string;
+    /**
+     * Per-request official fallback: `true` lets one failed SearXNG request
+     * degrade to the official route once, with a cost notice in the result.
+     * Absent keeps the strict default: failures fail loudly, zero official
+     * requests. The page renders this as a switch, never a text input.
+     */
+    allowOfficialFallback?: boolean;
 }
 /** What the SearXNG search page renders. */
 export interface SearxngSearchCardState extends SettingsFormShell {
@@ -27,6 +34,8 @@ export interface SearxngSearchCardState extends SettingsFormShell {
     engines: SettingsFieldState;
     /** Result language. */
     language: SettingsFieldState;
+    /** Official-fallback switch state ('true' when allowed); never rendered as an input. */
+    allowOfficialFallback: SettingsFieldState;
 }
 /** The registration-side face the SearXNG search page's slot entry injects. */
 export interface SearxngSearchCardFace extends SettingsFormActions {

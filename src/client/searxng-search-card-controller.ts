@@ -5,7 +5,7 @@
  */
 
 import type {
-  SettingsFieldState, SettingsFormActions, SettingsFormShell, SettingsFormScope,
+  SettingsFieldSpec, SettingsFieldState, SettingsFormActions, SettingsFormShell, SettingsFormScope,
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import { SettingsFormModel, settingsTextField } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { SnapshotStore } from '@deepseek-ai/dsh-client-store'
@@ -16,6 +16,21 @@ import type { SnapshotStore } from '@deepseek-ai/dsh-client-store'
  */
 export const SEARXNG_SEARCH_NS = 'web-search-searxng'
 
+/**
+ * The official-fallback switch, staged as hidden text but stored as a
+ * boolean. Both positions write an explicit value so an inherited `true`
+ * cannot prevent the user from disabling paid fallback.
+ * @param field - field name inside the namespace section.
+ * @returns the field's conversion spec.
+ */
+function settingsSwitchField(field: string): SettingsFieldSpec {
+  return {
+    field,
+    format: value => value === true ? 'true' : 'false',
+    parse: text => ({ kind: 'set', value: text === 'true' }),
+  }
+}
+
 /** The search-provider fields this page edits. */
 export interface SearxngSearchSettings {
   /** Instance endpoint; blank inherits `$SEARXNG_BASE_URL`. */
@@ -24,6 +39,13 @@ export interface SearxngSearchSettings {
   engines?: string
   /** Preferred result language; blank uses the instance default. */
   language?: string
+  /**
+   * Per-request official fallback: `true` lets one failed SearXNG request
+   * degrade to the official route once, with a cost notice in the result.
+   * Absent keeps the strict default: failures fail loudly, zero official
+   * requests. The page renders this as a switch, never a text input.
+   */
+  allowOfficialFallback?: boolean
 }
 
 /** What the SearXNG search page renders. */
@@ -34,6 +56,8 @@ export interface SearxngSearchCardState extends SettingsFormShell {
   engines: SettingsFieldState
   /** Result language. */
   language: SettingsFieldState
+  /** Official-fallback switch state ('true' when allowed); never rendered as an input. */
+  allowOfficialFallback: SettingsFieldState
 }
 
 /** The registration-side face the SearXNG search page's slot entry injects. */
@@ -55,7 +79,12 @@ export class SearxngSearchCardController {
   constructor(scope: SettingsFormScope<SearxngSearchSettings>) {
     this.form = new SettingsFormModel(
       scope,
-      [settingsTextField('baseURL'), settingsTextField('engines'), settingsTextField('language')],
+      [
+        settingsTextField('baseURL'),
+        settingsTextField('engines'),
+        settingsTextField('language'),
+        settingsSwitchField('allowOfficialFallback'),
+      ],
     )
     this.store = this.form.bind(() => this.projection())
   }
@@ -66,6 +95,7 @@ export class SearxngSearchCardController {
       baseURL: this.form.field('baseURL'),
       engines: this.form.field('engines'),
       language: this.form.field('language'),
+      allowOfficialFallback: this.form.field('allowOfficialFallback'),
     }
   }
 

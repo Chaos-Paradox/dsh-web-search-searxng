@@ -15,10 +15,12 @@ This design is closest to real usage — **every question is answered by an actu
 ```
 Each question (10 total, 5 zh + 5 en)
   ├─ SearXNG round:  dsh --profile headless --patch e2e-searxng.patch.yml "<question>"
-  │                  (the patch does exactly two things: web row searchProvider: searxng
-  │                   + plugin row config pointing at the local instance, engines bing,yahoo)
-  ├─ Official round: dsh --profile headless "<question>"
-  │                  (profile untouched, searchProvider: deepseek-official)
+  │                  (installation journaled web.searchProvider: searxng into
+  │                   the profile patch; the overlay only carries the endpoint —
+  │                   engines bing,yahoo — for the local instance)
+  ├─ Official round: dsh --profile headless --patch e2e-official.patch.yml "<question>"
+  │                  (the invocation overlay pins searchProvider back to
+  │                   deepseek-official for exactly one process)
   │   —— same agent model, same preset, same prompt across rounds;
   │      the only variable is the search provider; each prompt requires
   │      web_search before answering
@@ -26,6 +28,8 @@ Each question (10 total, 5 zh + 5 en)
             answer came from which side; scores 0-5 on accuracy,
             completeness, citation support against per-question reference points
 ```
+
+> **Layering note (config-effects host)**: installation applies `web.searchProvider: searxng` as a journaled write in the profile patch, so an *unpatched* official round would silently search through SearXNG too. Both rounds therefore pin their route explicitly at the invocation layer (the official round also disables the plugin row, so its activation gate stays silent). The published results below predate this mechanism: their SearXNG round pinned the route through an equivalent overlay and their official round used the base default — the measured configurations are identical to the current explicit-pin setup, so the numbers remain valid.
 
 ### Results (two full runs: 2026-10-06 and 2026-10-07)
 
@@ -59,7 +63,7 @@ All 40 runs **actually searched** (12 `web_search` calls per SearXNG-side run, 2
 
 Three forensic checks were run before publishing (see [below](#engine-forensics) for the full story):
 
-1. **Config tree**: `--dump-config` shows the untouched profile's `web` row at `searchProvider: deepseek-official` (from the dsh-base bundle); with the overlay it becomes `searxng`.
+1. **Config tree**: with the plugin installed, `--dump-config` shows the `web` row at `searchProvider: searxng` (the install-time journaled write over the dsh-base default); the official round's invocation overlay pins it back to `deepseek-official` for that process only.
 2. **Causal probe**: pointing the patch's `baseURL` at a port with nothing listening makes the SearXNG round's `web_search` fail with the plugin's own error text (`SearXNG search request failed: fetch failed`) — proving that round's searches really execute inside this plugin's provider; the official round is unaffected.
 3. **Server-side log**: each benchmark question appears exactly once in the local SearXNG instance's log (the SearXNG round); the official round never touches the local instance. If both rounds shared a source, their answers and scores would not diverge.
 

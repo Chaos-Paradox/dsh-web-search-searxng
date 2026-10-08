@@ -1,0 +1,14 @@
+# E2E benchmark overlay for the official round: pin the base route back.
+# The integrated host journals the installed SearXNG route on the
+# `web` row, so an unpatched official round would search through
+# SearXNG too and the comparison would measure nothing. This invocation-layer
+# pin restores `deepseek-official` for exactly one process, leaving the
+# profile's own files untouched. `fetchProvider` is restated because a patch
+# replaces a row's whole config.
+- id: web
+  config:
+    searchProvider: deepseek-official
+    fetchProvider: http
+# This explicit official-only benchmark disables the SearXNG consumer.
+- id: web-search-searxng
+  disabled: true
