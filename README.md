@@ -15,9 +15,9 @@ Give [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) w
 ✅ **Configure directly in DSH Settings** — *Settings → Plugins → SearXNG search*
 ✅ **Tested end-to-end against the official web search** — [no quality difference observed](docs/quality-benchmark.md)
 
-![SearXNG settings card in Settings → Plugins](docs/settings-card.en.png)
+![SearXNG settings card preview with grouped engine choices and a language dropdown](docs/settings-card.en.png)
 
-*The SearXNG search card on the Settings → Plugins page — endpoint, engines, and result language, applied to the next search without a restart.*
+*Preview of the SearXNG search card in Settings → Plugins — grouped engine choices and a result-language dropdown. Save to apply changes to the next search without a restart.*
 
 ## Quick Start
 
@@ -146,7 +146,9 @@ dsh plugin --profile <name> remove dsh-web-search-searxng
 
 ### 1. Point it at your instance
 
-**Option A — GUI (recommended):** open **Settings → Plugins → SearXNG 搜索** and fill in the fields. All fields apply to the next search without a restart.
+**Option A — GUI (recommended):** open **Settings → Plugins → SearXNG search**, enter the instance endpoint, choose engines from the grouped checklist, and select a result language from the dropdown. Save to apply the changes to the next search without a restart.
+
+The engine list groups common candidates by purpose: web, news, research, and technology/reference. It is not a live inventory of your instance; chosen names must exist and be enabled there. No selection uses the instance defaults. Other engine names and language codes remain available through the custom options, and existing custom values are preserved when editing a list selection.
 
 **Option B — environment variable** before launching dsh:
 
@@ -157,8 +159,8 @@ export SEARXNG_BASE_URL="http://localhost:8080"
 | Field | GUI label | Env fallback | Description |
 |---|---|---|---|
 | `baseURL` | Endpoint / 实例地址 | `SEARXNG_BASE_URL` | SearXNG instance base; `/search` is appended. Empty → provider reports unavailable. |
-| `engines` | Engines / 引擎限制 | — | Comma-separated engine restriction, e.g. `bing,duckduckgo`. |
-| `language` | Language / 结果语言 | — | Preferred result language, e.g. `zh-CN`, `en`, `ja`. |
+| `engines` | Engines / 引擎限制 | — | Grouped multi-select list; stored as comma-separated names, e.g. `bing,duckduckgo`. Custom names are supported. |
+| `language` | Language / 结果语言 | — | Dropdown for common languages plus a custom-code option, e.g. `zh-CN`, `en`, `ja`. |
 
 ⚠️ **While the takeover is active without an endpoint, searches fail loudly** (provider unavailable) instead of silently falling back to DeepSeek — a silent fallback is exactly the kind of billing surprise this plugin exists to prevent. The failure surfaces in the search result itself and the host log carries a warning. (The card deliberately shows no endpoint alert: an empty field can still mean `$SEARXNG_BASE_URL` is set, and only the host knows.)
 

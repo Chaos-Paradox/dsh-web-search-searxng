@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-/** The SearXNG search page as the Plugins page renders it: its three fields, two switches, and their resets. */
+/** The SearXNG search page: staged choices, custom-value preservation, fallback and resets. */
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -39,6 +39,9 @@ describe('SearxngSearchCard', () => {
   function renderCard(state: Partial<SearxngSearchCardState> = {}) {
     const store = cardStore(state)
     const actions = cardActions()
+    actions.edit.mockImplementation((key: 'baseURL' | 'engines' | 'language' | 'allowOfficialFallback', text: string) => {
+      store.update(snapshot => { snapshot[key].text = text })
+    })
     const props = { ...actions, view: 'page', t, useSearxngSearchCard: bindSnapshotSelector(store) } as SearxngSearchCardProps
     render(<SearxngSearchCard {...props} />)
     return actions
@@ -56,8 +59,8 @@ describe('SearxngSearchCard', () => {
     renderCard({ writable: false })
 
     expect(screen.getByLabelText(en.baseUrl)).toHaveProperty('disabled', true)
-    expect(screen.getByLabelText(en.engines)).toHaveProperty('disabled', true)
-    expect(screen.getByLabelText(en.language)).toHaveProperty('disabled', true)
+    expect(screen.getByRole('checkbox', { name: 'Bing' })).toHaveProperty('disabled', true)
+    expect(screen.getByRole('combobox', { name: en.language })).toHaveProperty('disabled', true)
   })
 
   it('stages the endpoint, engines, and language, and their resets', () => {
@@ -68,8 +71,8 @@ describe('SearxngSearchCard', () => {
     })
 
     fireEvent.change(screen.getByLabelText(en.baseUrl), { target: { value: 'http://other.test' } })
-    fireEvent.change(screen.getByLabelText(en.engines), { target: { value: 'bing,duckduckgo' } })
-    fireEvent.change(screen.getByLabelText(en.language), { target: { value: 'en' } })
+    fireEvent.click(screen.getByRole('checkbox', { name: 'DuckDuckGo' }))
+    fireEvent.change(screen.getByRole('combobox', { name: en.language }), { target: { value: 'en' } })
     const resets = screen.getAllByRole('button', { name: en.reset })
     expect(resets).toHaveLength(3)
     for (const reset of resets) fireEvent.click(reset)
@@ -80,6 +83,61 @@ describe('SearxngSearchCard', () => {
       ['language', 'en'],
     ])
     expect(actions.resetField.mock.calls).toEqual([['baseURL'], ['engines'], ['language']])
+  })
+
+  it('shows engines grouped by purpose with instance-default selections', () => {
+    renderCard()
+    for (const name of [en.enginesWeb, en.enginesNews, en.enginesScience, en.enginesKnowledge]) {
+      expect(screen.getByRole('group', { name })).toBeTruthy()
+    }
+    expect(screen.getByText(en.enginesDefault)).toBeTruthy()
+    expect(screen.getByRole('checkbox', { name: 'Google Scholar' })).toHaveProperty('checked', false)
+    expect(screen.getByRole('combobox', { name: en.language })).toHaveProperty('value', '')
+  })
+
+  it('preserves custom engines and names containing spaces when selecting another engine', () => {
+    const actions = renderCard({ engines: field('google scholar,corp search') })
+    expect(screen.getByRole('checkbox', { name: 'Google Scholar' })).toHaveProperty('checked', true)
+    expect(screen.getByText(`${en.enginesCustomSelected}: corp search`)).toBeTruthy()
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Bing' }))
+    expect(actions.edit.mock.calls).toEqual([['engines', 'google scholar,corp search,bing']])
+  })
+
+  it('edits custom engines without dropping the list selections', () => {
+    const actions = renderCard({ engines: field('bing,corp search') })
+    fireEvent.change(screen.getByLabelText(en.enginesCustomNames), { target: { value: 'new engine,google scholar,bing' } })
+    expect(actions.edit.mock.calls).toEqual([['engines', 'bing,new engine,google scholar']])
+  })
+
+  it('keeps a trailing comma while typing multiple custom engines', () => {
+    const actions = renderCard({ engines: field('bing,corp search') })
+    const input = screen.getByLabelText(en.enginesCustomNames)
+    fireEvent.change(input, { target: { value: 'corp search,' } })
+    expect(input).toHaveProperty('value', 'corp search,')
+    fireEvent.change(input, { target: { value: 'corp search,another engine' } })
+    expect(input).toHaveProperty('value', 'corp search,another engine')
+    expect(actions.edit.mock.calls).toEqual([
+      ['engines', 'bing,corp search'],
+      ['engines', 'bing,corp search,another engine'],
+    ])
+  })
+
+  it('preserves an uncommon language and allows switching it back to a listed choice', () => {
+    const actions = renderCard({ language: field('pt-BR') })
+    expect(screen.getByLabelText(en.languageCustomCode)).toHaveProperty('value', 'pt-BR')
+    expect(actions.edit).not.toHaveBeenCalled()
+    fireEvent.change(screen.getByRole('combobox', { name: en.language }), { target: { value: 'zh-CN' } })
+    expect(actions.edit.mock.calls).toEqual([['language', 'zh-CN']])
+    expect(screen.queryByLabelText(en.languageCustomCode)).toBeNull()
+  })
+
+  it('allows a custom language without saving before the user enters a code', () => {
+    const actions = renderCard()
+    fireEvent.change(screen.getByRole('combobox', { name: en.language }), { target: { value: '__custom_language__' } })
+    expect(actions.edit).not.toHaveBeenCalled()
+    fireEvent.change(screen.getByLabelText(en.languageCustomCode), { target: { value: 'pt-BR' } })
+    expect(actions.edit.mock.calls).toEqual([['language', 'pt-BR']])
+    expect(actions.save).not.toHaveBeenCalled()
   })
 
   it('checks for updates only on click and reports a newer release', async () => {
