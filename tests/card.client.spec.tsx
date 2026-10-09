@@ -185,6 +185,33 @@ describe('SearxngSearchCard', () => {
     expect(screen.queryByRole('alert')).toBeNull()
   })
 
+  it('explains that the Plugins page owns the route', () => {
+    renderCard()
+    expect(screen.getByText(en.routeHint)).toBeTruthy()
+  })
+
+  it('stages defaults for every field via the reset-all button', () => {
+    const actions = renderCard({
+      baseURL: field('http://localhost:8080', { overridden: true }),
+      allowOfficialFallback: field('true', { overridden: true }),
+    })
+    const button = screen.getByRole('button', { name: en.resetAll })
+    expect(button).toHaveProperty('disabled', false)
+    fireEvent.click(button)
+    expect(actions.resetField.mock.calls)
+      .toEqual([['baseURL'], ['engines'], ['language'], ['allowOfficialFallback']])
+    // Staged only: the form's own save button commits, like per-field resets.
+    expect(actions.save).not.toHaveBeenCalled()
+  })
+
+  it('disables reset-all when nothing is overridden or the form is read-only', () => {
+    renderCard()
+    expect(screen.getByRole('button', { name: en.resetAll })).toHaveProperty('disabled', true)
+    cleanup()
+    renderCard({ writable: false, engines: field('bing', { overridden: true }) })
+    expect(screen.getByRole('button', { name: en.resetAll })).toHaveProperty('disabled', true)
+  })
+
   it('disables fallback while unavailable, read-only, or saving', () => {
     for (const state of [{ available: false }, { writable: false }, { saving: true }]) {
       renderCard(state)

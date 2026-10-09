@@ -29,6 +29,16 @@ export function SearxngSearchCard(props: SearxngSearchCardProps) {
   if (props.view === 'summary') return t('description')
   const fallbackAllowed = state.allowOfficialFallback.text === 'true'
   const disabled = !state.available || !state.writable || state.saving
+  const fields = [state.baseURL, state.engines, state.language, state.allowOfficialFallback]
+  const anyOverridden = fields.some(field => field.overridden)
+  // Stages defaults for every field; the user reviews and saves through the
+  // form's own save button, exactly like the per-field reset buttons.
+  const resetAll = (): void => {
+    props.resetField('baseURL')
+    props.resetField('engines')
+    props.resetField('language')
+    props.resetField('allowOfficialFallback')
+  }
   return (
     <>
       <SettingsForm labels={formLabels(t)} state={state} onSave={props.save} onDiscard={props.discard}>
@@ -43,6 +53,7 @@ export function SearxngSearchCard(props: SearxngSearchCardProps) {
           {t('fallbackLabel')}
         </label>
         <p id="searxng-fallback-hint">{t('fallbackHint')}</p>
+        <p>{t('routeHint')}</p>
         <SettingsValueField
           id="plugin-config-web-search-searxng-endpoint"
           label={t('baseUrl')}
@@ -59,6 +70,9 @@ export function SearxngSearchCard(props: SearxngSearchCardProps) {
           onEdit={text => props.edit('engines', text)} onReset={() => props.resetField('engines')} />
         <LanguageChoiceField t={t} state={state.language} disabled={disabled}
           onEdit={text => props.edit('language', text)} onReset={() => props.resetField('language')} />
+        <Button variant="outline" size="sm" disabled={disabled || !anyOverridden} onClick={resetAll}>
+          {t('resetAll')}
+        </Button>
       </SettingsForm>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginTop: 12 }}>
         <span>{t('currentVersion')}: v{CURRENT_VERSION}</span>

@@ -13,6 +13,7 @@ export type SearxngSearchSettingsLocaleKey =
   | 'overridden' | 'reset' | 'readOnly' | 'unavailable'
   | 'save' | 'saving' | 'saveFailed' | 'invalidValue'
   | 'fallbackLabel' | 'fallbackHint'
+  | 'routeHint' | 'resetAll'
   | 'currentVersion' | 'checkUpdate' | 'checkingUpdate'
   | 'updateAvailable' | 'updateReleases' | 'updateHowTo' | 'updateLatest' | 'updateFailed'
 
@@ -59,6 +60,8 @@ export const en: Record<SearxngSearchSettingsLocaleKey, string> = {
   invalidValue: 'Enter text, or leave blank to use the default.',
   fallbackLabel: 'Allow official fallback (may incur search fees)',
   fallbackHint: 'Default off: SearXNG failures report a search error. Enable and save to try official DeepSeek search after a failed SearXNG request. Each fallback includes a cost notice; the next request still starts with SearXNG.',
+  routeHint: 'While this plugin is enabled, SearXNG is the search route (enforced at activation). To use official DeepSeek search temporarily, disable this plugin on the Plugins page — the route restores itself, and re-enabling brings SearXNG back.',
+  resetAll: 'Reset all to defaults',
   currentVersion: 'Installed version',
   checkUpdate: 'Check for updates',
   checkingUpdate: 'Checking…',
@@ -112,6 +115,8 @@ export const zh: Record<SearxngSearchSettingsLocaleKey, string> = {
   invalidValue: '请填文本；留空表示使用默认值。',
   fallbackLabel: '允许官方备用（可能产生搜索费用）',
   fallbackHint: '默认关闭：SearXNG 失败时明确报告搜索失败。勾选并保存后，失败的单次请求可改用 DeepSeek 官方搜索，并提示可能产生费用；下一次请求仍优先 SearXNG。',
+  routeHint: '插件启用期间，搜索固定走 SearXNG（激活时强制校验）。想临时切回官方搜索？在插件页禁用本插件即可——路由自动恢复，重新启用时账本原样恢复 SearXNG。',
+  resetAll: '全部恢复默认',
   currentVersion: '当前版本',
   checkUpdate: '检查更新',
   checkingUpdate: '正在检查…',
