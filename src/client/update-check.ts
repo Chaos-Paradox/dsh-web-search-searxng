@@ -9,7 +9,7 @@
  * This package's own version. Bump with package.json (the provider's
  * USER_AGENT follows the same rule).
  */
-export const CURRENT_VERSION = '0.2.0'
+export const CURRENT_VERSION = '0.3.0'
 
 /** GitHub repository hosting the plugin's releases. */
 const REPO = 'Chaos-Paradox/dsh-web-search-searxng'

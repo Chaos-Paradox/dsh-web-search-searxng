@@ -34,7 +34,7 @@ export interface FallbackRecord {
 export interface OfficialFallback {
   /** Whether the deployment currently allows degradation (volatile field). */
   readonly enabled: () => boolean
-  /** Resolve the official provider, or undefined when unavailable here. */
+  /** Resolve the official provider, return undefined when unavailable, or reject for missing host capability. */
   readonly official: () => Promise<WebSearchProvider | undefined>
   /** Record the paid attempt before dispatch, including attempts which fail. */
   readonly onAttempt: (reason: string) => void
@@ -92,7 +92,14 @@ export class SearxngFallbackProvider implements WebSearchProvider {
       // for a second, slower search on a paid route.
       if (aborted(signal) || (error instanceof WebError && error.code === 'WEB_ABORTED')) throw error
       if (!this.fallback.enabled()) throw error
-      const official = await this.fallback.official()
+      let official: WebSearchProvider | undefined
+      try {
+        official = await this.fallback.official()
+      } catch (resolutionError) {
+        if (aborted(signal)) throw error
+        const detail = resolutionError instanceof Error ? resolutionError.message : String(resolutionError)
+        throw new WebError(`SearXNG search failed (${error instanceof Error ? error.message : String(error)}); official fallback unavailable (${detail}); no official request was made`, 'WEB_PROVIDER_ERROR', { cause: error })
+      }
       if (official === undefined || !official.available()) throw error
       const reason = error instanceof Error ? error.message : String(error)
       // Recheck after asynchronous resolution: cancellation or disabling must stop dispatch.
@@ -120,6 +127,14 @@ interface ExplicitSearchRuntime {
   searchWithProvider(id: string, request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearchResult>
 }
 
+/** Detect the public API needed for fallback without accessing provider registries.
+ * @param web Host web service.
+ * @returns Whether explicit provider dispatch is available.
+ */
+export function supportsOfficialFallback(web: object): web is ExplicitSearchRuntime {
+  return 'searchWithProvider' in web && typeof web.searchWithProvider === 'function'
+}
+
 /** Resolve an adapter to the host's registered official provider, never a new credentialed instance.
  * Disabled, missing, or unavailable providers fail through the host's normal selection errors.
  * @param ctx Plugin context supplying the web service.
@@ -127,9 +142,9 @@ interface ExplicitSearchRuntime {
  */
 export function createOfficialFallbackResolver(ctx: Context): () => Promise<WebSearchProvider | undefined> {
   return async () => {
-    const web = ctx.web as typeof ctx.web & Partial<ExplicitSearchRuntime>
-    if (typeof web.searchWithProvider !== 'function') {
-      throw new WebError('Official fallback requires DSH host integration: web.searchWithProvider is unavailable', 'WEB_PROVIDER_CONFIGURED_MISSING')
+    const web = ctx.web
+    if (!supportsOfficialFallback(web)) {
+      throw new WebError('this host does not expose web.searchWithProvider; DSH 0.2.1-alpha.2 cannot perform official fallback', 'WEB_PROVIDER_CONFIGURED_MISSING')
     }
     const search = web.searchWithProvider.bind(web)
     return {

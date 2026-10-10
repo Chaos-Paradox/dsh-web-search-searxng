@@ -6,6 +6,7 @@
  * everything else inlines.
  */
 import type { UserConfig } from 'tsdown'
+import { lowerServiceDecorators } from './build/decorators.ts'
 
 const id = 'dsh-web-search-searxng'
 
@@ -24,9 +25,12 @@ const HOST_EXTERNALS = [
   /^@deepseek-ai\/schemastery/,
   /^@deepseek-ai\/dsh-launch-environment/,
   /^@deepseek-ai\/dsh-web/,
+  /^@deepseek-ai\/dsh-typert-protocol/,
+  /^(tar|fflate|proper-lockfile)$/,
 ]
 
 const host: UserConfig = {
+  plugins: [lowerServiceDecorators()],
   name: id,
   entry: ['src/index.ts'],
   outDir: 'lib',

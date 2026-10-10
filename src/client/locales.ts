@@ -5,6 +5,10 @@ import type { SettingsFormLabels } from '@deepseek-ai/dsh-client-ui-primitives'
 /** Locale keys the page renders. */
 export type SearxngSearchSettingsLocaleKey =
   | 'title' | 'description'
+  | 'modeLabel' | 'modeAuto' | 'modeLocal' | 'modeExternal' | 'modeHint' | 'advanced' | 'managedPort' | 'managedPortHint'
+  | 'serviceTitle' | 'serviceIdle' | 'servicePreparing' | 'serviceStarting' | 'serviceReady' | 'serviceStopped' | 'serviceFailed' | 'serviceExternal'
+  | 'activeEndpoint' | 'serviceHint' | 'serviceRestart' | 'serviceStop' | 'serviceTest' | 'serviceTestResult' | 'serviceLogs'
+  | 'setupUv' | 'setupSource' | 'setupPython' | 'setupDependencies'
   | 'baseUrl' | 'baseUrlHint' | 'engines' | 'enginesHint' | 'language' | 'languageHint'
   | 'enginesDefault' | 'enginesSelected' | 'enginesWeb' | 'enginesNews' | 'enginesScience' | 'enginesKnowledge'
   | 'enginesCustom' | 'enginesCustomNames' | 'enginesCustomHint' | 'enginesCustomSelected'
@@ -21,8 +25,16 @@ export type SearxngSearchSettingsLocaleKey =
 export const en: Record<SearxngSearchSettingsLocaleKey, string> = {
   title: 'SearXNG search',
   description: 'Set up the self-hosted SearXNG search provider.',
+  modeLabel: 'Service mode', modeAuto: 'Automatic', modeLocal: 'Managed local service', modeExternal: 'Existing instance',
+  modeHint: 'Automatic uses your existing endpoint/environment setting when present; otherwise it prepares a local service. Local mode requires no Docker or system Python. Save to apply.',
+  advanced: 'Advanced settings', managedPort: 'Local port', managedPortHint: '0 automatically selects an available port. A specific occupied port reports an error. Saving a change restarts the local service.',
+  serviceTitle: 'Search service', serviceIdle: 'Waiting', servicePreparing: 'Preparing first-use runtime', serviceStarting: 'Starting',
+  serviceReady: 'Ready', serviceStopped: 'Stopped', serviceFailed: 'Failed', serviceExternal: 'Using existing instance',
+  activeEndpoint: 'Active endpoint', serviceHint: 'Local setup downloads pinned dependencies on first use. The local service follows DSH and stops when the plugin is disabled or DSH exits. Existing instances remain independently managed.',
+  serviceRestart: 'Start / retry / restart', serviceStop: 'Stop', serviceTest: 'Test search', serviceTestResult: 'Search succeeded; sources returned', serviceLogs: 'Diagnostic log',
+  setupUv: 'Downloading setup tool', setupSource: 'Downloading SearXNG', setupPython: 'Preparing Python', setupDependencies: 'Installing dependencies',
   baseUrl: 'Instance endpoint',
-  baseUrlHint: 'Leave blank to use the SEARXNG_BASE_URL environment variable; with neither set, search reports itself unavailable.',
+  baseUrlHint: 'Existing-instance mode uses this address, or SEARXNG_BASE_URL when blank. Automatic mode prepares a local service when neither is set.',
   engines: 'Engines',
   enginesHint: 'Choose multiple engines. These are common candidates, not a live list from your instance; names must exist and be enabled in your SearXNG configuration.',
   enginesDefault: 'No restriction: use the instance’s default engines.',
@@ -59,8 +71,8 @@ export const en: Record<SearxngSearchSettingsLocaleKey, string> = {
   saveFailed: 'The deployment did not accept these values; they were left for you to correct.',
   invalidValue: 'Enter text, or leave blank to use the default.',
   fallbackLabel: 'Allow official fallback (may incur search fees)',
-  fallbackHint: 'Default off: SearXNG failures report a search error. Enable and save to try official DeepSeek search after a failed SearXNG request. Each fallback includes a cost notice; the next request still starts with SearXNG.',
-  routeHint: 'While this plugin is enabled, SearXNG is the search route (enforced at activation). To use official DeepSeek search temporarily, disable this plugin on the Plugins page — the route restores itself, and re-enabling brings SearXNG back.',
+  fallbackHint: 'Default off. DSH 0.2.1-alpha.2 has no official fallback API: enabling this option cannot start an official search, and failures report that limitation. A host with public searchWithProvider support can reuse its registered official provider after a failure; fees may apply. Cancellation never starts fallback.',
+  routeHint: 'This bundle selects SearXNG unless a later bundle, profile, home or CLI config overrides it. Disable the entire dsh-web-search-searxng bundle to restore the remaining route. Disabling only its provider row leaves the SearXNG route selected and searches fail. Saved instance settings are retained.',
   resetAll: 'Reset all to defaults',
   currentVersion: 'Installed version',
   checkUpdate: 'Check for updates',
@@ -76,8 +88,16 @@ export const en: Record<SearxngSearchSettingsLocaleKey, string> = {
 export const zh: Record<SearxngSearchSettingsLocaleKey, string> = {
   title: 'SearXNG 搜索',
   description: '设置自托管的 SearXNG 搜索提供方。',
+  modeLabel: '服务模式', modeAuto: '自动选择', modeLocal: '本地自动托管', modeExternal: '连接已有实例',
+  modeHint: '自动选择会沿用已填写的地址或环境变量；没有地址时自动准备本地服务。本地托管无需 Docker 或系统 Python，保存后生效。',
+  advanced: '高级设置', managedPort: '本地端口', managedPortHint: '0 表示自动选择空闲端口。指定的端口被占用时会报错；保存端口修改会自动重启本地服务。',
+  serviceTitle: '搜索服务', serviceIdle: '等待中', servicePreparing: '首次准备运行环境', serviceStarting: '正在启动',
+  serviceReady: '可用', serviceStopped: '已停止', serviceFailed: '失败', serviceExternal: '使用已有实例',
+  activeEndpoint: '当前地址', serviceHint: '本地服务首次使用会下载固定版本的依赖，随 DSH 运行，禁用插件或退出 DSH 时停止。已有实例由其部署者独立管理。',
+  serviceRestart: '启动 / 重试 / 重启', serviceStop: '停止', serviceTest: '测试搜索', serviceTestResult: '搜索成功，返回来源数', serviceLogs: '诊断日志',
+  setupUv: '正在下载安装工具', setupSource: '正在下载 SearXNG', setupPython: '正在准备 Python', setupDependencies: '正在安装依赖',
   baseUrl: '实例地址',
-  baseUrlHint: '留空则使用 SEARXNG_BASE_URL 环境变量；两者都未设置时搜索不可用。',
+  baseUrlHint: '已有实例模式使用此地址，留空则使用 SEARXNG_BASE_URL；自动选择模式下，两者都未设置时自动准备本地服务。',
   engines: '引擎',
   enginesHint: '可多选。这里是常用候选，并非实例的实时清单；引擎名须在你的 SearXNG 配置中存在且已启用。',
   enginesDefault: '未限制引擎：使用实例默认配置。',
@@ -114,8 +134,8 @@ export const zh: Record<SearxngSearchSettingsLocaleKey, string> = {
   saveFailed: '本部署没有接受这些值，已保留供你修改。',
   invalidValue: '请填文本；留空表示使用默认值。',
   fallbackLabel: '允许官方备用（可能产生搜索费用）',
-  fallbackHint: '默认关闭：SearXNG 失败时明确报告搜索失败。勾选并保存后，失败的单次请求可改用 DeepSeek 官方搜索，并提示可能产生费用；下一次请求仍优先 SearXNG。',
-  routeHint: '插件启用期间，搜索固定走 SearXNG（激活时强制校验）。想临时切回官方搜索？在插件页禁用本插件即可——路由自动恢复，重新启用时账本原样恢复 SearXNG。',
+  fallbackHint: '默认关闭。DSH 0.2.1-alpha.2 没有官方备用接口：勾选后也不会发起官方搜索，失败时会明确提示此限制。支持公开 searchWithProvider 的宿主可在失败后复用已注册的官方提供方，可能产生费用。取消请求不会启动备用。',
+  routeHint: '此 bundle 默认选择 SearXNG，后续 bundle、profile、home 或 CLI 配置可覆盖路由。请禁用整个 dsh-web-search-searxng bundle 来恢复其余配置决定的路由；仅禁用提供方行会留下 SearXNG 路由并导致搜索失败。已保存的实例设置会保留。',
   resetAll: '全部恢复默认',
   currentVersion: '当前版本',
   checkUpdate: '检查更新',
