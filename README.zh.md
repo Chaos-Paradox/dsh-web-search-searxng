@@ -9,15 +9,15 @@
 
 通过你自己托管的 [SearXNG](https://github.com/searxng/searxng) 实例，为 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（dsh）提供网页搜索能力。
 
-✅ **无需 API 密钥**
+✅ **无需搜索 API 密钥**
 ✅ **没有按次计费的搜索成本**
-✅ **自托管、保护隐私**——查询只发往*你自己的*实例
-✅ **直接在 DSH 设置中配置**——设置 → 插件 → SearXNG 搜索
+✅ **自托管搜索中转**——由你自己的实例向所选搜索引擎发起查询
+✅ **直接在 DSH 中配置**——侧栏 → 插件 → SearXNG 搜索
 ✅ **与官方网页搜索做过端到端对照**——[未观察到质量差异](docs/quality-benchmark.zh.md)
 
-![SearXNG 设置卡片预览：分组引擎列表与结果语言下拉选择](docs/settings-card.zh.png)
+![SearXNG 0.3.0 设置卡片：本地服务状态与管理按钮](docs/validation-managed-service.png)
 
-*设置 → 插件 页中的 SearXNG 搜索卡片预览——分组引擎列表与结果语言下拉选择，保存后对下一次搜索生效，无需重启。*
+*0.3.0 实际验证时的卡片：服务可用状态、自动分配的地址、启停按钮与测试搜索。图中端口仅为示例。修改引擎或语言对下一次搜索生效，无需重启；修改本地端口会重启托管服务。*
 
 ## 快速开始
 
@@ -27,25 +27,43 @@
 
 **1. 安装插件：**
 
+在 DSH 侧栏打开 **插件 → 添加插件**，填写 `https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.3.0`，安装完成后选择 **立即启用**。等价的 CLI 命令为：
+
 ```sh
-dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
+dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.3.0
 ```
 
-**2. 设置偏好：** 打开 **设置 → 插件 → SearXNG 搜索**，等待服务显示「可用」，选择引擎和结果语言并保存。点击「测试搜索」检查实际返回的来源。默认自动选择空闲端口，用户无需填写地址；高级设置可指定端口。连接自己的现有服务时，选择「连接已有实例」并填写地址。
+**2. 设置偏好：** 打开 **侧栏 → 插件 → SearXNG 搜索**，等待服务显示「可用」，选择引擎和结果语言并保存。点击「测试搜索」检查实际返回的来源。默认自动选择空闲端口，用户无需填写地址；高级设置可指定端口。连接自己的现有服务时，选择「连接已有实例」并填写地址。
 
 安装会追加默认选择 SearXNG 的 bundle 层，更高优先级的用户配置仍然生效。默认搜索失败会明确报错，不发起官方请求。**未打补丁的 DSH 0.2.1-alpha.2 不支持官方备用**，即使勾选也不会调用官方搜索；卡片与宿主错误会说明限制。禁用整个 bundle 或卸载后，其余配置层决定恢复的路由；已保存的实例设置会保留在 profile。
 
+### 默认生命周期与端口
+
+**本地托管的 SearXNG 随插件启用而启动，随 DSH 后端正常退出、禁用插件或卸载而停止。** 查询之间复用运行中的服务，所以每次搜索没有单独的启动步骤。关闭浏览器标签页不会停止 DSH 后端及其服务。插件不注册操作系统开机服务；依赖与偏好缓存于 profile，后续启动会复用。卡片也提供手动停止和启动/重试按钮。
+
+**本地端口默认是 `0`，不是 8080。** 操作系统自动分配空闲的回环端口，插件自动同步实际地址，重启后也是如此；用户无需手动开启端口或把地址复制到设置中。若明确填写 `8080` 且它被占用，启动会报错，不会自动换掉这个指定值。将「本地端口」改回 `0` 并保存即可恢复自动分配，也可以指定另一个空闲端口。
+
+| 服务模式 | 行为 |
+|---|---|
+| 自动选择（`auto`，默认） | 沿用已保存的地址或 `SEARXNG_BASE_URL`；没有地址时自动托管本地服务。 |
+| 本地自动托管（`local`） | 强制本地托管，即使之前保存过外部地址。 |
+| 连接已有实例（`external`） | 连接你的服务；启停与端口映射由该服务的部署者管理。 |
+
+如果之前使用 `http://localhost:8080`，自动模式会继续连接它。想改用插件托管，请选择「本地自动托管」，将「本地端口」保持为 `0`，无需填写新地址；原外部服务仍由部署者独立管理。缓存位置、故障恢复与退出限制见[本地托管说明](docs/managed-runtime.zh.md)。
+
 ## 为什么用它？
 
-AI 助手本身不会上网。想让它查资料，通常得买托管搜索 API——按次收费、要 API 密钥、你搜的内容还会经过别人的服务器。这个插件的做法是：在你自己电脑上跑一个搜索中转站（SearXNG），它同时去问谷歌、必应等 70 多个搜索引擎，把汇总结果交给智能体。
+这个插件在你自己的电脑上提供搜索中转站（SearXNG），向设置中选择的引擎发起查询，再把汇总结果交给智能体。未选择引擎时使用实例默认配置；可用引擎取决于实例配置和上游服务状态。
 
 | | 托管搜索 API | **本插件** |
 |---|---|---|
-| 成本 | 按查询计费 | **免费**——你的实例、你的硬件 |
-| API 密钥 | 必需，会轮换、会泄露 | **完全没有** |
-| 隐私 | 查询发往第三方 | 查询只发往**你的** SearXNG，由它替你聚合 70+ 引擎 |
-| 速率限制 | 有 | 只取决于你自己实例的限制 |
-| 离线 / 内网可用 | 否 | 是——设计上支持回环地址与内网地址 |
+| 成本 | 通常按查询计费 | 插件不收搜索 API 费用；运行与网络资源由你提供 |
+| 搜索 API 密钥 | 通常需要 | **本提供方不需要** |
+| 查询路径 | 托管服务，再到其搜索来源 | **你的** SearXNG，再到所选上游引擎 |
+| 速率限制 | 提供方限制 | 实例与上游引擎的限制 |
+| 内网实例地址 | 取决于服务 | 支持回环地址与内网地址 |
+
+搜索公开网页仍需 SearXNG 能联网；缓存安装并不意味着可以离线搜索。DSH 的模型提供方凭据需独立配置，与本搜索插件分开。
 
 ## 基准测试
 
@@ -63,7 +81,7 @@ AI 助手本身不会上网。想让它查资料，通常得买托管搜索 API�
                                └──────────────┘                      │ 聚合
                                                           ┌──────────▼──────────┐
                                                           │ Google / Bing / DDG │
-                                                          │ Brave / 70+ 引擎    │
+                                                          │ 所选搜索引擎        │
                                                           └─────────────────────┘
 ```
 
@@ -76,7 +94,7 @@ SearXNG 不返回生成答案，因此结果只带**来源**——需要正文�
 | `content` | `snippet` | 引擎摘录 |
 | `publishedDate` | `publishedAt` | 引擎提供时才有 |
 
-`truncated` 恒为 `false`（`maxResults` 截断由 web 服务负责）；不附带生成式 `content` 答案，因为 SearXNG 没有可供能力缝担保的答案。
+提供方初始映射的 `truncated` 为 `false`；DSH 的 Web 服务会按 `maxResults` 截断，最终结果的标记可能为 `true`。不附带生成式 `content` 答案，因为 SearXNG 提供的是来源。
 
 ## 安全
 
@@ -127,13 +145,15 @@ curl "http://localhost:8080/search?q=test&format=json"
 
 ### 操作系统与验证范围
 
-本地托管提供 macOS、Windows 与 Linux glibc 的 x64/arm64 安装工具选择，使用公开 DSH 子进程接口。**本机实际验证为 macOS；仓库 CI 在 Windows、macOS、Linux 上执行单元测试与从空目录准备服务的验证，结果以对应运行记录为准。未覆盖所有 CPU 架构与 Linux 发行版。** 其他系统可连接外部实例；DSH 版本兼容仍需独立验证。
+本地托管提供 macOS、Windows 与 Linux glibc 的 x64/arm64 安装工具选择，使用公开 DSH 子进程接口。**Windows、macOS、Linux CI 已于 2026-10-10 通过**，包含依赖安装、类型检查、单元测试、构建、从空目录准备服务、缓存重启与退出清理。详见[成功的 CI 运行](https://github.com/Chaos-Paradox/dsh-web-search-searxng/actions/runs/38034853680)和[验证记录](docs/validation-managed-2026-10-10.md)。CI 验证就绪与生命周期；上游真实搜索及完整 Web 卡片在本机 macOS arm64 上验证。未覆盖所有 CPU 架构与 Linux 发行版，其他系统可连接外部实例。
 
 | DSH 所在平台 | SearXNG 部署选择 | 当前验证状态 |
 |---|---|---|
-| macOS | 自动托管，或已有本机/远程实例 | 已验证 DSH 0.2.1-alpha.2 |
-| Windows | 自动托管，或已有本机/远程实例 | 已加入 CI；以实际运行结果为准 |
-| Linux | 自动托管（glibc），或已有本机/远程实例 | 已加入 CI；以实际运行结果为准 |
+| macOS | 自动托管，或已有本机/远程实例 | CI 已通过；本机完整 Web 卡片与真实搜索已验证 |
+| Windows | 自动托管，或已有本机/远程实例 | 服务准备与生命周期 CI 已通过 |
+| Linux | 自动托管（glibc），或已有本机/远程实例 | 服务准备与生命周期 CI 已通过 |
+
+DSH 版本兼容是另一项验证：目前仅实际测试了**未打补丁的 0.2.1-alpha.2**。声明的 peer 范围 `>=0.2.1-alpha.2 <0.3.0` 不等于逐版本测试或对范围内所有版本的保证；宿主接口变化时可能需要更新插件。
 
 实例地址必须从 **DSH 后端**可达。`localhost` 指 DSH 后端所在的主机或容器；浏览器在另一台电脑上时，不能把浏览器所在电脑当作后端的 `localhost`。使用远程实例无需在每位用户的电脑上再启动一个 SearXNG。连接错误应先检查服务是否运行及 JSON 是否启用，再检查卡片地址。
 
@@ -145,13 +165,13 @@ curl "http://localhost:8080/search?q=test&format=json"
 dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-**指定发布版本（推荐，可复现）：**
+**固定 v0.3.0 发布版本（推荐，可复现）：**
 
 ```sh
-dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v<version>
+dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.3.0
 ```
 
-所有版本见 [Releases 页面](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases)。
+本 README 描述插件 **0.3.0**，详见其[发布说明与可安装压缩包](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases/tag/v0.3.0)，所有版本见 [Releases 页面](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases)。旧 v0.1.0/v0.2.0 标签不包含自动托管；安装旧版前请阅读各自的兼容说明。
 
 **本地克隆或 tarball：** 同一命令填绝对路径即可，例如 `dsh plugin --profile <名称> add /path/to/dsh-web-search-searxng`。无需构建——`lib/` 已提交。
 
@@ -169,7 +189,7 @@ dsh plugin --profile <名称> remove dsh-web-search-searxng
 
 ### 1. 指向你的实例
 
-**方式 A —— GUI（推荐）：** 打开 **设置 → 插件 → SearXNG 搜索**，选择服务模式、引擎与结果语言并保存。本地模式自动提供连接地址；修改本地端口会自动重启服务，修改引擎或语言无需重启。已有实例模式填写该实例的地址。
+**方式 A —— GUI（推荐）：** 打开 **侧栏 → 插件 → SearXNG 搜索**，选择服务模式、引擎与结果语言并保存。本地模式自动提供连接地址；修改本地端口会自动重启服务，修改引擎或语言无需重启。已有实例模式填写该实例的地址。
 
 引擎列表按用途分为通用网页、新闻资讯、学术研究、技术与百科，展示常用候选，并非实例的实时清单；所选名称须在你的实例中存在且已启用。未勾选时使用实例默认配置。其他引擎名和语言代码可通过自定义选项填写，修改列表选择时会保留已有的自定义值。
 
@@ -209,8 +229,11 @@ export SEARXNG_BASE_URL="http://localhost:8080"
 |---|---|---|
 | `SearXNG error (HTTP 403); the instance may refuse JSON output` | `settings.yml` 的 `search.formats` 缺少 `json` | 按上文添加并重启容器 |
 | 搜索报提供方不可用（`WEB_PROVIDER_CONFIGURED_UNAVAILABLE`） | 本地服务准备中、已停止、失败，或外部模式缺少地址 | 检查卡片状态并重试；外部模式填写地址 |
+| 本地启动报地址或端口已占用 | 明确指定的本地端口被占用 | 将「本地端口」改为 `0` 并保存，或选空闲固定端口；插件不会自动改掉指定值 |
+| 首次准备在下载或安装依赖时失败 | DSH 后端无法访问下载/依赖服务，或准备超时 | 查看卡片诊断日志，恢复 GitHub/PyPI 访问后重试 |
+| 本地服务提示此 profile 已有其他管理者 | 另一个 DSH 进程占用同一 profile 的托管运行环境 | 停止另一个 profile 进程后重试；同一 profile 不运行两个管理者 |
 | 搜索走了其他提供方 | 后续 bundle 或更高优先级的 profile/home/CLI 配置 | 检查 `--dump-config` 与覆盖配置 |
-| `search request failed` / ECONNREFUSED | 实例未运行或端口不对 | 检查 `docker ps`，用 curl 验证命令测试；当前已验证宿主不支持官方备用 |
+| `search request failed` / ECONNREFUSED | 实例未运行或端口不对 | 本地托管检查卡片状态并启动/重试；外部模式检查服务及地址（如容器用 `docker ps`） |
 | 搜索结果开头出现 ⚠️ 降级提醒 | 扩展后的宿主支持官方备用，且 SearXNG 刚失败了一次 | 检查实例；在卡片关闭备用即恢复严格模式 |
 | `WEB_PROVIDER_ERROR` 提到 redirect | SearXNG 前有代理发生重定向 | 将 `baseURL` 指向最终地址；重定向按设计直接失败 |
 | `sources` 为空 | 引擎没有返回可用结果（或条目都缺 URL） | 放宽 `engines`，在浏览器里检查实例 |
@@ -233,7 +256,7 @@ src/
   provider.ts   SearxngSearchProvider：JSON API 调用、结果映射、错误策略
   fallback.ts   可选官方备用：逐请求降级、中英双语提醒、host 日志
   types.ts      SearXNG 响应类型
-  client/       浏览器 bundle：设置 → 插件 页卡片（React）
+  client/       浏览器 bundle：插件页卡片（React）
 tests/          vitest 套件，含重定向与 egress 策略
 ```
 

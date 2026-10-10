@@ -25,7 +25,7 @@ The custom fetch provider must already be registered. An intentional `searchProv
 
 ## Lifecycle
 
-Managed local mode prepares and starts the service with the plugin; disabling or removing it stops the owned service and retains caches. External mode does not manage instance processes. The card exposes connection, port, preferences and service controls; see [managed runtime notes](managed-runtime.md).
+Managed local mode prepares and starts the service with the enabled plugin; disabling or removing it, or normal DSH backend shutdown, stops the owned service and retains caches. Searches reuse the running service. Closing a browser tab does not stop the backend. External mode does not manage instance processes. The card exposes connection, port, preferences and service controls; see [managed runtime notes](managed-runtime.md).
 
 Bundle enable/disable changes the ordered manifest list. Disable the whole installed bundle to restore routing; with HMR the remaining composition applies live, otherwise restart. Individual provider-row disable leaves the route selected and searches fail visibly. Removal also exposes the remaining layers, including custom earlier defaults and current user overrides. CLI removal requires the profile process to be stopped; the running Plugins page can remove bundles live with HMR.
 
@@ -33,7 +33,9 @@ Card writes are normal user settings. Endpoint, engines, language and fallback p
 
 ## SearXNG service and ports
 
-Managed local mode selects a free port automatically. Changing the advanced `managedPort` setting restarts the service and updates its effective endpoint. External instances require changing their own listener/container mapping and then updating `baseURL`; an endpoint change alone cannot change their port. Each search reuses the running service.
+Managed local mode defaults `managedPort` to `0`: the OS assigns a free loopback port, and the plugin follows the effective endpoint automatically. No manual port opening or endpoint entry is needed. An explicitly configured port such as `8080` fails if occupied; it does not fall back to another port. Change it to `0` and save to restore automatic allocation, or select another free fixed port. Changing `managedPort` restarts the service and updates its effective endpoint.
+
+`auto` preserves any existing `baseURL` or `SEARXNG_BASE_URL`. If you previously connected to a manual 8080 service, choose `local` in the card to switch to automatic management; keep the port at `0`. External instances require changing their own listener/container mapping and then updating `baseURL`; an endpoint change alone cannot change their port. For example, Docker `-p 8088:8080` exposes container port 8080 on host port 8088, so set the endpoint to `http://localhost:8088`. The plugin never starts or stops that external container.
 
 Version 0.3.0 uses persistent profile caches and follows DSH startup/shutdown without installing a system startup service. The manually started `/tmp` instance from 0.2.1 validation is historical test infrastructure, not the new managed runtime.
 
