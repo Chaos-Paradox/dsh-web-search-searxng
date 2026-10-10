@@ -1,7 +1,7 @@
 {
   "name": "dsh-web-search-searxng",
   "description": "SearXNG-backed self-hosted metasearch provider for DeepSeek Harness (ctx.web), with a Plugins-page settings card",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -21,38 +21,22 @@
       "inject": [
         "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-settings",
-        "@deepseek-ai/dsh-client-ui-plugin-manager"
+        "@deepseek-ai/dsh-client-ui-plugin-manager",
+        "@deepseek-ai/dsh-client-connection"
       ],
       "platform": "web"
     },
     "bundle": {
-      "patch": "./cordis.patch.yml",
-      "configEffects": [
-        {
-          "id": "web",
-          "set": {
-            "searchProvider": "searxng"
-          }
-        },
-        {
-          "id": "web-search-searxng",
-          "set": {
-            "allowOfficialFallback": false
-          },
-          "track": [
-            "baseURL",
-            "engines",
-            "language",
-            "allowOfficialFallback"
-          ]
-        }
-      ]
+      "patch": "./cordis.patch.yml"
     }
   },
   "scripts": {
     "build": "tsdown && tsc -p tsconfig.client.json",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:host": "node tests/host-composition.mjs",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
+    "test:managed": "node tests/managed-smoke.mjs"
   },
   "files": [
     "lib/index.js",
@@ -61,39 +45,53 @@
     "lib/client.js",
     "lib/client.js.map",
     "lib/client/**/*.d.ts",
-    "host-integration/dsh-config-effects.patch",
-    "host-integration/README.md"
+    "docs/configuration.md",
+    "docs/configuration.zh.md",
+    "lib/runtime-types.d.ts",
+    "docs/managed-runtime.md",
+    "docs/managed-runtime.zh.md"
   ],
   "license": "MIT",
   "engines": {
     "node": "^22.19 || >=24"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "^4.0.4",
-    "@deepseek-ai/dsh-launch-environment": ">=0.1.7-rc.1",
-    "@deepseek-ai/dsh-web": ">=0.1.7-rc.1"
+    "@deepseek-ai/cordis": "~4.0.5-alpha.1",
+    "@deepseek-ai/dsh-launch-environment": ">=0.2.1-alpha.2 <0.3.0",
+    "@deepseek-ai/dsh-typert-protocol": ">=0.2.1-alpha.2 <0.3.0",
+    "@deepseek-ai/dsh-web": ">=0.2.1-alpha.2 <0.3.0"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "^3.18.4"
+    "@deepseek-ai/schemastery": "~3.18.5-alpha.1",
+    "fflate": "^0.8.3",
+    "proper-lockfile": "^4.1.2",
+    "tar": "^7.5.22"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "^4.0.4",
-    "@deepseek-ai/dsh-api-remotes": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-client-locale": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-client-store": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-client-test-runtime": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-client-ui-plugin-manager": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-client-ui-primitives": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-client-ui-renderer": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-client-ui-settings": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-client-ui-slots": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-http-proxy": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-launch-environment": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-util-code-language": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-util-workspace-path": "0.2.1-alpha.1",
-    "@deepseek-ai/dsh-web": "0.2.1-alpha.1",
+    "@deepseek-ai/cordis": "~4.0.5-alpha.1",
+    "@deepseek-ai/dsh-api-remotes": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-app-boot": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-client-connection": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-client-locale": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-client-store": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-client-test-runtime": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-client-ui-plugin-manager": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-client-ui-renderer": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-client-ui-settings": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-client-ui-slots": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-http-proxy": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-launch-environment": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-subprocess": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-subprocess-local": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-typert-protocol": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-util-code-language": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-util-workspace-path": "0.2.1-alpha.2",
+    "@deepseek-ai/dsh-web": "0.2.1-alpha.2",
     "@shikijs/langs": "^4.5.0",
     "@testing-library/react": "^16.1.0",
+    "@types/node": "^26.6.4",
+    "@types/proper-lockfile": "^4.1.4",
     "@types/react": "~18.3.1",
     "@types/use-sync-external-store": "^1.7.0",
     "anser": "^2.3.5",
@@ -120,7 +118,7 @@
     "typescript": "~6.0.3",
     "use-sync-external-store": "^1.7.0",
     "vitest": "^4.1.8",
-    "zustand": "~4.4.7",
-    "yaml": "^2.9.1"
+    "yaml": "^2.9.1",
+    "zustand": "~4.4.7"
   }
 }

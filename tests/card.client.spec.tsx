@@ -27,6 +27,8 @@ function cardActions() {
 function cardStore(state: Partial<SearxngSearchCardState> = {}) {
   return createSnapshotStore<SearxngSearchCardState>({
     ...settled,
+    mode: field('external'),
+    managedPort: field('0'),
     baseURL: field(''),
     engines: field(''),
     language: field(''),
@@ -199,7 +201,7 @@ describe('SearxngSearchCard', () => {
     expect(button).toHaveProperty('disabled', false)
     fireEvent.click(button)
     expect(actions.resetField.mock.calls)
-      .toEqual([['baseURL'], ['engines'], ['language'], ['allowOfficialFallback']])
+      .toEqual([['mode'], ['managedPort'], ['baseURL'], ['engines'], ['language'], ['allowOfficialFallback']])
     // Staged only: the form's own save button commits, like per-field resets.
     expect(actions.save).not.toHaveBeenCalled()
   })

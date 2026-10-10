@@ -149,6 +149,18 @@ describe('SearxngFallbackProvider opt-in degradation', () => {
     expect(official.search).not.toHaveBeenCalled()
   })
 
+  it('reports the primary failure and unsupported host capability without a paid attempt', async () => {
+    const onAttempt = vi.fn()
+    const provider = new SearxngFallbackProvider(failingPrimary(new WebError('primary HTTP 503', 'WEB_PROVIDER_ERROR')), {
+      enabled: () => true,
+      official: createOfficialFallbackResolver({ web: {} } as never),
+      onAttempt,
+      onDegraded: vi.fn(),
+    })
+    await expect(provider.search(REQUEST)).rejects.toThrow('SearXNG search failed (primary HTTP 503); official fallback unavailable (this host does not expose web.searchWithProvider; DSH 0.2.1-alpha.2 cannot perform official fallback); no official request was made')
+    expect(onAttempt).not.toHaveBeenCalled()
+  })
+
   it.each(['cancel', 'disable'])('starts no paid request when %s happens during provider resolution', async action => {
     const resolving = Promise.withResolvers<WebSearchProvider>()
     const started = Promise.withResolvers<void>()
@@ -203,7 +215,7 @@ describe('createOfficialFallbackResolver', () => {
 
   it('reports missing host support without constructing a credentialed provider', async () => {
     const resolve = createOfficialFallbackResolver({ web: {} } as never)
-    await expect(resolve()).rejects.toThrow('host integration')
+    await expect(resolve()).rejects.toThrow('does not expose web.searchWithProvider')
   })
 
   it('honors a disabled or absent registered official provider', async () => {

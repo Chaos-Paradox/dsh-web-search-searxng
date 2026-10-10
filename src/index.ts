@@ -7,14 +7,15 @@
  * @module dsh-web-search-searxng
  */
 
-import { readFileSync } from 'node:fs'
 import type { Context, Volatile } from '@deepseek-ai/cordis'
 import z from '@deepseek-ai/schemastery'
 import { launchEnvironmentOf } from '@deepseek-ai/dsh-launch-environment'
 import type {} from '@deepseek-ai/dsh-web'
-import { createOfficialFallbackResolver, SearxngFallbackProvider } from './fallback.ts'
+import { createOfficialFallbackResolver, supportsOfficialFallback, SearxngFallbackProvider } from './fallback.ts'
 import { SearxngSearchProvider } from './provider.ts'
 import type { SearxngSearchProviderOptions } from './provider.ts'
+import { SearxngRuntimeService } from './runtime-service.ts'
+import type { ServiceMode } from './runtime-types.ts'
 
 
 export {
@@ -27,6 +28,7 @@ export type { SearxngSearchProviderOptions } from './provider.ts'
 export type { SearxngResult, SearxngSearchResponse } from './types.ts'
 export {
   createOfficialFallbackResolver,
+  supportsOfficialFallback,
   fallbackNotice,
   SearxngFallbackProvider,
 } from './fallback.ts'
@@ -59,6 +61,13 @@ const SEARXNG_BASE_URL_ENV = 'SEARXNG_BASE_URL'
 
 /** Plugin config (all optional and volatile — settings writes apply to the next search). */
 export interface Config {
+  /** Auto preserves existing URLs; otherwise prepares a local service. */
+  mode: Volatile<ServiceMode | undefined>
+  /** Zero lets the OS atomically allocate a free loopback port. */
+  managedPort: Volatile<number>
+  setupTimeoutMs: Volatile<number>
+  startupTimeoutMs: Volatile<number>
+  restartLimit: Volatile<number>
   /** SearXNG instance base; `/search` is appended. Falls back to `$SEARXNG_BASE_URL`. Empty → provider unavailable. */
   baseURL: Volatile<string | undefined>
   /** Comma-separated engine restriction sent as SearXNG's `engines` parameter (for example `bing,duckduckgo`). */
@@ -69,9 +78,11 @@ export interface Config {
    * Per-request official-route escape hatch. Absent or `false` (the default):
    * a failed SearXNG search fails loudly and the official route is never
    * called, so an unnoticed failure cannot silently bill the deployment.
-   * `true`: one failed request degrades to the built-in DeepSeek provider for
+   * `true`, on a host exposing `web.searchWithProvider`: one failed request degrades to the built-in DeepSeek provider for
    * that request only, the result carries a bilingual cost notice, and every
-   * degradation hits the host log. The route itself never changes.
+   * degradation hits the host log. The route itself never changes. On hosts
+   * without that public API, a failed search reports the capability limitation
+   * alongside the SearXNG failure and makes no official request.
    */
   allowOfficialFallback: Volatile<boolean | undefined>
 }
@@ -80,6 +91,11 @@ export interface Config {
 // the declaration emitter cannot name the inferred schema type portably, and
 // a `z<Config>` annotation misstates the volatile field types.
 export const Config: Schemastery = z.object({
+  mode: z.union(['auto', 'local', 'external']).volatile(),
+  managedPort: z.natural().max(65535).default(0).volatile(),
+  setupTimeoutMs: z.natural().min(1000).max(2147483647).default(600000).volatile(),
+  startupTimeoutMs: z.natural().min(1000).max(2147483647).default(120000).volatile(),
+  restartLimit: z.natural().max(10).default(2).volatile(),
   baseURL: z.string().volatile(),
   engines: z.string().volatile(),
   language: z.string().volatile(),
@@ -105,66 +121,21 @@ function resolveOptions(
   }
 }
 
-/** Marker comment of the host's journaled config-effects transaction in the profile patch. */
-const JOURNAL_MARKER = 'dsh-config-effects/v1: '
-
-/**
- * Field-ownership fragment in the journal JSON: some bundle owns
- * `web.searchProvider`. Ownership uniqueness is enforced host-side at
- * reconcile time, so the gate does not care which package name owns it —
- * fixture profiles and forks may mount this plugin under another name.
- */
-const ROUTE_OWNER_FRAGMENT = '"web":{"searchProvider":{'
-
-/** The structural slice of the Loader service this plugin reads at activation. */
-interface LoaderLike {
-  entries(): Iterable<{ options?: { id?: string; config?: { searchProvider?: string } } }>
-}
-
-/** The structural slice of the profile context this plugin reads at activation. */
-interface ProfileContextLike {
-  patchPath?: string
-}
-
-/**
- * Why activation must refuse, or undefined when search is routed to the
- * journaled SearXNG route. Pure so tests can drive it directly; apply()
- * wires the loader's composed rows and the profile patch text into it.
- * @param route - the effective `web` row's searchProvider value.
- * @param patchText - the profile patch file's text, when readable.
- * @returns the refusal message, or undefined to proceed.
- */
-export function activationGate(route: unknown, patchText: string | undefined): string | undefined {
-  if (patchText === undefined || !patchText.includes(JOURNAL_MARKER) || !patchText.includes(ROUTE_OWNER_FRAGMENT)) {
-    return 'web-search-searxng requires DSH bundle config-effects integration for default routing and uninstall restoration; apply host-integration/dsh-config-effects.patch before enabling this bundle'
-  }
-  if (route !== 'searxng') {
-    return `web-search-searxng expected the installed SearXNG route, but web.searchProvider is ${String(route)}; remove conflicting home/CLI overrides, or re-apply the bundle route by disabling and re-enabling the bundle (dsh plugin disable/enable or remove/add)`
-  }
-  return undefined
-}
-
 /** Register SearXNG with opt-in fallback and warn about a missing endpoint. */
 export function apply(ctx: Context, config: Config): void {
-  // The gate reads only settled state — loader rows are composed before any
-  // fiber activates, and the journal was reconciled before this bundle was
-  // enabled — so it is race-free without waiting on other services. Reading
-  // a service like configEditor here would race its own fiber's start.
-  const profile = ctx.get('profileContext') as ProfileContextLike | undefined
-  let patchText: string | undefined
-  if (profile?.patchPath !== undefined) {
-    try { patchText = readFileSync(profile.patchPath, 'utf8') } catch { patchText = undefined }
-  }
-  const loader = ctx.get('loader') as LoaderLike | undefined
-  const route = [...loader?.entries() ?? []]
-    .find(entry => entry.options?.id === 'web')?.options?.config?.searchProvider
-  const refusal = activationGate(route, patchText)
-  if (refusal !== undefined) throw new Error(refusal)
-  const provider = new SearxngSearchProvider(() => resolveOptions(ctx, {
-    baseURL: config.baseURL.get(),
-    engines: config.engines.get(),
-    language: config.language.get(),
-  }))
+  let runtime: SearxngRuntimeService | undefined
+  const provider = new SearxngSearchProvider(() => {
+    const options = resolveOptions(ctx, { baseURL: config.baseURL.get(), engines: config.engines.get(), language: config.language.get() })
+    return { ...options, baseURL: runtime?.endpoint() ?? options.baseURL }
+  })
+  runtime = new SearxngRuntimeService(ctx, () => ({
+    mode: config.mode.get() ?? 'auto',
+    externalURL: config.baseURL.get() ?? launchEnvironmentOf(ctx).get(SEARXNG_BASE_URL_ENV)?.value ?? '',
+    port: config.managedPort.get(), setupTimeoutMs: config.setupTimeoutMs.get(),
+    startupTimeoutMs: config.startupTimeoutMs.get(), restartLimit: config.restartLimit.get(),
+  }), provider)
+  runtime.sync()
+  ctx.on('loader/volatile-update', () => { runtime?.sync() })
   const routed = new SearxngFallbackProvider(provider, {
     enabled: () => config.allowOfficialFallback.get() === true,
     official: createOfficialFallbackResolver(ctx),
@@ -179,13 +150,19 @@ export function apply(ctx: Context, config: Config): void {
   ctx.web.registerSearchProvider(routed)
 
   let warnedMissingEndpoint = false
+  let warnedFallback = false
   const checkEndpoint = (): void => {
-    if (!provider.available()) {
+    const unsupportedFallback = config.allowOfficialFallback.get() === true && !supportsOfficialFallback(ctx.web)
+    if (unsupportedFallback && !warnedFallback) {
+      ctx.logger.warn('web-search-searxng: official fallback is enabled but this host has no public web.searchWithProvider API; SearXNG remains usable, and failed searches make no official request')
+    }
+    warnedFallback = unsupportedFallback
+    if (!provider.available() && runtime?.status().phase === 'external') {
       if (warnedMissingEndpoint) return
       warnedMissingEndpoint = true
       ctx.logger.warn(
-        'web-search-searxng: search is routed to SearXNG, but no instance endpoint is configured, '
-        + 'so every search will fail with the provider unavailable. Set the endpoint on the plugin '
+        'web-search-searxng: no instance endpoint is configured, '
+        + 'so searches routed to SearXNG will fail with the provider unavailable. Set the endpoint on the plugin '
         + 'card or export SEARXNG_BASE_URL, then save the settings.',
       )
       return

@@ -1,5 +1,9 @@
 import { WebSearchProvider, WebSearchRequest, WebSearchResult, WebSearchSource } from "@deepseek-ai/dsh-web";
 import { Context, Volatile } from "@deepseek-ai/cordis";
+//#region src/runtime-types.d.ts
+/** JSON values shared by the Host manager and browser card. */
+type ServiceMode = 'auto' | 'local' | 'external';
+//#endregion
 //#region src/types.d.ts
 /**
  * Wire types for the SearXNG metasearch API (`GET {baseURL}/search?format=json`).
@@ -90,7 +94,7 @@ interface FallbackRecord {
 interface OfficialFallback {
   /** Whether the deployment currently allows degradation (volatile field). */
   readonly enabled: () => boolean;
-  /** Resolve the official provider, or undefined when unavailable here. */
+  /** Resolve the official provider, return undefined when unavailable, or reject for missing host capability. */
   readonly official: () => Promise<WebSearchProvider | undefined>;
   /** Record the paid attempt before dispatch, including attempts which fail. */
   readonly onAttempt: (reason: string) => void;
@@ -125,6 +129,15 @@ declare class SearxngFallbackProvider implements WebSearchProvider {
   available(): boolean;
   search(request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearchResult>;
 }
+/** Public host operation required to reuse registered official search configuration. */
+interface ExplicitSearchRuntime {
+  searchWithProvider(id: string, request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearchResult>;
+}
+/** Detect the public API needed for fallback without accessing provider registries.
+ * @param web Host web service.
+ * @returns Whether explicit provider dispatch is available.
+ */
+declare function supportsOfficialFallback(web: object): web is ExplicitSearchRuntime;
 /** Resolve an adapter to the host's registered official provider, never a new credentialed instance.
  * Disabled, missing, or unavailable providers fail through the host's normal selection errors.
  * @param ctx Plugin context supplying the web service.
@@ -150,6 +163,13 @@ declare const name = "web-search-searxng";
 declare const inject: string[];
 /** Plugin config (all optional and volatile — settings writes apply to the next search). */
 interface Config {
+  /** Auto preserves existing URLs; otherwise prepares a local service. */
+  mode: Volatile<ServiceMode | undefined>;
+  /** Zero lets the OS atomically allocate a free loopback port. */
+  managedPort: Volatile<number>;
+  setupTimeoutMs: Volatile<number>;
+  startupTimeoutMs: Volatile<number>;
+  restartLimit: Volatile<number>;
   /** SearXNG instance base; `/search` is appended. Falls back to `$SEARXNG_BASE_URL`. Empty → provider unavailable. */
   baseURL: Volatile<string | undefined>;
   /** Comma-separated engine restriction sent as SearXNG's `engines` parameter (for example `bing,duckduckgo`). */
@@ -160,23 +180,16 @@ interface Config {
    * Per-request official-route escape hatch. Absent or `false` (the default):
    * a failed SearXNG search fails loudly and the official route is never
    * called, so an unnoticed failure cannot silently bill the deployment.
-   * `true`: one failed request degrades to the built-in DeepSeek provider for
+   * `true`, on a host exposing `web.searchWithProvider`: one failed request degrades to the built-in DeepSeek provider for
    * that request only, the result carries a bilingual cost notice, and every
-   * degradation hits the host log. The route itself never changes.
+   * degradation hits the host log. The route itself never changes. On hosts
+   * without that public API, a failed search reports the capability limitation
+   * alongside the SearXNG failure and makes no official request.
    */
   allowOfficialFallback: Volatile<boolean | undefined>;
 }
 declare const Config: Schemastery;
-/**
- * Why activation must refuse, or undefined when search is routed to the
- * journaled SearXNG route. Pure so tests can drive it directly; apply()
- * wires the loader's composed rows and the profile patch text into it.
- * @param route - the effective `web` row's searchProvider value.
- * @param patchText - the profile patch file's text, when readable.
- * @returns the refusal message, or undefined to proceed.
- */
-declare function activationGate(route: unknown, patchText: string | undefined): string | undefined;
 /** Register SearXNG with opt-in fallback and warn about a missing endpoint. */
 declare function apply(ctx: Context, config: Config): void;
 //#endregion
-export { Config, type FallbackRecord, type OfficialFallback, SEARXNG_PROVIDER_ID, SearxngFallbackProvider, type SearxngResult, SearxngSearchProvider, type SearxngSearchProviderOptions, type SearxngSearchResponse, activationGate, apply, createOfficialFallbackResolver, fallbackNotice, inject, mapSearxngResponse, mapSearxngResult, name };
+export { Config, type FallbackRecord, type OfficialFallback, SEARXNG_PROVIDER_ID, SearxngFallbackProvider, type SearxngResult, SearxngSearchProvider, type SearxngSearchProviderOptions, type SearxngSearchResponse, apply, createOfficialFallbackResolver, fallbackNotice, inject, mapSearxngResponse, mapSearxngResult, name, supportsOfficialFallback };

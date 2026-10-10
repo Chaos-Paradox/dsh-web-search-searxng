@@ -1,5 +1,12 @@
-# The host applies and journals the manifest's web.searchProvider change.
-# Removing the bundle reverses that recorded change and restores the prior route.
+# Bundle layers precede profile, home and CLI overrides. Removing this bundle
+# exposes the remaining layers; no user route is written or journaled.
+# DSH overlays replace the complete config object, so include standard HTTP fetch.
+- id: web
+  config:
+    searchProvider: searxng
+    fetchProvider: http
 - insert:
     - id: web-search-searxng
       name: 'dsh-web-search-searxng'
+      config:
+        allowOfficialFallback: false
