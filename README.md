@@ -9,15 +9,15 @@
 
 Give [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) web search through your own self-hosted [SearXNG](https://github.com/searxng/searxng) instance.
 
-✅ **No API key**
+✅ **No search API key**
 ✅ **No per-search API cost**
-✅ **Self-hosted & private** — queries go to *your* instance, nowhere else
-✅ **Configure directly in DSH Settings** — *Settings → Plugins → SearXNG search*
+✅ **Self-hosted search relay** — your instance forwards queries to the selected search engines
+✅ **Configure directly in DSH** — *sidebar → Plugins → SearXNG search*
 ✅ **Tested end-to-end against the official web search** — [no quality difference observed](docs/quality-benchmark.md)
 
-![SearXNG settings card preview with grouped engine choices and a language dropdown](docs/settings-card.en.png)
+![SearXNG 0.3.0 settings card showing managed service status and controls](docs/validation-managed-service.png)
 
-*Preview of the SearXNG search card in Settings → Plugins — grouped engine choices and a result-language dropdown. Save to apply changes to the next search without a restart.*
+*Version 0.3.0 during live validation, shown in Chinese: service readiness, an automatically selected endpoint, lifecycle controls and Test search. The displayed port is an example. Engine/language changes apply to the next search without restarting; local port changes restart the managed service.*
 
 ## Quick Start
 
@@ -27,25 +27,43 @@ Prerequisite: DeepSeek Harness **0.2.1-alpha.2** with the standard Web/base bund
 
 **1. Install the plugin:**
 
+In DSH's sidebar, open **Plugins → Add plugin**, enter `https://github.com/Chaos-Paradox/dsh-web-search-searxng`, and choose **Enable now** after installation. The equivalent CLI command is:
+
 ```sh
 dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-**2. Set your preferences:** open **Settings → Plugins → SearXNG search**, wait for Ready, choose engines and result language, and save. Use Test search to check returned sources. A free port is selected automatically, so no endpoint entry is needed; advanced settings allow a specific port. To use your own existing service, select Existing instance and enter its endpoint.
+**2. Set your preferences:** open **sidebar → Plugins → SearXNG search**, wait for Ready, choose engines and result language, and save. Use Test search to check returned sources. A free port is selected automatically, so no endpoint entry is needed; advanced settings allow a specific port. To use your own existing service, select Existing instance and enter its endpoint.
 
 Installing appends a bundle layer that selects SearXNG by default. Higher-priority user configuration still wins. Failed searches report an error and make no official search request by default. **Official fallback is unavailable on unpatched DSH 0.2.1-alpha.2**, even if the checkbox is enabled; the card and host errors explain this limit. Disabling the entire bundle or uninstalling exposes the remaining route configuration, while saved instance settings stay in your profile.
 
+### Default lifecycle and ports
+
+**Managed local SearXNG starts with the enabled plugin and stops on normal DSH backend shutdown, plugin disablement or removal.** It stays running between searches, which is why each query has no separate startup step. Closing a browser tab does not stop the DSH backend or its service. The plugin installs no OS startup service; dependencies and preferences remain cached in the profile, so subsequent launches reuse them. The card also provides manual stop and start/retry controls.
+
+**The default local port is `0`, not 8080.** The OS assigns a free loopback port and the plugin updates its effective endpoint automatically, including after a restart. You do not need to open a port manually or copy the address into settings. If you explicitly set `8080` and it is occupied, startup fails visibly rather than changing that choice. Set Local port back to `0` and save to restore automatic allocation, or choose another available fixed port.
+
+| Service mode | Behavior |
+|---|---|
+| Automatic (`auto`, default) | Uses an existing saved endpoint or `SEARXNG_BASE_URL`; otherwise manages a local service. |
+| Managed local service (`local`) | Forces local management, even if an external endpoint was saved before. |
+| Existing instance (`external`) | Connects to your service; its startup, shutdown and port mapping remain under your control. |
+
+If you previously used an instance at `http://localhost:8080`, automatic mode keeps using it. To switch to plugin management, select Managed local service and leave Local port at `0`; no new endpoint entry is needed. The previous external service remains independently managed. See [managed runtime notes](docs/managed-runtime.md) for cache location, recovery and shutdown limits.
+
 ## Why use it?
 
-An AI assistant can't browse the web by itself — to let it look things up you normally pay for a hosted search API: billed per query, API key required, queries passing through someone else's servers. This plugin takes a different route: you run a small search relay (SearXNG) on your own machine, and it asks Google, Bing, and 70+ other engines at the same time, then hands the combined results to the agent.
+This plugin gives the agent a search relay (SearXNG) on your own machine. It queries the engines selected in settings, or the instance defaults when none are selected, then returns their combined results. Available engines depend on the instance and upstream availability.
 
 | | Hosted search APIs | **This plugin** |
 |---|---|---|
-| Cost | Pay per query | **Free** — your instance, your hardware |
-| API key | Required, rotates, leaks | **None** |
-| Privacy | Queries go to a third party | Queries go to **your** SearXNG, which aggregates 70+ engines for you |
-| Rate limit | Yes | Only what your instance allows |
-| Works offline / intranet | No | Yes — loopback and private-network endpoints are supported by design |
+| Cost | Usually billed per query | No plugin search API fee; you provide hosting and network access |
+| Search API key | Usually required | **None required by this provider** |
+| Query path | Hosted service, then its search sources | **Your** SearXNG, then the selected upstream engines |
+| Rate limit | Provider limits | Instance and upstream engine limits |
+| Private-network endpoint | Depends on the service | Loopback and private-network endpoints supported |
+
+Public web search still needs internet access from SearXNG; a cached installation does not make searching offline. DSH model-provider credentials are configured separately from this search plugin.
 
 ## Benchmark
 
@@ -63,7 +81,7 @@ The plugin registers the `searxng` provider into `ctx.web`. Each search starts w
                                └──────────────┘                      │ aggregates
                                                           ┌──────────▼──────────┐
                                                           │ Google / Bing / DDG │
-                                                          │ Brave / 70+ engines │
+                                                          │ selected engines    │
                                                           └─────────────────────┘
 ```
 
@@ -76,7 +94,7 @@ SearXNG returns no generated answer, so results carry **sources only** — the a
 | `content` | `snippet` | the engine's excerpt |
 | `publishedDate` | `publishedAt` | when the engine provides it |
 
-`truncated` is always `false` (the web service owns `maxResults` truncation), and no generated `content` answer is attached because SearXNG has none the seam could vouch for.
+The provider initially maps `truncated` to `false`; DSH's Web service applies `maxResults` and can set the final result's flag to `true`. No generated `content` answer is attached because SearXNG supplies sources rather than an answer.
 
 ## Security
 
@@ -127,25 +145,33 @@ curl "http://localhost:8080/search?q=test&format=json"
 
 ### Operating systems and validation coverage
 
-Local setup selects macOS, Windows and Linux glibc x64/arm64 bootstrap tools and uses public DSH subprocess APIs. **Local validation is on macOS. Repository CI runs unit tests and clean first-use setup on Windows, macOS and Linux; the actual run records determine validation status. A complete CPU architecture and Linux distribution matrix is not covered.** Other systems can use an external instance. DSH version compatibility needs separate checks.
+Local setup selects macOS, Windows and Linux glibc x64/arm64 bootstrap tools and uses public DSH subprocess APIs. **Windows, macOS and Linux CI passed on 2026-10-10**, including dependency installation, typecheck, unit tests, build, clean service preparation, cached restart and shutdown. See the [successful CI run](https://github.com/Chaos-Paradox/dsh-web-search-searxng/actions/runs/38034853680) and [validation notes](docs/validation-managed-2026-10-10.md). CI checks service readiness and lifecycle; real upstream searches and the full Web card were validated locally on macOS arm64. A complete CPU architecture and Linux distribution matrix is not covered. Other systems can use an external instance.
 
 | DSH host platform | SearXNG deployment options | Current validation |
 |---|---|---|
-| macOS | Managed local service or existing local/remote instance | DSH 0.2.1-alpha.2 verified |
-| Windows | Managed local service or existing local/remote instance | CI configured; check actual run results |
-| Linux | Managed local service (glibc) or existing local/remote instance | CI configured; check actual run results |
+| macOS | Managed local service or existing local/remote instance | CI passed; full Web card and real search verified locally |
+| Windows | Managed local service or existing local/remote instance | CI passed for setup and lifecycle |
+| Linux | Managed local service (glibc) or existing local/remote instance | CI passed for setup and lifecycle |
+
+DSH version compatibility is a separate question: only **unpatched 0.2.1-alpha.2** has been exercised. The declared peer range `>=0.2.1-alpha.2 <0.3.0` is not a test matrix or a guarantee for every version in that range; host API changes may require plugin updates.
 
 The endpoint must be reachable from the **DSH backend**. `localhost` means the backend's host or container; a browser on another computer does not make that computer the backend's `localhost`. A remote instance does not require every user to start SearXNG locally. For connection errors, check that the service is running and JSON is enabled, then check the card's endpoint.
 
 ### Install options
 
-**From GitHub (tracks latest):**
+**From GitHub (tracks latest main):**
 
 ```sh
 dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-**Pin a release version (recommended for reproducibility):**
+This README describes plugin **0.3.0**, which is merged into `main`. As of 2026-10-10, the latest published Release is still **v0.2.0**; v0.1.0/v0.2.0 do not contain automatic local management and have different host requirements. To pin the merged 0.3.0 implementation reproducibly:
+
+```sh
+dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#40985c5a0631b0b1662f99729edb35340bc7fa88
+```
+
+**Pin a published release** (use an existing tag and read that release's compatibility notes):
 
 ```sh
 dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v<version>
@@ -209,8 +235,11 @@ Version 0.3.0 retires `configEffects`, the activation journal gate and the compa
 |---|---|---|
 | `SearXNG error (HTTP 403); the instance may refuse JSON output` | `settings.yml` lacks `json` in `search.formats` | Add it as shown above and restart the container |
 | Search fails with provider unavailable (`WEB_PROVIDER_CONFIGURED_UNAVAILABLE`) | Local service is preparing/stopped/failed, or external mode has no endpoint | Check card status and retry; configure an address for external mode |
+| Local startup reports address/port in use | An explicitly configured local port is occupied | Set Local port to `0` and save, or choose a free fixed port; the plugin does not remap an explicit choice |
+| First setup fails during download or dependency installation | The DSH backend cannot reach the download/package services, or setup timed out | Read the card's diagnostic log, restore GitHub/PyPI access and retry |
+| Local service reports another owner for this profile | Another DSH process is using the same profile's managed runtime | Stop the other profile process, then retry; do not run two owners for one profile |
 | Search went to another provider | A later bundle or higher-priority profile/home/CLI config | Check `--dump-config` and your overrides |
-| `search request failed` / ECONNREFUSED | Instance down or wrong port | Check `docker ps`, try the curl verify command; the tested host cannot provide official fallback |
+| `search request failed` / ECONNREFUSED | Instance down or wrong port | For managed mode, check card status and start/retry; for external mode, check its service and endpoint (e.g. `docker ps` for a container) |
 | A search result opens with a ⚠️ fallback notice | An extended host supports official fallback and SearXNG just failed once | Check the instance; disable the fallback on the card to return to strict mode |
 | `WEB_PROVIDER_ERROR` mentioning a redirect | A proxy in front of SearXNG redirects | Point `baseURL` at the final address; redirects fail closed by design |
 | Empty `sources` | Engines returned nothing usable (or all entries lacked URLs) | Loosen `engines`, check the instance in a browser |
@@ -233,7 +262,7 @@ src/
   provider.ts   SearxngSearchProvider: JSON API call, result mapping, error policy
   fallback.ts   opt-in official fallback: per-request degrade, bilingual notice, host log
   types.ts      SearXNG response types
-  client/       browser bundle: the Settings → Plugins card (React)
+  client/       browser bundle: the Plugins-page card (React)
 tests/          vitest suites incl. redirect & egress policy
 ```
 
