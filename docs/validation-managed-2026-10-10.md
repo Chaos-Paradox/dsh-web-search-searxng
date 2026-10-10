@@ -5,7 +5,7 @@ Plugin 0.3.0 adds automatic local SearXNG preparation and lifecycle management t
 ## Automated checks
 
 - Frozen dependency installation, typecheck and Host/Client build passed. Built files and declarations are committed under `lib/`.
-- 94 tests passed across 12 suites, covering provider/fallback behavior, card settings and actions, archive verification and extraction, six platform asset selections, duplicate ownership, cancellation, bounded crash recovery, failed readiness cleanup, and late mounting/replacement of the host process service. Existing published client source-map warnings did not fail the suite.
+- 96 tests passed across 12 suites, covering provider/fallback behavior, card settings and actions, archive verification and extraction, six platform asset selections, duplicate ownership, cancellation, bounded crash recovery, failed readiness cleanup, and late mounting/replacement of the host process service. Existing published client source-map warnings did not fail the suite.
 - Nine built-artifact host composition tests passed: real profile layers, package resolution, Include/Loader, volatile saves, route priorities, cancellation, no paid fallback on the unpatched host, bundle disable/enable, and manager/pnpm removal in a disposable profile.
 - `pnpm run test:managed` passed from an empty temporary directory using built JavaScript and the published public subprocess provider. It downloaded the managed runtime, returned three real search sources through `ctx.web`, reused the cached runtime on restart, verified HTTP shutdown after stopping and after plugin disposal, and removed temporary data.
 - `pnpm pack` created `artifacts/dsh-web-search-searxng-0.3.0.tgz`. A new Web profile installed this actual tarball and booted the full Web composition on port 3084. The card reported a ready automatic service at an OS-selected loopback port without configuring an endpoint or system Python. Artifact contents include both bundles, routing YAML, declarations and bilingual setup notes.
@@ -23,7 +23,7 @@ The two disposable Web servers were stopped after validation, and their owned Se
 
 ## Cross-platform scope
 
-The first Actions run passed Linux/macOS and exposed a Windows build issue: the decorator-lowering hook matched only forward-slash paths, leaving syntax that Node cannot parse. The hook now accepts Windows separators, with parser regression tests for both path forms. Subsequent CI runs validate the fixed build.
+The first Actions run passed Linux/macOS and exposed a Windows build issue: the decorator-lowering hook matched only forward-slash paths, leaving syntax that Node cannot parse. The hook now accepts Windows separators, with parser regression tests for both path forms. The next run reached real Windows setup and exposed an unconditional Unix-only `pwd` import in the pinned Valkey adapter. A guarded, Windows-only source compatibility patch now preserves POSIX behavior and avoids account metadata for Windows connection-error logging. Expected-source checks and compatibility-version markers protect this patch. Subsequent CI runs validate the fixed build and startup.
 
 Local live testing covered macOS arm64 only. GitHub Actions runs frozen installation, typecheck, unit tests, build and clean managed preparation on Windows, macOS and Linux. CI sets `SEARXNG_SMOKE_SEARCH=0` to test readiness and teardown without relying on upstream search-engine availability. CI results must be read from the corresponding run; six bootstrap assets alone do not establish that every CPU architecture or Linux distribution works.
 

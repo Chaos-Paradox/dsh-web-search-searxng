@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createHash } from 'node:crypto'
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { zipSync } from 'fflate'
-import { extractRuntimeArchive, uvAsset, verifiedDownload } from '../src/runtime-installer.ts'
+import { applyWindowsCompatibility, extractRuntimeArchive, uvAsset, verifiedDownload } from '../src/runtime-installer.ts'
 import { parseServiceStatus } from '../src/runtime-types.ts'
 
 const dirs: string[] = []
@@ -36,5 +36,24 @@ describe('verified runtime installation', () => {
     expect(parseServiceStatus({ phase: 'ready', endpoint: 'http://localhost', message: '', logs: '' }).phase).toBe('ready')
     expect(() => parseServiceStatus({ phase: 'unexpected' })).toThrow()
     expect(() => parseServiceStatus({ phase: 'ready', endpoint: 123, message: '', logs: '' })).toThrow()
+  })
+  it('guards Unix account imports and logging only for Windows', async () => {
+    const dir = await directory(); await mkdir(join(dir, 'searx'))
+    const target = join(dir, 'searx', 'valkeydb.py')
+    const original = `import os\nimport pwd\n\ndef connect():\n        _pw = pwd.getpwuid(os.getuid())\n        logger.exception("[%s (%s)] can't connect valkey DB ...", _pw.pw_name, _pw.pw_uid)\n`
+    await writeFile(target, original)
+    await applyWindowsCompatibility(dir, 'darwin')
+    expect(await readFile(target, 'utf8')).toBe(original)
+    await applyWindowsCompatibility(dir, 'win32')
+    const patched = await readFile(target, 'utf8')
+    expect(patched).toContain('except ImportError:\n    pwd = None')
+    expect(patched).toContain('if pwd is None:')
+    expect(patched).toContain('else:\n            _pw = pwd.getpwuid(os.getuid())')
+  })
+  it('rejects an unexpected upstream source before making a partial patch', async () => {
+    const dir = await directory(); await mkdir(join(dir, 'searx'))
+    const target = join(dir, 'searx', 'valkeydb.py'); await writeFile(target, 'unexpected source')
+    await expect(applyWindowsCompatibility(dir, 'win32')).rejects.toThrow(/no longer matches/)
+    expect(await readFile(target, 'utf8')).toBe('unexpected source')
   })
 })

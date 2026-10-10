@@ -18,6 +18,8 @@ The service binds only the DSH backend's `127.0.0.1`, using Waitress and a prebo
 
 The service follows the enabled plugin. Stop, switching to external mode, disabling the plugin or normal DSH shutdown awaits owned subprocess exit and releases the lock while retaining caches and preferences. DSH restart starts it again. No system startup service is registered. External mode never starts, stops or modifies the existing instance. Forced host termination relies on the DSH subprocess provider's cleanup, with stale-lock recovery; identical behavior for every OS termination mechanism is not guaranteed.
 
+On Windows, setup applies a narrow compatibility patch after verifying the pinned source archive: the Valkey adapter treats Unix-only `pwd` account metadata as optional and uses an account-independent connection-error log. The patch validates the expected source before writing, and the ready marker includes its compatibility version. POSIX source behavior is unchanged. This is a plugin-maintained patch, not an upstream claim of Windows support.
+
 ## Platforms and validation
 
 Bootstrap selection covers macOS/Windows/Linux glibc x64 and arm64. Python and dependency availability still needs validation on each platform. Unsupported systems report an error and can use an external instance. Local validation covers macOS, unpatched DSH 0.2.1-alpha.2, clean downloads, real search, cached restart, stop and plugin teardown. GitHub Actions runs unit tests, builds and clean service setup on Windows, macOS and Linux; CI readiness tests do not depend on upstream engine results. A complete architecture/distribution matrix is not covered.

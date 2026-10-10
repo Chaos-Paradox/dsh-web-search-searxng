@@ -8,6 +8,7 @@ import { unzipSync } from 'fflate'
 export const UV_VERSION = '0.13.0'
 export const SEARXNG_REVISION = 'f4822b3fc46726bb259d14c6332b702c76b98f82'
 export const PYTHON_VERSION = '3.12.12'
+const WINDOWS_COMPATIBILITY_VERSION = 1
 const SOURCE_SHA256 = 'a377e229d3f05bba445894f83c0d450093174201c416441b565c772787f85ffd'
 const UV_ASSETS: Record<string, { name: string; hash: string }> = {
   'darwin-arm64': { name: 'uv-aarch64-apple-darwin.tar.gz', hash: 'a9c1b29002cf3c83f07fa9cd8a887a3be0107d90e23189721221e7257db8e3d6' },
@@ -62,6 +63,20 @@ export async function extractRuntimeArchive(archive: string, destination: string
   if (uvOnly) await chmod(join(destination, 'uv'), 0o700)
 }
 
+/** The pinned Valkey client imports Unix account metadata even with Valkey disabled.
+ * Preserve its POSIX behavior and use an account-independent error log on Windows.
+ */
+export async function applyWindowsCompatibility(source: string, platform: string = process.platform): Promise<void> {
+  if (platform !== 'win32') return
+  const target = join(source, 'searx', 'valkeydb.py')
+  const original = await readFile(target, 'utf8')
+  const accountLog = "        _pw = pwd.getpwuid(os.getuid())\n        logger.exception(\"[%s (%s)] can't connect valkey DB ...\", _pw.pw_name, _pw.pw_uid)"
+  if (!original.includes('\nimport pwd\n') || !original.includes(accountLog)) throw new Error('Pinned SearXNG Windows compatibility patch no longer matches')
+  const patched = original.replace('\nimport pwd\n', '\ntry:\n    import pwd\nexcept ImportError:\n    pwd = None\n')
+    .replace(accountLog, "        if pwd is None:\n            logger.exception(\"can't connect valkey DB ...\")\n        else:\n            _pw = pwd.getpwuid(os.getuid())\n            logger.exception(\"[%s (%s)] can't connect valkey DB ...\", _pw.pw_name, _pw.pw_uid)")
+  await writeFile(target, patched)
+}
+
 /** Prepare a versioned, profile-owned runtime. Failed setup is retried without a ready marker. */
 export async function prepareRuntime(
   directory: string, command: RuntimeCommand, signal: AbortSignal, progress: (message: string) => void,
@@ -73,7 +88,8 @@ export async function prepareRuntime(
   const marker = join(base, 'ready.json')
   try {
     const ready = JSON.parse(await readFile(marker, 'utf8'))
-    if (ready.revision === SEARXNG_REVISION && ready.python === PYTHON_VERSION && ready.uv === UV_VERSION) {
+    if (ready.revision === SEARXNG_REVISION && ready.python === PYTHON_VERSION && ready.uv === UV_VERSION
+      && ready.compatibility === WINDOWS_COMPATIBILITY_VERSION) {
       await readFile(join(source, 'searx', 'webapp.py'))
       await readFile(python)
       return { python, source }
@@ -90,6 +106,7 @@ export async function prepareRuntime(
   await verifiedDownload(`https://codeload.github.com/searxng/searxng/tar.gz/${SEARXNG_REVISION}`, SOURCE_SHA256, sourceArchive, signal)
   await rm(source, { recursive: true, force: true })
   await extractRuntimeArchive(sourceArchive, source)
+  await applyWindowsCompatibility(source)
   const env = {
     UV_PYTHON_INSTALL_DIR: join(directory, 'python'), UV_CACHE_DIR: join(directory, 'uv-cache'),
     UV_PYTHON_INSTALL_BIN: '0', UV_NO_PROGRESS: '1', UV_PYTHON_PREFERENCE: 'only-managed',
@@ -100,7 +117,7 @@ export async function prepareRuntime(
   progress('dependencies')
   await command([uv, 'pip', 'install', '--python', python, '-r', join(source, 'requirements.txt'), 'waitress==3.0.2'], source, env, signal)
   await command([python, '-c', 'import flask, curl_cffi, lxml, waitress'], source, env, signal)
-  await writeFile(`${marker}.tmp`, JSON.stringify({ revision: SEARXNG_REVISION, python: PYTHON_VERSION, uv: UV_VERSION }))
+  await writeFile(`${marker}.tmp`, JSON.stringify({ revision: SEARXNG_REVISION, python: PYTHON_VERSION, uv: UV_VERSION, compatibility: WINDOWS_COMPATIBILITY_VERSION }))
   await rename(`${marker}.tmp`, marker)
   await rm(uvArchive, { force: true })
   await rm(sourceArchive, { force: true })
