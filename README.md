@@ -27,10 +27,10 @@ Prerequisite: DeepSeek Harness **0.2.1-alpha.2** with the standard Web/base bund
 
 **1. Install the plugin:**
 
-In DSH's sidebar, open **Plugins → Add plugin**, enter `https://github.com/Chaos-Paradox/dsh-web-search-searxng`, and choose **Enable now** after installation. The equivalent CLI command is:
+In DSH's sidebar, open **Plugins → Add plugin**, enter `https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.3.0`, and choose **Enable now** after installation. The equivalent CLI command is:
 
 ```sh
-dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
+dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.3.0
 ```
 
 **2. Set your preferences:** open **sidebar → Plugins → SearXNG search**, wait for Ready, choose engines and result language, and save. Use Test search to check returned sources. A free port is selected automatically, so no endpoint entry is needed; advanced settings allow a specific port. To use your own existing service, select Existing instance and enter its endpoint.
@@ -165,19 +165,13 @@ The endpoint must be reachable from the **DSH backend**. `localhost` means the b
 dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-This README describes plugin **0.3.0**, which is merged into `main`. As of 2026-10-10, the latest published Release is still **v0.2.0**; v0.1.0/v0.2.0 do not contain automatic local management and have different host requirements. To pin the merged 0.3.0 implementation reproducibly:
+**Pin the v0.3.0 release (recommended for reproducibility):**
 
 ```sh
-dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#40985c5a0631b0b1662f99729edb35340bc7fa88
+dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.3.0
 ```
 
-**Pin a published release** (use an existing tag and read that release's compatibility notes):
-
-```sh
-dsh plugin --profile <name> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v<version>
-```
-
-See all versions on the [Releases page](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases).
+This README describes plugin **0.3.0**. See its [Release notes and installable tarball](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases/tag/v0.3.0), or all versions on the [Releases page](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases). Older v0.1.0/v0.2.0 tags do not contain automatic local management; read their own compatibility notes before installing them.
 
 **From a local clone or tarball:** the same command takes an absolute path, e.g. `dsh plugin --profile <name> add /path/to/dsh-web-search-searxng`. No build step needed — `lib/` is committed.
 

@@ -27,10 +27,10 @@
 
 **1. 安装插件：**
 
-在 DSH 侧栏打开 **插件 → 添加插件**，填写 `https://github.com/Chaos-Paradox/dsh-web-search-searxng`，安装完成后选择 **立即启用**。等价的 CLI 命令为：
+在 DSH 侧栏打开 **插件 → 添加插件**，填写 `https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.3.0`，安装完成后选择 **立即启用**。等价的 CLI 命令为：
 
 ```sh
-dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
+dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.3.0
 ```
 
 **2. 设置偏好：** 打开 **侧栏 → 插件 → SearXNG 搜索**，等待服务显示「可用」，选择引擎和结果语言并保存。点击「测试搜索」检查实际返回的来源。默认自动选择空闲端口，用户无需填写地址；高级设置可指定端口。连接自己的现有服务时，选择「连接已有实例」并填写地址。
@@ -165,19 +165,13 @@ DSH 版本兼容是另一项验证：目前仅实际测试了**未打补丁的 0
 dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng
 ```
 
-本 README 描述插件 **0.3.0**，代码已合并到 `main`。截至 2026-10-10，最新已发布 Release 仍是 **v0.2.0**；v0.1.0/v0.2.0 不包含自动托管，宿主要求也不同。如需固定本次合并的 0.3.0 实现，可使用提交号：
+**固定 v0.3.0 发布版本（推荐，可复现）：**
 
 ```sh
-dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#40985c5a0631b0b1662f99729edb35340bc7fa88
+dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v0.3.0
 ```
 
-**指定已发布版本**（使用实际存在的标签，并阅读该版本的兼容说明）：
-
-```sh
-dsh plugin --profile <名称> add https://github.com/Chaos-Paradox/dsh-web-search-searxng#v<version>
-```
-
-所有版本见 [Releases 页面](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases)。
+本 README 描述插件 **0.3.0**，详见其[发布说明与可安装压缩包](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases/tag/v0.3.0)，所有版本见 [Releases 页面](https://github.com/Chaos-Paradox/dsh-web-search-searxng/releases)。旧 v0.1.0/v0.2.0 标签不包含自动托管；安装旧版前请阅读各自的兼容说明。
 
 **本地克隆或 tarball：** 同一命令填绝对路径即可，例如 `dsh plugin --profile <名称> add /path/to/dsh-web-search-searxng`。无需构建——`lib/` 已提交。
 
